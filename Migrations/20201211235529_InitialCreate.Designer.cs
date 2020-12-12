@@ -20,7 +20,7 @@ namespace InventoryControlSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("InventoryControlSystem.Models.Bottle", b =>
+            modelBuilder.Entity("InventoryControlSystem.Models.Item", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace InventoryControlSystem.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Bottles");
+                    b.ToTable("Items");
                 });
 #pragma warning restore 612, 618
         }

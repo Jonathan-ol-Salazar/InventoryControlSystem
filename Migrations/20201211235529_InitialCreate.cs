@@ -7,7 +7,7 @@ namespace InventoryControlSystem.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Bottles",
+                name: "Items",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -19,14 +19,14 @@ namespace InventoryControlSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bottles", x => x.ID);
+                    table.PrimaryKey("PK_Items", x => x.ID);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Bottles");
+                name: "Items");
         }
     }
 }

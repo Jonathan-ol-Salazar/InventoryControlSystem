@@ -12,7 +12,7 @@ namespace InventoryControlSystem.Controllers
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
-        private readonly IBottleRepository _bottleRepository;
+        private readonly IItemRepository _bottleRepository;
 
         //public HomeController(ILogger<HomeController> logger)
         //{
@@ -20,7 +20,7 @@ namespace InventoryControlSystem.Controllers
         //}
 
 
-        public HomeController(IBottleRepository bottleRepository)
+        public HomeController(IItemRepository bottleRepository)
         {
             _bottleRepository = bottleRepository;
         }
@@ -28,7 +28,7 @@ namespace InventoryControlSystem.Controllers
 
         //public String Index()
         //{
-        //    return _bottleRepository.GetBottle(1).Name;
+        //    return _bottleRepository.GetItem(1).Name;
         //}
 
 

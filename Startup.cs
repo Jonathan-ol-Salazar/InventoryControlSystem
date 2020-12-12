@@ -40,7 +40,7 @@ namespace InventoryControlSystem
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 
-			services.AddSingleton<IBottleRepository, MockBottleRepository>();
+			services.AddTransient<IItemRepository, ItemRepository>();
 
             // Auth0 
 
