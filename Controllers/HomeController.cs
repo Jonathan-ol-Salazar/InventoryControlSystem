@@ -11,17 +11,31 @@ namespace InventoryControlSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
+        private readonly IBottleRepository _bottleRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+
+        public HomeController(IBottleRepository bottleRepository)
         {
-            _logger = logger;
+            _bottleRepository = bottleRepository;
         }
 
-        public IActionResult Index()
+
+        public String Index()
         {
-            return View();
+            return _bottleRepository.GetBottle(1).Name;
         }
+
+
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public IActionResult Privacy()
         {

@@ -13,6 +13,7 @@ namespace InventoryControlSystem.Models
 
         }
 
+        public DbSet<Bottle> Bottles { get; set; }
 
     }
 }
