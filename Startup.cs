@@ -37,6 +37,9 @@ namespace InventoryControlSystem
 
 			services.AddMvc();
 			services.AddControllersWithViews();
+			services.AddRazorPages().AddRazorRuntimeCompilation();
+
+
 			services.AddSingleton<IBottleRepository, MockBottleRepository>();
 
             // Auth0 
@@ -119,6 +122,7 @@ namespace InventoryControlSystem
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				app.UseBrowserLink();
 			}
 			else 
 			{
