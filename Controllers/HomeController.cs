@@ -26,16 +26,16 @@ namespace InventoryControlSystem.Controllers
         }
 
 
-        public String Index()
-        {
-            return _bottleRepository.GetBottle(1).Name;
-        }
-
-
-        //public IActionResult Index()
+        //public String Index()
         //{
-        //    return View();
+        //    return _bottleRepository.GetBottle(1).Name;
         //}
+
+
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
