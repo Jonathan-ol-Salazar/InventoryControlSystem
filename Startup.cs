@@ -40,15 +40,18 @@ namespace InventoryControlSystem
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 
-			services.AddTransient<IItemRepository, ItemRepository>();
+			services.AddTransient<IProductRepository, ProductRepository>();
+			services.AddTransient<IUserRepository, UserRepository>();
+			services.AddTransient<ICustomerRepository, CustomerRepository>();
 
-            // Auth0 
 
-            // Cookie configuration for HTTP to support cookies with SameSite=None
-            //services.ConfigureSameSiteNoneCookies();
+			// Auth0 
 
-            // Cookie configuration for HTTPS
-            services.Configure<CookiePolicyOptions>(options =>
+			// Cookie configuration for HTTP to support cookies with SameSite=None
+			//services.ConfigureSameSiteNoneCookies();
+
+			// Cookie configuration for HTTPS
+			services.Configure<CookiePolicyOptions>(options =>
             {
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 

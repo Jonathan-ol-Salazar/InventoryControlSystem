@@ -12,7 +12,7 @@ namespace InventoryControlSystem.Controllers
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
-        private readonly IItemRepository _bottleRepository;
+        private readonly IProductRepository _bottleRepository;
 
         //public HomeController(ILogger<HomeController> logger)
         //{
@@ -20,7 +20,7 @@ namespace InventoryControlSystem.Controllers
         //}
 
 
-        public HomeController(IItemRepository bottleRepository)
+        public HomeController(IProductRepository bottleRepository)
         {
             _bottleRepository = bottleRepository;
         }

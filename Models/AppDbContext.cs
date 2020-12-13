@@ -13,7 +13,12 @@ namespace InventoryControlSystem.Models
 
         }
 
-        public DbSet<Item> Items { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        //public DbSet<Supplier> Suppliers { get; set; }
+        //public DbSet<Fund> Funds { get; set; }
+
 
     }
 }

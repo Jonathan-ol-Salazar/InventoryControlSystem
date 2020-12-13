@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InventoryControlSystem.Models
 {
-    public class Item
+    public class Product
     {
         public int ID { get; set; }
         public string Name { get; set; }

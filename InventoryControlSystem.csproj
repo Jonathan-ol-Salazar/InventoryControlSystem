@@ -6,6 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Customers\**" />
+    <Compile Remove="Models\Money_\**" />
+    <Compile Remove="Models\Supplier_\**" />
+    <Content Remove="Models\Customers\**" />
+    <Content Remove="Models\Money_\**" />
+    <Content Remove="Models\Supplier_\**" />
+    <EmbeddedResource Remove="Models\Customers\**" />
+    <EmbeddedResource Remove="Models\Money_\**" />
+    <EmbeddedResource Remove="Models\Supplier_\**" />
+    <None Remove="Models\Customers\**" />
+    <None Remove="Models\Money_\**" />
+    <None Remove="Models\Supplier_\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.1" />
