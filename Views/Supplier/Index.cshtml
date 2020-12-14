@@ -1,14 +1,14 @@
-﻿@model IEnumerable<InventoryControlSystem.Models.User>
+﻿@model IEnumerable<InventoryControlSystem.Models.Supplier>
 
 @{
-    ViewData["Title"] = "Table of Users";
+    ViewData["Title"] = "Index";
 }
 
 
 
 <p>
     <a asp-action="Create">Create New</a>
-</p>   
+</p>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -22,13 +22,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.ID)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.FirstName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.LastName)
+                                    @Html.DisplayNameFor(model => model.Name)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Email)
@@ -40,11 +34,9 @@
                                     @Html.DisplayNameFor(model => model.Address)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DOB)
+                                    @Html.DisplayNameFor(model => model.Orders)
                                 </th>
-                                <th>
-                                    Functions
-                                </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,13 +44,7 @@
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ID)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.FirstName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.LastName)
+                                        @Html.DisplayFor(modelItem => item.Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Email)
@@ -70,7 +56,7 @@
                                         @Html.DisplayFor(modelItem => item.Address)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DOB)
+                                        @Html.DisplayFor(modelItem => item.Orders)
                                     </td>
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
@@ -87,4 +73,3 @@
         </div>
     </div>
 </div>
-

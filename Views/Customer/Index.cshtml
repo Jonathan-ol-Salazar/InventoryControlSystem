@@ -1,14 +1,13 @@
-﻿@model IEnumerable<InventoryControlSystem.Models.User>
+﻿@model IEnumerable<InventoryControlSystem.Models.Customer>
 
 @{
-    ViewData["Title"] = "Table of Users";
+    ViewData["Title"] = "Index";
 }
-
 
 
 <p>
     <a asp-action="Create">Create New</a>
-</p>   
+</p>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -21,9 +20,6 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ID)
-                                </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.FirstName)
                                 </th>
@@ -40,7 +36,7 @@
                                     @Html.DisplayNameFor(model => model.Address)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DOB)
+                                    @Html.DisplayNameFor(model => model.Orders)
                                 </th>
                                 <th>
                                     Functions
@@ -51,9 +47,6 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ID)
-                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.FirstName)
                                     </td>
@@ -70,7 +63,7 @@
                                         @Html.DisplayFor(modelItem => item.Address)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.DOB)
+                                        @Html.DisplayFor(modelItem => item.Orders)
                                     </td>
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
