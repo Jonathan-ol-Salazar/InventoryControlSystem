@@ -4,14 +4,16 @@ using InventoryControlSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryControlSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201214102537_Added_Order")]
+    partial class Added_Order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,8 +61,8 @@ namespace InventoryControlSystem.Migrations
                     b.Property<int?>("CustomerID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Fulfilled")
-                        .HasColumnType("bit");
+                    b.Property<string>("Fulfilled")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumProducts")
                         .HasColumnType("int");
@@ -68,8 +70,8 @@ namespace InventoryControlSystem.Migrations
                     b.Property<string>("OrderID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Ordered")
-                        .HasColumnType("bit");
+                    b.Property<string>("Ordered")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");

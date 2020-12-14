@@ -102,7 +102,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         @*@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                            {*@
+        {*@
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Home", new { })" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -112,8 +112,38 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="@Url.Action("Index", "Order", new { })" class="nav-link">
+                                <i class="nav-icon fas fa-dolly"></i>
+                                <p>
+                                    Orders
+                                    <i class="fas fa-angle-left right"></i>
+                                    @*<span class="badge badge-info right">6</span>*@
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Order", new { })" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Customer Orders</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>To Order</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>To Fulfill</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
                             <a href="@Url.Action("Index", "User", new { })" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
+                                <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Users
                                 </p>
@@ -121,7 +151,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Customer", new { })" class="nav-link">
-                                <i class="fab fa-creative-commons-by"></i>
+                                <i class="nav-icon fab fa-creative-commons-by"></i>
                                 <p>
                                     Customers
                                 </p>
@@ -129,7 +159,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Supplier", new { })" class="nav-link">
-                                <i class="fas fa-truck"></i>
+                                <i class="nav-icon fas fa-truck"></i>
                                 <p>
                                     Suppliers
                                 </p>
@@ -138,7 +168,7 @@
                         @*}*@
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Product", new { })" class="nav-link">
-                                <i class="fas fa-wine-bottle"></i>
+                                <i class="nav-icon fas fa-wine-bottle"></i>
                                 <p>
                                     Products
                                 </p>
