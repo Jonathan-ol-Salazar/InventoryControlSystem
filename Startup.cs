@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 namespace InventoryControlSystem
 {
@@ -81,6 +82,18 @@ namespace InventoryControlSystem
 				// Configure the scope
 				options.Scope.Clear();
 				options.Scope.Add("openid");
+				options.Scope.Add("profile");
+				options.Scope.Add("email");
+				options.Scope.Add("name");
+
+
+
+				// Set the correct name claim type
+				options.TokenValidationParameters = new TokenValidationParameters
+				{
+					NameClaimType = "name",
+					RoleClaimType = "https://schemas.bottleo-ics.com/roles"
+				};
 
 				// Set the callback path, so Auth0 will call back to http://localhost:3000/callback
 				// Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
@@ -142,8 +155,8 @@ namespace InventoryControlSystem
 
 			app.UseRouting();
 
-			app.UseAuthorization();
 			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
