@@ -122,23 +122,29 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
+                                        <a href="@Url.Action("Create", "Order", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Create Order</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="@Url.Action("Index", "Order", new { })" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>All Customer Orders</p>
+                                            <p>Manage Orders</p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>To Order</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>To Fulfill</p>
-                                        </a>
-                                    </li>
+                                    @*<li class="nav-item">
+            <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>To Order</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>To Fulfill</p>
+            </a>
+        </li>*@
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -162,8 +168,29 @@
                                     <i class="nav-icon fas fa-truck"></i>
                                     <p>
                                         Suppliers
+                                        <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Create", "Supplier", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Create Orderlist</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "Supplier", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage Suppliers</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Create", "Supplier", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage Orderlists</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         <li class="nav-item">

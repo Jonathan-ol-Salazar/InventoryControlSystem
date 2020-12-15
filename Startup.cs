@@ -46,6 +46,7 @@ namespace InventoryControlSystem
 			services.AddTransient<ICustomerRepository, CustomerRepository>();
 			services.AddTransient<ISupplierRepository, SupplierRepository>();
 			services.AddTransient<IOrderRepository, OrderRepository>();
+			services.AddTransient<IOrderListRepository, OrderListRepository>();
 
 
 
