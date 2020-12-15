@@ -4,14 +4,16 @@ using InventoryControlSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryControlSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201215043903_Added_OrderList")]
+    partial class Added_OrderList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +67,6 @@ namespace InventoryControlSystem.Migrations
                     b.Property<int>("NumProducts")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("OrderID")
                         .HasColumnType("nvarchar(max)");
 
@@ -94,30 +93,19 @@ namespace InventoryControlSystem.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("BillingAddress")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Business")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Confirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShippingAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SupplierID")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("SupplierID");
+                    b.HasKey("ID");
 
                     b.ToTable("OrderLists");
                 });
@@ -129,19 +117,10 @@ namespace InventoryControlSystem.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Brand")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumUnits")
-                        .HasColumnType("int");
-
                     b.Property<int?>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderListID")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
@@ -150,22 +129,12 @@ namespace InventoryControlSystem.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SupplierID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("OrderID");
-
-                    b.HasIndex("OrderListID");
-
-                    b.HasIndex("SupplierID");
 
                     b.ToTable("Products");
                 });
@@ -236,38 +205,14 @@ namespace InventoryControlSystem.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("InventoryControlSystem.Models.OrderList", b =>
-                {
-                    b.HasOne("InventoryControlSystem.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierID");
-
-                    b.Navigation("Supplier");
-                });
-
             modelBuilder.Entity("InventoryControlSystem.Models.Product", b =>
                 {
                     b.HasOne("InventoryControlSystem.Models.Order", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderID");
-
-                    b.HasOne("InventoryControlSystem.Models.OrderList", null)
-                        .WithMany("Products")
-                        .HasForeignKey("OrderListID");
-
-                    b.HasOne("InventoryControlSystem.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierID");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("InventoryControlSystem.Models.Order", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("InventoryControlSystem.Models.OrderList", b =>
                 {
                     b.Navigation("Products");
                 });

@@ -8,6 +8,9 @@
 
 <p>
     <a asp-action="Create">Create New</a>
+    <a asp-action="ToOrder">To Order</a>
+    <a asp-action="ToFulfill">To Fulfill</a>
+
 </p>
 <div class="container-fluid">
     <div class="row">
@@ -37,6 +40,9 @@
                                     @Html.DisplayNameFor(model => model.Ordered)
                                 </th>
                                 <th>
+                                    @Html.DisplayNameFor(model => model.OrderList)
+                                </th>
+                                <th>
                                     Functions
                                 </th>
                             </tr>
@@ -44,28 +50,33 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OrderID)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NumProducts)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Status)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Fulfilled)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Ordered)
-                                    </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumProducts)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Fulfilled)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ordered)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderList)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a> |
+                                    <a asp-action="Add2OrderList" asp-route-id="@item.ID">Add To Order List</a>
+
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

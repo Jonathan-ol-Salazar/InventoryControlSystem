@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\Order\" />
     <Folder Include="wwwroot\Theme_AdminLTE\" />
   </ItemGroup>
 
