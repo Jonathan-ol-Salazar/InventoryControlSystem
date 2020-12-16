@@ -13,6 +13,8 @@ namespace InventoryControlSystem.Models
         public string Business { get; set; }
         public List<Product> Products { get; set; }
 
+        public List<Order> Orders { get; set; }
+
         public int Price { get; set; }
         public DateTime OrderDate  { get; set; }
 

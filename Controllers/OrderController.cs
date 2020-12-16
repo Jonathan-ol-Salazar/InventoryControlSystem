@@ -186,7 +186,7 @@ namespace InventoryControlSystem.Controllers
 
             order.OrderList = true;
             _context.Update(order);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
           
             // DUMB PRODUCTS LIST
@@ -225,24 +225,23 @@ namespace InventoryControlSystem.Controllers
                 // If no OrderList exists, create a new one
                 if (orderList4Supplier == null || orderList4Supplier.Count() == 0)
                 {
-                    List<Product> productList = new List<Product>
-                    {
-                        product
-                    };
-
+                 
                     OrderList newOrderList = new OrderList
                     {
                         Supplier = product.Supplier,
                         Business = "",
-                        Products = productList,
+                        Products = new List<Product> {product},
+                        Orders = new List<Order> {order},
                         Price = 0,
-                        OrderDate = new DateTime(2008, 5, 1, 8, 30, 52),
+                        OrderDate = DateTime.Now,
                         BillingAddress = "",
                         ShippingAddress = "",
                         Confirmed = false
                     };
 
                     _context.OrderLists.Add(newOrderList);
+
+                    await _context.SaveChangesAsync();
 
                 }
                 else
@@ -261,8 +260,12 @@ namespace InventoryControlSystem.Controllers
 
                     // Increase quantity of units
                     orderList4Supplier[0].Products.Find(x => x.ID == product.ID).NumUnits += 1;
+
+                    // Add order to OrderList
+                    orderList4Supplier[0].Orders.Add(order);
                     
                     _context.OrderLists.Update(orderList4Supplier[0]);
+                    //await _context.SaveChangesAsync();
 
 
                 }
@@ -270,28 +273,7 @@ namespace InventoryControlSystem.Controllers
             }
 
 
-
-
-            await _context.SaveChangesAsync();
-
-            //// if there are no lists to be confirmed
-            //if(toConfirm == null)
-            //{
-            //    OrderList newOrderList = new OrderList();
-            //    newOrderList.ID = 0;
-            //    newOrderList.Supplier = order.sup;
-            //    newOrderList.Business = 0;
-            //    newOrderList.Products = 0;
-            //    newOrderList.Price = 0;
-            //    newOrderList.OrderDate = 0;
-            //    newOrderList.BillingAddress = 0;
-            //    newOrderList.ShippingAddress = 0;
-            //    newOrderList.Confirmed = 0;
-            //}
-
-
-
-
+            //await _context.SaveChangesAsync();
 
 
             return RedirectToAction(nameof(ToOrder));

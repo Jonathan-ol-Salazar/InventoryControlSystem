@@ -148,5 +148,55 @@ namespace InventoryControlSystem.Controllers
         {
             return _context.OrderLists.Any(e => e.ID == id);
         }
+
+        // ToConfirm
+        public async Task<IActionResult> ToConfirm()
+        {
+            // get all the entries that have 'confirm' as false
+            var toConfirm = await _context.OrderLists.Where(p => p.Confirmed == false).ToListAsync();
+            return View("Index", toConfirm);
+        }
+
+        public async Task<IActionResult> Confirm(int? id)
+        {
+            // Get OrderList
+            // Set to 'Confirmed'
+            // Loop through all its order and set it to 'Ordered'
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orderList = await _context.OrderLists
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (orderList == null)
+            {
+                return NotFound();
+            }
+
+            // Set OrderList 'Confirmed' to true
+            orderList.Confirmed = true;
+
+            // Set its orders to 'Ordered'
+            foreach (Order order in orderList.Orders)
+            {
+                order.Ordered = true;
+                _context.Update(order);
+
+            }
+
+            _context.Update(orderList);
+
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction(nameof(ToConfirm));
+
+
+        }
+
+
     }
 }
