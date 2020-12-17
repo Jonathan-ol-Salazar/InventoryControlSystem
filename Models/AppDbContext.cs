@@ -21,8 +21,18 @@ namespace InventoryControlSystem.Models
         public DbSet<OrderList> OrderLists { get; set; }
 
 
-        //public DbSet<Fund> Funds { get; set; }
+        ////public DbSet<Fund> Funds { get; set; }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Product>().ToTable("Products");
+        //    modelBuilder.Entity<User>().ToTable("Users");
+        //    modelBuilder.Entity<Customer>().ToTable("Customers");
+        //    modelBuilder.Entity<Supplier>().ToTable("Suppliers");
+        //    modelBuilder.Entity<Order>().ToTable("Orders");
+        //    modelBuilder.Entity<OrderList>().ToTable("OrderLists");
 
+            
+        //}
 
     }
 }

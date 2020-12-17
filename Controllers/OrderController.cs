@@ -38,6 +38,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "View Order";
 
             return View(order);
         }
@@ -45,6 +46,8 @@ namespace InventoryControlSystem.Controllers
         // GET: Order/Create
         public IActionResult Create()
         {
+            ViewData["Title"] = "Create New Order";
+        
             return View();
         }
 
@@ -77,6 +80,8 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Edit Order";
+
             return View(order);
         }
 
@@ -129,6 +134,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Delete Order";
 
             return View(order);
         }
@@ -176,109 +182,132 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            var order = await _context.Orders.FindAsync(id);
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.ID == id);
+            //var order = await _context.Orders
+            //    .FirstOrDefaultAsync(m => m.ID == id);
             if (order == null)
             {
                 return NotFound();
             }
 
-            order.OrderList = true;
-            _context.Update(order);
-            //await _context.SaveChangesAsync();
-
-          
-            // DUMB PRODUCTS LIST
-            List<Product> Products = new List<Product>();
-            
-            Products.Add(new Product
+            if (ModelState.IsValid)
             {
-                Name = "",
-                Type = "",
-                Brand = "",
-                Quantity = 1,
-                Price = 1,
-                Size = 1,
-                NumUnits = 1,
-                Supplier = new Supplier
+                order.OrderList = true;
+                //await _context.SaveChangesAsync();
+
+
+                //// DUMB PRODUCTS LIST
+                List<Product> Products = new List<Product>();
+
+                Products.Add(new Product
                 {
                     Name = "",
-                    Email = "",
-                    Phone = 0,
-                    Address = "", 
-                    Orders = ""
-                }
-
-            });
-
-            order.Products = Products;
-
-            //var toConfirm = await _context.OrderLists.Where(p => p.Confirmed == false).ToListAsync();
-
-            // Loop through each product in order and add to order list
-            foreach(Product product in order.Products)
-            {
-                // Check if OrderList from supplier exists
-                var orderList4Supplier = await _context.OrderLists.Where(p => p.Supplier == product.Supplier && p.Confirmed == false).ToListAsync();
-
-                // If no OrderList exists, create a new one
-                if (orderList4Supplier == null || orderList4Supplier.Count() == 0)
-                {
-                 
-                    OrderList newOrderList = new OrderList
+                    Type = "",
+                    Brand = "",
+                    Quantity = 1,
+                    Price = 1,
+                    Size = 1,
+                    NumUnits = 1,
+                    Supplier = new Supplier
                     {
-                        Supplier = product.Supplier,
-                        Business = "",
-                        Products = new List<Product> {product},
-                        Orders = new List<Order> {order},
-                        Price = 0,
-                        OrderDate = DateTime.Now,
-                        BillingAddress = "",
-                        ShippingAddress = "",
-                        Confirmed = false
-                    };
-
-                    _context.OrderLists.Add(newOrderList);
-
-                    await _context.SaveChangesAsync();
-
-                }
-                else
-                {
-                    // Add product to existing list
-
-
-                    // Check if product is already in list
-                    if (!orderList4Supplier[0].Products.Contains(product))
-                    {
-                        orderList4Supplier[0].Products.Add(product);
+                        Name = "",
+                        Email = "",
+                        Phone = 0,
+                        Address = "",
+                        Orders = ""
                     }
 
-                    // Increase price of OrderList
-                    orderList4Supplier[0].Price += product.Price;
+                });
 
-                    // Increase quantity of units
-                    orderList4Supplier[0].Products.Find(x => x.ID == product.ID).NumUnits += 1;
+                order.Products = Products;
+                _context.Orders.Update(order);
+                _context.Entry(order).State = EntityState.Modified;
 
-                    // Add order to OrderList
-                    orderList4Supplier[0].Orders.Add(order);
-                    
-                    _context.OrderLists.Update(orderList4Supplier[0]);
-                    //await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
 
+
+                //OrderList newOrderList = new OrderList
+                //{
+                //    Supplier = order.Products[0].Supplier,
+                //    Business = "",
+                //    Products = Products,
+                //    Orders = new List<Order> { order },
+                //    Price = 0,
+                //    OrderDate = DateTime.Now,
+                //    BillingAddress = "",
+                //    ShippingAddress = "",
+                //    Confirmed = false
+                //};
+
+                //_context.OrderLists.Add(newOrderList);
+                //await _context.SaveChangesAsync();
+
+                var toConfirm = await _context.OrderLists.Where(p => p.Confirmed == false).ToListAsync();
+
+                //Loop through each product in order and add to order list
+                foreach (Product product in order.Products)
+                {
+                    // Check if OrderList from supplier exists
+                    var orderList4Supplier = await _context.OrderLists.Where(p => p.Supplier == product.Supplier && p.Confirmed == false).ToListAsync();
+
+                    // If no OrderList exists, create a new one
+                    if (orderList4Supplier == null || orderList4Supplier.Count() == 0)
+                    {
+
+                        OrderList newOrderList = new OrderList
+                        {
+                            Supplier = product.Supplier,
+                            Business = "",
+                            Products = new List<Product> { product },
+                            Orders = new List<Order> { order },
+                            Price = 0,
+                            OrderDate = DateTime.Now,
+                            BillingAddress = "",
+                            ShippingAddress = "",
+                            Confirmed = false
+                        };
+
+                        _context.OrderLists.Add(newOrderList);
+
+                        await _context.SaveChangesAsync();
+
+                    }
+                    else
+                    {
+                        // Add product to existing list
+
+
+                        // Check if product is already in list
+                        if (!orderList4Supplier[0].Products.Contains(product))
+                        {
+                            orderList4Supplier[0].Products.Add(product);
+                        }
+
+                        // Increase price of OrderList
+                        orderList4Supplier[0].Price += product.Price;
+
+                        // Increase quantity of units
+                        orderList4Supplier[0].Products.Find(x => x.ID == product.ID).NumUnits += 1;
+
+                        // Add order to OrderList
+                        orderList4Supplier[0].Orders.Add(order);
+
+                        _context.OrderLists.Update(orderList4Supplier[0]);
+                        await _context.SaveChangesAsync();
+
+
+                    }
 
                 }
 
+
+                //await _context.SaveChangesAsync();
+
+
+                return RedirectToAction(nameof(ToOrder));
             }
-
-
-            //await _context.SaveChangesAsync();
-
-
-            return RedirectToAction(nameof(ToOrder));
-
-
+            return View("Index");
         }
 
 

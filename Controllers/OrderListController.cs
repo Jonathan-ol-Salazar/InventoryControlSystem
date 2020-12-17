@@ -38,6 +38,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "View Order List";
 
             return View(orderList);
         }
@@ -45,6 +46,8 @@ namespace InventoryControlSystem.Controllers
         // GET: OrderList/Create
         public IActionResult Create()
         {
+            ViewData["Title"] = "Create New Order List";
+
             return View();
         }
 
@@ -77,6 +80,8 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Edit Order List";
+
             return View(orderList);
         }
 
@@ -129,6 +134,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Delete Order List";
 
             return View(orderList);
         }
@@ -156,6 +162,7 @@ namespace InventoryControlSystem.Controllers
             var toConfirm = await _context.OrderLists.Where(p => p.Confirmed == false).ToListAsync();
             return View("Index", toConfirm);
         }
+
 
         public async Task<IActionResult> Confirm(int? id)
         {

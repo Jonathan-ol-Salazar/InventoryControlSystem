@@ -38,13 +38,15 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Title"] = "View User";
             return View(user);
         }
 
         // GET: User/Create
         public IActionResult Create()
         {
+            ViewData["Title"] = "Create New User";
+
             return View();
         }
 
@@ -77,6 +79,8 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Edit User";
+
             return View(user);
         }
 
@@ -129,6 +133,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Delete User";
 
             return View(user);
         }

@@ -38,6 +38,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "View Supplier";
 
             return View(supplier);
         }
@@ -45,6 +46,8 @@ namespace InventoryControlSystem.Controllers
         // GET: Supplier/Create
         public IActionResult Create()
         {
+            ViewData["Title"] = "Create New Supplier";
+
             return View();
         }
 
@@ -77,6 +80,8 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Edit Supplier";
+
             return View(supplier);
         }
 
@@ -129,6 +134,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["Title"] = "Delete Supplier";
 
             return View(supplier);
         }
