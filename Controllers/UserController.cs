@@ -11,7 +11,6 @@ namespace InventoryControlSystem.Controllers
 {
     public class UserController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly IUserRepository _userRepository;
 
 
