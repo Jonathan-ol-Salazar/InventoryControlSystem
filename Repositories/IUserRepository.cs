@@ -9,11 +9,11 @@ namespace InventoryControlSystem
 {
     public interface IUserRepository
     {
-        Task<User> GetUser(int ID);
+        Task<User> GetUser(string ID);
 
         Task CreateUser(User user);
 
-        Task<bool> DeleteUser(ObjectId id);
+        Task<bool> DeleteUser(string id);
 
         Task<IEnumerable<User>> GetAllUsers();
 

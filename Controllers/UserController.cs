@@ -28,21 +28,18 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: User/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var user = await _userRepository.GetUser(id);
             if (user == null)
             {
                 return NotFound();
+
             }
             ViewData["Title"] = "View User";
+
             return View(user);
+
         }
 
         // GET: User/Create
@@ -62,22 +59,22 @@ namespace InventoryControlSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                await _userRepository.CreateUser(user);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
         }
 
         // GET: User/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            User user = await _userRepository.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -92,46 +89,34 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB")] User user)
+        public async Task<IActionResult> Edit([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB")] User user)
         {
-            if (id != user.ID)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                var userFromDb = await _userRepository.GetUser(user.ID);
+                if (userFromDb == null)
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundResult();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                user.Id = userFromDb.Id;
+                await _userRepository.UpdateUser(user);
+                TempData["Message"] = "Customer Updated Successfully";
+
             }
-            return View(user);
+            return RedirectToAction("Index");
+
         }
 
         // GET: User/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.ID == id);
+            User user = await _userRepository.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -144,17 +129,23 @@ namespace InventoryControlSystem.Controllers
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FindAsync(id);
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            User user = await _userRepository.GetUser(id);
+
+            await _userRepository.DeleteUser(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.ID == id);
-        }
+        //private async bool UserExists(string id)
+        //{
+        //    User user = await _userRepository.GetUser(id);
+
+        //    if
+
+
+        //    return await _context.Users.FindAsync(id);
+
+        //}
     }
 }
