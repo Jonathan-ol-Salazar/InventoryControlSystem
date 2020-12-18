@@ -1,16 +1,10 @@
-using InventoryControlSystem.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -19,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace InventoryControlSystem
 {
-	public class Startup
+    public class Startup
 	{
 		//private IConfiguration _configuration;
 
@@ -33,20 +27,27 @@ namespace InventoryControlSystem
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContextPool<AppDbContext>(
-				options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+			//services.AddDbContextPool<AppDbContext>(
+			//	options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+
+			services.Configure<Settings>(options =>
+			{
+				options.ConnectionString = Configuration.GetSection("MongoDB:ConnectionString").Value;
+				options.Database = Configuration.GetSection("MongoDB:Database").Value;
+			});
 
 			services.AddMvc();
 			services.AddControllersWithViews();
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 
-			services.AddTransient<IProductRepository, ProductRepository>();
+			//services.AddTransient<IProductRepository, ProductRepository>();
+			services.AddTransient<IUserContext, Context>();
 			services.AddTransient<IUserRepository, UserRepository>();
-			services.AddTransient<ICustomerRepository, CustomerRepository>();
-			services.AddTransient<ISupplierRepository, SupplierRepository>();
-			services.AddTransient<IOrderRepository, OrderRepository>();
-			services.AddTransient<IOrderListRepository, OrderListRepository>();
+			//services.AddTransient<ICustomerRepository, CustomerRepository>();
+			//services.AddTransient<ISupplierRepository, SupplierRepository>();
+			//services.AddTransient<IOrderRepository, OrderRepository>();
+			//services.AddTransient<IOrderListRepository, OrderListRepository>();
 
 
 

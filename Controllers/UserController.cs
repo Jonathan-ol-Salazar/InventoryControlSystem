@@ -12,16 +12,19 @@ namespace InventoryControlSystem.Controllers
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(AppDbContext context)
+
+        public UserController(IUserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
+
 
         // GET: User
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _userRepository.GetAllUsers());
         }
 
         // GET: User/Details/5
