@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using InventoryControlSystem.Repositories.Users;
 using InventoryControlSystem.Repositories.Products;
-
+using InventoryControlSystem.Repositories.Customers;
+using InventoryControlSystem.Models;
 
 namespace InventoryControlSystem
 {
@@ -48,8 +49,9 @@ namespace InventoryControlSystem
 
             services.AddTransient<IProductContext, Context>();
             services.AddTransient<IProductRepository, ProductRepository>();
-			
-            //services.AddTransient<ICustomerRepository, CustomerRepository>();
+
+			services.AddTransient<ICustomerContext, Context>();
+			services.AddTransient<ICustomerRepository, CustomerRepository>();
             //services.AddTransient<ISupplierRepository, SupplierRepository>();
             //services.AddTransient<IOrderRepository, OrderRepository>();
             //services.AddTransient<IOrderListRepository, OrderListRepository>();

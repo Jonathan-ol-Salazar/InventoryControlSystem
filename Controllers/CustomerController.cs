@@ -1,46 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using InventoryControlSystem.Models;
+using InventoryControlSystem.Repositories.Customers;
 
 namespace InventoryControlSystem.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerController(AppDbContext context)
+
+        public CustomerController(ICustomerRepository customerRepository)
         {
-            _context = context;
+            _customerRepository = customerRepository;
         }
+
 
         // GET: Customer
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            var x = await _customerRepository.GetAllCustomers();
+            return View(await _customerRepository.GetAllCustomers());
         }
 
         // GET: Customer/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var customer = await _customerRepository.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
+
             }
             ViewData["Title"] = "View Customer";
 
             return View(customer);
+
         }
 
         // GET: Customer/Create
@@ -60,22 +55,22 @@ namespace InventoryControlSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                await _customerRepository.CreateCustomer(customer);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
         }
 
         // GET: Customer/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            Customer customer = await _customerRepository.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -90,46 +85,34 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Email,Phone,Address,Orders")] Customer customer)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,FirstName,LastName,Email,Phone,Address,Orders")] Customer customer)
         {
-            if (id != customer.ID)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                var customerFromDb = await _customerRepository.GetCustomer(id);
+                if (customerFromDb == null)
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundResult();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CustomerExists(customer.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                customer.Id = customerFromDb.Id;
+                await _customerRepository.UpdateCustomer(customer);
+                TempData["Message"] = "Customer Updated Successfully";
+
             }
-            return View(customer);
+            return RedirectToAction("Index");
+
         }
 
         // GET: Customer/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Customer customer = await _customerRepository.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -142,17 +125,23 @@ namespace InventoryControlSystem.Controllers
         // POST: Customer/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            Customer customer = await _customerRepository.GetCustomer(id);
+
+            await _customerRepository.DeleteCustomer(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.ID == id);
-        }
+        //private async bool CustomerExists(string id)
+        //{
+        //    Customer customer = await _customerRepository.GetCustomer(id);
+
+        //    if
+
+
+        //    return await _context.Customers.FindAsync(id);
+
+        //}
     }
 }

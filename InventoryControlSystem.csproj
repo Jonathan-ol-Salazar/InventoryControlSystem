@@ -42,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Repositories\OrderLists\" />
+    <Folder Include="Repositories\Suppliers\" />
+    <Folder Include="Repositories\Orders\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\Order\" />
     <Folder Include="wwwroot\Theme_AdminLTE\" />
