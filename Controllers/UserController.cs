@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InventoryControlSystem.Models;
+using MongoDB.Bson;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -23,6 +24,7 @@ namespace InventoryControlSystem.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
+            var x = await _userRepository.GetAllUsers();
             return View(await _userRepository.GetAllUsers());
         }
 
@@ -88,12 +90,12 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,FirstName,LastName,Email,Phone,Address,DOB")] User user)
         {
 
             if (ModelState.IsValid)
             {
-                var userFromDb = await _userRepository.GetUser(user.ID);
+                var userFromDb = await _userRepository.GetUser(id);
                 if (userFromDb == null)
                 {
                     return new NotFoundResult();

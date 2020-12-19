@@ -34,9 +34,9 @@ namespace InventoryControlSystem
 
 
 
-        public async Task<User> GetUser(string ID)
+        public async Task<User> GetUser(string id)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq(x => x.ID, ID);
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq(x => x.Id, id);
             return await _usersContext.Find(filter).FirstOrDefaultAsync();
         }
 
@@ -51,7 +51,7 @@ namespace InventoryControlSystem
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 
-        public async Task<bool> DeleteUser(string ID)
+        public async Task<bool> DeleteUser(string id)
         {
             //var ids = user.Select(d => d.Id);
 
@@ -64,7 +64,7 @@ namespace InventoryControlSystem
             //return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
 
 
-            DeleteResult deleteResult = await _usersContext.DeleteOneAsync(user => user.ID == ID);
+            DeleteResult deleteResult = await _usersContext.DeleteOneAsync(user => user.Id == id);
 
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
 

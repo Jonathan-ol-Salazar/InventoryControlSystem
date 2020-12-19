@@ -9,7 +9,7 @@ namespace InventoryControlSystem
 {
     public interface IUserRepository
     {
-        Task<User> GetUser(string ID);
+        Task<User> GetUser(string id);
 
         Task CreateUser(User user);
 
