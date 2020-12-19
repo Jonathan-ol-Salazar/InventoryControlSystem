@@ -1,52 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using InventoryControlSystem.Models;
+using InventoryControlSystem.Repositories.OrderLists;
 
 namespace InventoryControlSystem.Controllers
 {
     public class OrderListController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IOrderListRepository _orderListRepository;
 
-        public OrderListController(AppDbContext context)
+
+        public OrderListController(IOrderListRepository orderListRepository)
         {
-            _context = context;
+            _orderListRepository = orderListRepository;
         }
+
 
         // GET: OrderList
         public async Task<IActionResult> Index()
         {
-            return View(await _context.OrderLists.ToListAsync());
+            var x = await _orderListRepository.GetAllOrderLists();
+            return View(await _orderListRepository.GetAllOrderLists());
         }
 
         // GET: OrderList/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var orderList = await _context.OrderLists
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var orderList = await _orderListRepository.GetOrderList(id);
             if (orderList == null)
             {
                 return NotFound();
+
             }
-            ViewData["Title"] = "View Order List";
+            ViewData["Title"] = "View OrderList";
 
             return View(orderList);
+
         }
 
         // GET: OrderList/Create
         public IActionResult Create()
         {
-            ViewData["Title"] = "Create New Order List";
+            ViewData["Title"] = "Create New OrderList";
 
             return View();
         }
@@ -56,31 +51,31 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Type,Quantity,Price")] OrderList orderList)
+        public async Task<IActionResult> Create([Bind("ID,Supplier,Business,Products,Orders,Price,OrderDate,BillingAddress,ShippingAddress,Confirmed")] OrderList orderList)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(orderList);
-                await _context.SaveChangesAsync();
+                await _orderListRepository.CreateOrderList(orderList);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(orderList);
         }
 
         // GET: OrderList/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var orderList = await _context.OrderLists.FindAsync(id);
+            OrderList orderList = await _orderListRepository.GetOrderList(id);
             if (orderList == null)
             {
                 return NotFound();
             }
-            ViewData["Title"] = "Edit Order List";
+            ViewData["Title"] = "Edit OrderList";
 
             return View(orderList);
         }
@@ -90,51 +85,39 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Type,Quantity,Price")] OrderList orderList)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Supplier,Business,Products,Orders,Price,OrderDate,BillingAddress,ShippingAddress,Confirmed")] OrderList orderList)
         {
-            if (id != orderList.ID)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                var orderListFromDb = await _orderListRepository.GetOrderList(id);
+                if (orderListFromDb == null)
                 {
-                    _context.Update(orderList);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundResult();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderListExists(orderList.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                orderList.Id = orderListFromDb.Id;
+                await _orderListRepository.UpdateOrderList(orderList);
+                TempData["Message"] = "Customer Updated Successfully";
+
             }
-            return View(orderList);
+            return RedirectToAction("Index");
+
         }
 
         // GET: OrderList/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var orderList = await _context.OrderLists
-                .FirstOrDefaultAsync(m => m.ID == id);
+            OrderList orderList = await _orderListRepository.GetOrderList(id);
             if (orderList == null)
             {
                 return NotFound();
             }
-            ViewData["Title"] = "Delete Order List";
+            ViewData["Title"] = "Delete OrderList";
 
             return View(orderList);
         }
@@ -142,68 +125,23 @@ namespace InventoryControlSystem.Controllers
         // POST: OrderList/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var orderList = await _context.OrderLists.FindAsync(id);
-            _context.OrderLists.Remove(orderList);
-            await _context.SaveChangesAsync();
+            OrderList orderList = await _orderListRepository.GetOrderList(id);
+
+            await _orderListRepository.DeleteOrderList(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OrderListExists(int id)
-        {
-            return _context.OrderLists.Any(e => e.ID == id);
-        }
+        //private async bool OrderListExists(string id)
+        //{
+        //    OrderList orderList = await _orderListRepository.GetOrderList(id);
 
-        // ToConfirm
-        public async Task<IActionResult> ToConfirm()
-        {
-            // get all the entries that have 'confirm' as false
-            var toConfirm = await _context.OrderLists.Where(p => p.Confirmed == false).ToListAsync();
-            return View("Index", toConfirm);
-        }
+        //    if
 
 
-        public async Task<IActionResult> Confirm(int? id)
-        {
-            // Get OrderList
-            // Set to 'Confirmed'
-            // Loop through all its order and set it to 'Ordered'
+        //    return await _context.OrderLists.FindAsync(id);
 
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var orderList = await _context.OrderLists
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (orderList == null)
-            {
-                return NotFound();
-            }
-
-            // Set OrderList 'Confirmed' to true
-            orderList.Confirmed = true;
-
-            // Set its orders to 'Ordered'
-            foreach (Order order in orderList.Orders)
-            {
-                order.Ordered = true;
-                _context.Update(order);
-
-            }
-
-            _context.Update(orderList);
-
-            await _context.SaveChangesAsync();
-
-
-
-            return RedirectToAction(nameof(ToConfirm));
-
-
-        }
-
-
+        //}
     }
 }

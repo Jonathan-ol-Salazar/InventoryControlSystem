@@ -20,6 +20,7 @@ using InventoryControlSystem.Repositories.Customers;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Orders;
+using InventoryControlSystem.Repositories.OrderLists;
 
 namespace InventoryControlSystem
 {
@@ -59,11 +60,13 @@ namespace InventoryControlSystem
 			services.AddTransient<ICustomerContext, Context>();
 			services.AddTransient<ICustomerRepository, CustomerRepository>();
 
-			//         services.AddTransient<ISupplierRepository, Context>();
+			//services.AddTransient<ISupplierRepository, Context>();
 			//services.AddTransient<ISupplierRepository, SupplierRepository>();
 			services.AddTransient<IOrderContext, Context>();
 			services.AddTransient<IOrderRepository, OrderRepository>();
-            //services.AddTransient<IOrderListRepository, OrderListRepository>();
+
+			services.AddTransient<IOrderListContext, Context>();
+			services.AddTransient<IOrderListRepository, OrderListRepository>();
 
 
 

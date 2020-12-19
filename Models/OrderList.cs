@@ -1,13 +1,16 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventoryControlSystem.Models
 {
     public class OrderList
     {
-        public int ID { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        public string ID { get; set; }
         public Supplier Supplier { get; set; }
 
         public string Business { get; set; }
