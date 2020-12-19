@@ -4,7 +4,7 @@ using InventoryControlSystem.Models;
 
 namespace InventoryControlSystem
 {
-    public class Context : IUserContext, IProductContext, ICustomerContext, ISupplierContext, IOrderContext, IOrderListContext //, IOrderContext, IOrderListContext
+    public class Context : IUserContext, IProductContext, ICustomerContext, ISupplierContext, IOrderContext, IOrderListContext
     {
         private readonly IMongoDatabase mongoDatabase;
 

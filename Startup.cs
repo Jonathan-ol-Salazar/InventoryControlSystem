@@ -13,14 +13,12 @@ using Microsoft.IdentityModel.Tokens;
 using InventoryControlSystem.Repositories.Users;
 using InventoryControlSystem.Repositories.Products;
 using InventoryControlSystem.Repositories.Customers;
-
-//using InventoryControlSystem.Repositories.Orders;
-//using InventoryControlSystem.Repositories.OrderLists;
-
-using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.Repositories.OrderLists;
+
+using InventoryControlSystem.Models;
+
 
 namespace InventoryControlSystem
 {
@@ -60,9 +58,10 @@ namespace InventoryControlSystem
 			services.AddTransient<ICustomerContext, Context>();
 			services.AddTransient<ICustomerRepository, CustomerRepository>();
 
-			//services.AddTransient<ISupplierRepository, Context>();
-			//services.AddTransient<ISupplierRepository, SupplierRepository>();
-			services.AddTransient<IOrderContext, Context>();
+            services.AddTransient<ISupplierContext, Context>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+
+            services.AddTransient<IOrderContext, Context>();
 			services.AddTransient<IOrderRepository, OrderRepository>();
 
 			services.AddTransient<IOrderListContext, Context>();
