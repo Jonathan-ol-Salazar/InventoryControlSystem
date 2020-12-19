@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using InventoryControlSystem.Models;
 namespace InventoryControlSystem
 {
-    public class Context : IUserContext
+    public class Context : IUserContext, IProductContext
     {
         private readonly IMongoDatabase mongoDatabase;
 
@@ -13,16 +13,8 @@ namespace InventoryControlSystem
             mongoDatabase = client.GetDatabase(options.Value.Database);
         }
 
-        //public Context(IConfiguration config)
-        //{
-        //    MongoClient client = new MongoClient(config.GetConnectionString("ConnectionString"));
-        //    mongoDatabase = client.GetDatabase("Database");
-
-        //}
-
-
         public IMongoCollection<User> Users => mongoDatabase.GetCollection<User>("Users");
-        //public IMongoCollection<Project> Projects => mongoDatabase.GetCollection<Project>("Projects");
+        public IMongoCollection<Product> Products => mongoDatabase.GetCollection<Product>("Products");
         //public IMongoCollection<Issue> Issues => mongoDatabase.GetCollection<Issue>("Issues");
         //public IMongoCollection<Role> Roles => mongoDatabase.GetCollection<Role>("Roles");
 
@@ -34,6 +26,11 @@ namespace InventoryControlSystem
     public interface IUserContext
     {
         IMongoCollection<User> Users { get; }
+    }
+
+    public interface IProductContext
+    {
+        IMongoCollection<Product> Products { get; }
     }
 
 }

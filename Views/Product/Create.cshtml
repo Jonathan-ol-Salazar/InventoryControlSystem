@@ -31,6 +31,16 @@
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="Size" class="control-label"></label>
+                        <input asp-for="Size" class="form-control" />
+                        <span asp-validation-for="Size" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NumUnits" class="control-label"></label>
+                        <input asp-for="NumUnits" class="form-control" />
+                        <span asp-validation-for="NumUnits" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <a asp-action="Index" class="btn btn-secondary float-left">Back to List</a>
                         <input type="submit" value="Create" class="btn btn-primary float-right" />
                     </div>

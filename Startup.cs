@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using InventoryControlSystem.Repositories.Users;
+using InventoryControlSystem.Repositories.Products;
+
 
 namespace InventoryControlSystem
 {
@@ -40,24 +43,26 @@ namespace InventoryControlSystem
 			services.AddControllersWithViews();
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
-
-			//services.AddTransient<IProductRepository, ProductRepository>();
 			services.AddTransient<IUserContext, Context>();
 			services.AddTransient<IUserRepository, UserRepository>();
-			//services.AddTransient<ICustomerRepository, CustomerRepository>();
-			//services.AddTransient<ISupplierRepository, SupplierRepository>();
-			//services.AddTransient<IOrderRepository, OrderRepository>();
-			//services.AddTransient<IOrderListRepository, OrderListRepository>();
+
+            services.AddTransient<IProductContext, Context>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+			
+            //services.AddTransient<ICustomerRepository, CustomerRepository>();
+            //services.AddTransient<ISupplierRepository, SupplierRepository>();
+            //services.AddTransient<IOrderRepository, OrderRepository>();
+            //services.AddTransient<IOrderListRepository, OrderListRepository>();
 
 
 
-			// Auth0 
+            // Auth0 
 
-			// Cookie configuration for HTTP to support cookies with SameSite=None
-			//services.ConfigureSameSiteNoneCookies();
+            // Cookie configuration for HTTP to support cookies with SameSite=None
+            //services.ConfigureSameSiteNoneCookies();
 
-			// Cookie configuration for HTTPS
-			services.Configure<CookiePolicyOptions>(options =>
+            // Cookie configuration for HTTPS
+            services.Configure<CookiePolicyOptions>(options =>
             {
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 

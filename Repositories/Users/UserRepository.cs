@@ -1,12 +1,9 @@
 ﻿using InventoryControlSystem.Models;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryControlSystem
+namespace InventoryControlSystem.Repositories.Users
 {
     public class UserRepository : IUserRepository
     {
@@ -22,7 +19,6 @@ namespace InventoryControlSystem
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-
             return await _usersContext.Find(Builders<User>.Filter.Empty).ToListAsync();
         }
 

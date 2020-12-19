@@ -1,11 +1,8 @@
 ﻿using InventoryControlSystem.Models;
-using MongoDB.Bson;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryControlSystem
+namespace InventoryControlSystem.Repositories.Users
 {
     public interface IUserRepository
     {

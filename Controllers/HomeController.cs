@@ -1,4 +1,5 @@
 ﻿using InventoryControlSystem.Models;
+using InventoryControlSystem.Repositories.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
