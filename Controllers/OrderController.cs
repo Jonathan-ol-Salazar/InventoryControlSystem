@@ -6,6 +6,9 @@ using InventoryControlSystem.Repositories.OrderLists;
 using System.Collections.Generic;
 using System;
 using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.ViewModels;
+using System.Linq;
+using InventoryControlSystem.Repositories.Customers;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -14,15 +17,14 @@ namespace InventoryControlSystem.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderListRepository _orderListRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-
-
-
-        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository)
+        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
             _orderListRepository = orderListRepository;
             _productRepository = productRepository;
+            _customerRepository = customerRepository;
         }
 
 
@@ -49,11 +51,17 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: Order/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
+            OrderCreateViewModel orderCreateViewModel = new OrderCreateViewModel()
+            {
+                Products = await _productRepository.GetAllProducts(),                
+                Customers = await _customerRepository.GetAllCustomers()
+            };
+
             ViewData["Title"] = "Create New Order";
 
-            return View();
+            return View(orderCreateViewModel);
         }
 
         // POST: Order/Create
@@ -61,20 +69,19 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderID,NumProducts,Products,Customer,Status,Fulfilled,Ordered,OrderList,OrderDate")] Order order)
+        public async Task<IActionResult> Create([Bind("ID,OrderID,ProductsID,Customer")] Order order)
         {
             if (ModelState.IsValid)
             {
-                // dumby data for products
-                order.ProductsID = new List<string>
-                {
-                    "5fddbafcad25696cd1a0ff3a",
-                    "5fddc37ee64238a7f338578f"
-                };
+                // Set number of products 
+                order.NumProducts = order.ProductsID.Count();
+                // Set status to incomplete
+                order.Status = "INCOMPLETE";
+                // Set orderdate to now
+                order.OrderDate = DateTime.Now;          
+
                 // Create order
                 await _orderRepository.CreateOrder(order);
-                //// Retrive order and set ID to id
-                //orderFromDB = await _orderRepository.GetOrder(a)
 
                 order.ID = order.Id;
                 await _orderRepository.UpdateOrder(order);
@@ -107,7 +114,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,OrderID,NumProducts,Products,Customer,Status,Fulfilled,Ordered,OrderList,OrderDate")] Order order)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,OrderID,NumProducts,ProductsID,Customer,Status,Fulfilled,Ordered,OrderList,OrderDate")] Order order)
         {
 
             if (ModelState.IsValid)

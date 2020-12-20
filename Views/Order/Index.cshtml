@@ -23,9 +23,6 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.OrderID)
-                                </th>
-                                <th>
                                     @Html.DisplayNameFor(model => model.NumProducts)
                                 </th>
                                 <th>
@@ -41,7 +38,7 @@
                                     @Html.DisplayNameFor(model => model.OrderList)
                                 </th>
                                 <th>
-                                    Functions
+                                    Actions
                                 </th>
                             </tr>
                         </thead>
@@ -49,9 +46,6 @@
                             @foreach (var item in Model)
                             {
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OrderID)
-                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NumProducts)
                                 </td>
