@@ -73,6 +73,8 @@ namespace InventoryControlSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                // ORDER PROPERTIES
+
                 // Set number of products 
                 order.NumProducts = order.ProductsID.Count();
                 // Set status to incomplete
@@ -82,9 +84,19 @@ namespace InventoryControlSystem.Controllers
 
                 // Create order
                 await _orderRepository.CreateOrder(order);
-
+                // Set order ID
                 order.ID = order.Id;
                 await _orderRepository.UpdateOrder(order);
+
+                // CUSTOMER PROPERTIES
+                // Get customer
+                Customer customer = await _customerRepository.GetCustomer(order.Customer);
+                // Set order
+                customer.Orders.Add(order.ID);
+                // Update numOrders
+                customer.NumOrders = customer.Orders.Count;
+                // Update customer
+                await _customerRepository.UpdateCustomer(customer);
 
                 return RedirectToAction(nameof(Index));
             }
