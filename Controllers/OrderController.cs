@@ -5,6 +5,7 @@ using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.Repositories.OrderLists;
 using System.Collections.Generic;
 using System;
+using InventoryControlSystem.Repositories.Products;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -12,14 +13,16 @@ namespace InventoryControlSystem.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderListRepository _orderListRepository;
+        private readonly IProductRepository _productRepository;
 
 
 
-        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository)
+
+        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository)
         {
             _orderRepository = orderRepository;
             _orderListRepository = orderListRepository;
-
+            _productRepository = productRepository;
         }
 
 
@@ -196,6 +199,7 @@ namespace InventoryControlSystem.Controllers
 
                 Products.Add(new Product
                 {
+                    ID = "5fddbafcad25696cd1a0ff3a",
                     Name = "Smirnoff Vodka",
                     Type = "Vodka",
                     Brand = "Smirnoff",
@@ -206,7 +210,8 @@ namespace InventoryControlSystem.Controllers
                     SupplierName = "Smirnoff",
                     SupplierID = "1"
                 });
-
+                
+                Products.Add(await _productRepository.GetProduct("5fddbafcad25696cd1a0ff3a"));
                 order.Products = Products;
 
                 // Add each product from order to an orderlist
@@ -223,8 +228,8 @@ namespace InventoryControlSystem.Controllers
                         {
                             SupplierName = product.SupplierName,
                             Business = "",
-                            Products = new List<Product> { product },
-                            Orders = new List<Order> { order },
+                            ProductsID = new List<string> {product.ID},
+                            OrdersID = new List<string> {order.ID},
                             Price = 0,
                             OrderDate = DateTime.Now,
                             BillingAddress = "",
@@ -241,10 +246,10 @@ namespace InventoryControlSystem.Controllers
 
 
                         // Check if product is already in list
-                        if(!orderList4Supplier.Products.Contains(product))
+                        if(!orderList4Supplier.ProductsID.Contains(product.ID))
                         {
                             // if not add to list
-                            orderList4Supplier.Products.Add(product);
+                            orderList4Supplier.ProductsID.Add(product.ID);
                         }
 
 
@@ -252,10 +257,11 @@ namespace InventoryControlSystem.Controllers
                         orderList4Supplier.Price += product.Price;
 
                         // Increase quantity of units
-                        orderList4Supplier.Products.Find(x => x.ID == product.ID).NumUnits += 1;
+                        product.NumUnits += 1;
+                        await _productRepository.UpdateProduct(product);
 
                         // Add order to OrderList
-                        orderList4Supplier.Orders.Add(order);
+                        orderList4Supplier.OrdersID.Add(order.ID);
 
                         await _orderListRepository.UpdateOrderList(orderList4Supplier);
                        
