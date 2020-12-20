@@ -65,6 +65,13 @@ namespace InventoryControlSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                // dumby data for products
+                order.ProductsID = new List<string>
+                {
+                    "5fddbafcad25696cd1a0ff3a",
+                    "5fddc37ee64238a7f338578f"
+                };
+
                 await _orderRepository.CreateOrder(order);
 
                 return RedirectToAction(nameof(Index));
@@ -193,26 +200,6 @@ namespace InventoryControlSystem.Controllers
             {
                 // Set orderList to true
                 order.OrderList = true;
-
-                //// DUMB PRODUCTS LIST
-                List<Product> Products = new List<Product>();
-
-                Products.Add(new Product
-                {
-                    ID = "5fddbafcad25696cd1a0ff3a",
-                    Name = "Smirnoff Vodka",
-                    Type = "Vodka",
-                    Brand = "Smirnoff",
-                    Quantity = 1,
-                    Price = 1,
-                    Size = 1,
-                    NumUnits = 1,
-                    SupplierName = "Smirnoff",
-                    SupplierID = "1"
-                });
-                
-                Products.Add(await _productRepository.GetProduct("5fddbafcad25696cd1a0ff3a"));
-                order.ProductsID = new List<string> { "5fddbafcad25696cd1a0ff3a" };
 
                 // Add each product from order to an orderlist
                 foreach (string productID in order.ProductsID)
