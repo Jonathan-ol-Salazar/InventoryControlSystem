@@ -269,20 +269,30 @@ namespace InventoryControlSystem.Controllers
 
 
                     }
-
-                }
-
-
-
-
-    
-
-               
+                }               
                 await _orderRepository.UpdateOrder(order);
 
                 return RedirectToAction(nameof(Index));
             }
             return View("Index");        
+        }
+
+        public async Task<IActionResult> Fulfill(string id)
+        {
+            // Get Order
+            // Set 'Fulfilled' to true
+
+            Order order = await _orderRepository.GetOrder(id);
+
+            order.Fulfilled = true;
+
+            await _orderRepository.UpdateOrder(order);
+
+
+
+            return RedirectToAction(nameof(Index));
+
+
         }
 
     }
