@@ -56,7 +56,8 @@ namespace InventoryControlSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _supplierRepository.CreateSupplier(supplier);
-
+                supplier.ID = supplier.Id;
+                await _supplierRepository.UpdateSupplier(supplier);
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);

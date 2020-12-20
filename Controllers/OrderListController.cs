@@ -62,9 +62,11 @@ namespace InventoryControlSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _orderListRepository.CreateOrderList(orderList);
-
+                orderList.ID = orderList.Id;
+                await _orderListRepository.UpdateOrderList(orderList);
                 return RedirectToAction(nameof(Index));
             }
+           
             return View(orderList);
         }
 

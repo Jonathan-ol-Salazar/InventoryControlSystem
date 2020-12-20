@@ -56,7 +56,8 @@ namespace InventoryControlSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _productRepository.CreateProduct(product);
-
+                product.ID = product.Id;
+                await _productRepository.UpdateProduct(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);

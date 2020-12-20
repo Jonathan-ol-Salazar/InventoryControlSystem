@@ -56,7 +56,8 @@ namespace InventoryControlSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _customerRepository.CreateCustomer(customer);
-
+                customer.ID = customer.Id;
+                await _customerRepository.UpdateCustomer(customer);
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);

@@ -56,7 +56,8 @@ namespace InventoryControlSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _userRepository.CreateUser(user);
-
+                user.ID = user.Id;
+                await _userRepository.UpdateUser(user);
                 return RedirectToAction(nameof(Index));
             }
             return View(user);

@@ -71,8 +71,13 @@ namespace InventoryControlSystem.Controllers
                     "5fddbafcad25696cd1a0ff3a",
                     "5fddc37ee64238a7f338578f"
                 };
-
+                // Create order
                 await _orderRepository.CreateOrder(order);
+                //// Retrive order and set ID to id
+                //orderFromDB = await _orderRepository.GetOrder(a)
+
+                order.ID = order.Id;
+                await _orderRepository.UpdateOrder(order);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -224,8 +229,10 @@ namespace InventoryControlSystem.Controllers
                             ShippingAddress = "",
                             Confirmed = false
                         };
-
-                        await _orderListRepository.CreateOrderList(newOrderList);                       
+                        // Create new OrderList and update ID to reflect new Id
+                        await _orderListRepository.CreateOrderList(newOrderList);
+                        newOrderList.ID = newOrderList.Id;
+                        await _orderListRepository.UpdateOrderList(newOrderList);
 
                     }
                     else
