@@ -1,8 +1,8 @@
-﻿@model InventoryControlSystem.Models.Order
+﻿@model InventoryControlSystem.ViewModels.OrderViewModel
 
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">@ViewData["Title"]</h3>
@@ -10,37 +10,100 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.NumProducts)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Order.NumProducts)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.NumProducts)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Order.NumProducts)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Status)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Order.Status)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Status)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Order.Status)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Fulfilled)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Order.Fulfilled)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Fulfilled)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Order.Fulfilled)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Ordered)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Order.Ordered)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Ordered)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Order.Ordered)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Order.OrderList)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Order.OrderList)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Order.OrderDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Order.OrderDate)
                     </dd>
                 </dl>
-                <div>
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class=" btn btn-primary float-right">Edit</a> 
+                <h4><b>Products</b></h4>
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Brand)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Quantity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Price)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Products)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Brand)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>          
+                        </tr>
+                        }
+                    </tbody>
+                </table>  
+                <br />
+                <div class="form-group">
                     <a asp-action="Index" class="btn btn-secondary float-left">Back to List</a>
                 </div>
             </div>
-           
+
         </div>
 
     </div>

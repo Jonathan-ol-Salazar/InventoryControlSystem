@@ -20,7 +20,6 @@ namespace InventoryControlSystem.Models
         public int Quantity { get; set; }
         public int Price { get; set; }
         public int Size { get; set; }
-
         public int NumUnits { get; set; }
         public string SupplierName { get; set; }
         public string SupplierID { get; set; }

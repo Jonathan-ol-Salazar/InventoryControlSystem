@@ -5,6 +5,7 @@
 }
 
 <p>
+    <a asp-action="Index">All</a>
     <a asp-action="Create">Create New</a>
     <a asp-action="ToOrder">To Order</a>
     <a asp-action="ToFulfill">To Fulfill</a>
@@ -23,7 +24,10 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.NumProducts)
+                                    Order ID
+                                </th>
+                                <th>
+                                    Total Items
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Status)
@@ -46,6 +50,9 @@
                             @foreach (var item in Model)
                             {
                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NumProducts)
                                 </td>

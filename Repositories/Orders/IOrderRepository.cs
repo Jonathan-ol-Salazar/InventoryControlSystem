@@ -15,5 +15,9 @@ namespace InventoryControlSystem.Repositories.Orders
         Task<IEnumerable<Order>> GetAllOrders();
 
         Task<bool> UpdateOrder(Order orderChanges);
+
+        Task<IEnumerable<Order>> ToOrder();
+
+        Task<IEnumerable<Order>> ToFulfill();
     }
 }

@@ -42,18 +42,31 @@ namespace InventoryControlSystem.Controllers
             if (order == null)
             {
                 return NotFound();
+            }
+
+            List<Product> productList = new List<Product>();
+            foreach(string product in order.ProductsID)
+            {
+                productList.Add(await _productRepository.GetProduct(product));
 
             }
+
+            OrderViewModel orderViewModel = new OrderViewModel()
+            {
+                Products = productList,
+                Customers = await _customerRepository.GetAllCustomers(),
+                Order = order
+            };
             ViewData["Title"] = "View Order";
 
-            return View(order);
+            return View(orderViewModel);
 
         }
 
         // GET: Order/Create
-        public async Task<IActionResult> CreateAsync()
+        public async Task<IActionResult> Create()
         {
-            OrderCreateViewModel orderCreateViewModel = new OrderCreateViewModel()
+            OrderViewModel orderViewModel = new OrderViewModel()
             {
                 Products = await _productRepository.GetAllProducts(),                
                 Customers = await _customerRepository.GetAllCustomers()
@@ -61,7 +74,7 @@ namespace InventoryControlSystem.Controllers
 
             ViewData["Title"] = "Create New Order";
 
-            return View(orderCreateViewModel);
+            return View(orderViewModel);
         }
 
         // POST: Order/Create
@@ -69,7 +82,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderID,ProductsID,Customer")] Order order)
+        public async Task<IActionResult> Create([Bind("ID,ProductsID,Customer")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -116,9 +129,17 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+
+            OrderViewModel orderViewModel = new OrderViewModel()
+            {
+                Products = await _productRepository.GetAllProducts(),
+                Customers = await _customerRepository.GetAllCustomers(),
+                Order = order
+            };
+
             ViewData["Title"] = "Edit Order";
 
-            return View(order);
+            return View(orderViewModel);
         }
 
         // POST: Order/Edit/5
@@ -126,9 +147,8 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,OrderID,NumProducts,ProductsID,Customer,Status,Fulfilled,Ordered,OrderList,OrderDate")] Order order)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,ProductsID,Status,Fulfilled,Ordered,OrderList")] Order order)
         {
-
             if (ModelState.IsValid)
             {
                 var orderFromDb = await _orderRepository.GetOrder(id);
@@ -136,8 +156,15 @@ namespace InventoryControlSystem.Controllers
                 {
                     return new NotFoundResult();
                 }
+                
                 order.Id = orderFromDb.Id;
+                order.Customer = orderFromDb.Customer;
+                order.NumProducts = order.ProductsID.Count;
                 await _orderRepository.UpdateOrder(order);
+
+
+
+
                 TempData["Message"] = "Order Updated Successfully";
 
             }
@@ -158,9 +185,22 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            List<Product> productList = new List<Product>();
+            foreach (string product in order.ProductsID)
+            {
+                productList.Add(await _productRepository.GetProduct(product));
+
+            }
+
+            OrderViewModel orderViewModel = new OrderViewModel()
+            {
+                Products = productList,
+                Customers = await _customerRepository.GetAllCustomers(),
+                Order = order
+            };
             ViewData["Title"] = "Delete Order";
 
-            return View(order);
+            return View(orderViewModel);
         }
 
         // POST: Order/Delete/5
@@ -173,33 +213,6 @@ namespace InventoryControlSystem.Controllers
             await _orderRepository.DeleteOrder(id);
             return RedirectToAction(nameof(Index));
         }
-
-        //private async bool OrderExists(string id)
-        //{
-        //    Order order = await _orderRepository.GetOrder(id);
-
-        //    if
-
-
-        //    return await _context.Orders.FindAsync(id);
-
-        //}
-        // ToOrder
-        //public async Task<IActionResult> ToOrder()
-        //{
-        //    // get all the entries that have 'ordered' as false
-        //    var toOrder = await _orderRepository.GetAllOrders();
-        //    return View("Index", toOrder);
-        //}
-
-        //// ToFulfill
-        //public async Task<IActionResult> ToFulfill()
-        //{
-        //    // get all the entries that have 'fulfilled' as false
-        //    var toFulfill = await _context.Orders.Where(p => p.Fulfilled == false).ToListAsync();
-        //    return View("Index", toFulfill);
-        //}
-
 
         public async Task<IActionResult> Add2OrderList(string id)
         {
@@ -298,6 +311,7 @@ namespace InventoryControlSystem.Controllers
             Order order = await _orderRepository.GetOrder(id);
 
             order.Fulfilled = true;
+            order.Status = "COMPLETE";
 
             await _orderRepository.UpdateOrder(order);
 
@@ -306,6 +320,22 @@ namespace InventoryControlSystem.Controllers
             return RedirectToAction(nameof(Index));
 
 
+        }
+
+        // ToOrder
+        public async Task<IActionResult> ToOrder()
+        {
+            // get all the entries that have 'ordered' as false
+            var toOrder = await _orderRepository.ToOrder();
+            return View("Index", toOrder);
+        }
+
+        // ToFulfill
+        public async Task<IActionResult> ToFulfill()
+        {
+            // get all the entries that have 'fulfilled' as false
+            var toFulfill = await _orderRepository.ToFulfill();
+            return View("Index", toFulfill);
         }
 
     }

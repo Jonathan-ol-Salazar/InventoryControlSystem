@@ -1,4 +1,4 @@
-﻿@model InventoryControlSystem.ViewModels.OrderCreateViewModel
+﻿@model InventoryControlSystem.ViewModels.OrderViewModel
 
 
 
@@ -13,8 +13,8 @@
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="@Model.order.Customer">Select a Customer</label>
-                        <select asp-for="@Model.order.Customer" class="select2" multiple="multiple" data-placeholder="Select a Customer" style="width: 100%;">
+                        <label asp-for="@Model.Order.Customer">Select a Customer</label>
+                        <select asp-for="@Model.Order.Customer" class="select2" multiple="multiple" data-placeholder="Select a Customer" style="width: 100%;">
 
                             @foreach (Customer customer in @Model.Customers)
                             {
@@ -24,8 +24,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.order.ProductsID">Select a Product</label>
-                        <select asp-for="@Model.order.ProductsID"class="select2" multiple="multiple" data-placeholder="Select a Product" style="width: 100%;">
+                        <label asp-for="@Model.Order.ProductsID">Select a Product</label>
+                        <select asp-for="@Model.Order.ProductsID"class="select2" multiple="multiple" data-placeholder="Select a Product" style="width: 100%;">
 
                             @foreach(Product product in @Model.Products){
                                 <option value="@product.ID">@product.Name</option>

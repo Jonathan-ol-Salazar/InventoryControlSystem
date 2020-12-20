@@ -65,5 +65,16 @@ namespace InventoryControlSystem.Repositories.Orders
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
 
         }
+
+        public async Task<IEnumerable<Order>> ToOrder()
+        {
+            FilterDefinition<Order> filter = Builders<Order>.Filter.Where(x => x.Ordered == false);
+            return await _ordersContext.Find(filter).ToListAsync();
+        }
+        public async Task<IEnumerable<Order>> ToFulfill()
+        {
+            FilterDefinition<Order> filter = Builders<Order>.Filter.Where(x => x.Fulfilled == false);
+            return await _ordersContext.Find(filter).ToListAsync();
+        }
     }
 }
