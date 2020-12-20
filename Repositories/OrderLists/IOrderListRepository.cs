@@ -15,5 +15,8 @@ namespace InventoryControlSystem.Repositories.OrderLists
         Task<IEnumerable<OrderList>> GetAllOrderLists();
 
         Task<bool> UpdateOrderList(OrderList orderListChanges);
+
+        Task<OrderList> OrderListExist(string supplier);
+
     }
 }

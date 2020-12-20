@@ -65,5 +65,11 @@ namespace InventoryControlSystem.Repositories.OrderLists
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
 
         }
+
+        public async Task<OrderList> OrderListExist(string supplierName)
+        {
+            FilterDefinition<OrderList> filter = Builders<OrderList>.Filter.Eq(x => x.SupplierName, supplierName);
+            return await _orderListsContext.Find(filter).FirstOrDefaultAsync();
+        }
     }
 }

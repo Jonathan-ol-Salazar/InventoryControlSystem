@@ -11,7 +11,7 @@ namespace InventoryControlSystem.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string ID { get; set; }
-        public Supplier Supplier { get; set; }
+        public string SupplierName { get; set; }
 
         public string Business { get; set; }
         public List<Product> Products { get; set; }

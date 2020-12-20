@@ -2,17 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Orders;
+using InventoryControlSystem.Repositories.OrderLists;
+using System.Collections.Generic;
+using System;
 
 namespace InventoryControlSystem.Controllers
 {
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderListRepository _orderListRepository;
 
 
-        public OrderController(IOrderRepository orderRepository)
+
+        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository)
         {
             _orderRepository = orderRepository;
+            _orderListRepository = orderListRepository;
+
         }
 
 
@@ -143,5 +150,132 @@ namespace InventoryControlSystem.Controllers
         //    return await _context.Orders.FindAsync(id);
 
         //}
+        // ToOrder
+        //public async Task<IActionResult> ToOrder()
+        //{
+        //    // get all the entries that have 'ordered' as false
+        //    var toOrder = await _orderRepository.GetAllOrders();
+        //    return View("Index", toOrder);
+        //}
+
+        //// ToFulfill
+        //public async Task<IActionResult> ToFulfill()
+        //{
+        //    // get all the entries that have 'fulfilled' as false
+        //    var toFulfill = await _context.Orders.Where(p => p.Fulfilled == false).ToListAsync();
+        //    return View("Index", toFulfill);
+        //}
+
+
+        public async Task<IActionResult> Add2OrderList(string id)
+        {
+            // Get selected item 
+            // Set 'Order List' to true
+            // Add item to an orderlist, create one if none exists
+            // Refresh the screen to /toOrder
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _orderRepository.GetOrder(id);
+
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Set orderList to true
+                order.OrderList = true;
+
+                //// DUMB PRODUCTS LIST
+                List<Product> Products = new List<Product>();
+
+                Products.Add(new Product
+                {
+                    Name = "Smirnoff Vodka",
+                    Type = "Vodka",
+                    Brand = "Smirnoff",
+                    Quantity = 1,
+                    Price = 1,
+                    Size = 1,
+                    NumUnits = 1,
+                    SupplierName = "Smirnoff",
+                    SupplierID = "1"
+                });
+
+                order.Products = Products;
+
+                // Add each product from order to an orderlist
+                foreach (Product product in order.Products)
+                {
+                    // Check if an existing orderlist for current product exists
+                    var orderList4Supplier = await _orderListRepository.OrderListExist(product.SupplierName);
+
+                    // If no OrderList exists, create a new one. Otherwise, add to existing one
+                    if (orderList4Supplier == null)
+                    {
+
+                        OrderList newOrderList = new OrderList
+                        {
+                            SupplierName = product.SupplierName,
+                            Business = "",
+                            Products = new List<Product> { product },
+                            Orders = new List<Order> { order },
+                            Price = 0,
+                            OrderDate = DateTime.Now,
+                            BillingAddress = "",
+                            ShippingAddress = "",
+                            Confirmed = false
+                        };
+
+                        await _orderListRepository.CreateOrderList(newOrderList);                       
+
+                    }
+                    else
+                    {
+                        // Add product to existing list
+
+
+                        // Check if product is already in list
+                        if(!orderList4Supplier.Products.Contains(product))
+                        {
+                            // if not add to list
+                            orderList4Supplier.Products.Add(product);
+                        }
+
+
+                        // Increase price of OrderList
+                        orderList4Supplier.Price += product.Price;
+
+                        // Increase quantity of units
+                        orderList4Supplier.Products.Find(x => x.ID == product.ID).NumUnits += 1;
+
+                        // Add order to OrderList
+                        orderList4Supplier.Orders.Add(order);
+
+                        await _orderListRepository.UpdateOrderList(orderList4Supplier);
+                       
+
+
+                    }
+
+                }
+
+
+
+
+    
+
+               
+                await _orderRepository.UpdateOrder(order);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View("Index");        
+        }
     }
 }
