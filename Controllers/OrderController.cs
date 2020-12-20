@@ -212,11 +212,12 @@ namespace InventoryControlSystem.Controllers
                 });
                 
                 Products.Add(await _productRepository.GetProduct("5fddbafcad25696cd1a0ff3a"));
-                order.Products = Products;
+                order.ProductsID = new List<string> { "5fddbafcad25696cd1a0ff3a" };
 
                 // Add each product from order to an orderlist
-                foreach (Product product in order.Products)
+                foreach (string productID in order.ProductsID)
                 {
+                    Product product = await _productRepository.GetProduct(productID);
                     // Check if an existing orderlist for current product exists
                     var orderList4Supplier = await _orderListRepository.OrderListExist(product.SupplierName);
 
