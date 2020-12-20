@@ -2,17 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.OrderLists;
+using InventoryControlSystem.Repositories.Orders;
+
 
 namespace InventoryControlSystem.Controllers
 {
     public class OrderListController : Controller
     {
         private readonly IOrderListRepository _orderListRepository;
+        private readonly IOrderRepository _orderRepository;
 
 
-        public OrderListController(IOrderListRepository orderListRepository)
+
+        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository)
         {
             _orderListRepository = orderListRepository;
+            _orderRepository = orderRepository;
+
         }
 
 
@@ -143,5 +149,46 @@ namespace InventoryControlSystem.Controllers
         //    return await _context.OrderLists.FindAsync(id);
 
         //}
+
+        public async Task<IActionResult> Confirm(string id)
+        {
+            // Get OrderList
+            // Set to 'Confirmed'
+            // Loop through all its order and set it to 'Ordered'
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            OrderList orderList = await _orderListRepository.GetOrderList(id);
+
+            if (orderList == null)
+            {
+                return NotFound();
+            }
+
+            // Set OrderList 'Confirmed' to true
+            orderList.Confirmed = true;
+
+            // Set its orders to 'Ordered'
+            foreach (string orderID in orderList.OrdersID)
+            {
+                Order order = await _orderRepository.GetOrder(orderID);
+
+                order.Ordered = true;
+                await _orderRepository.UpdateOrder(order);
+
+            }
+
+            await _orderListRepository.UpdateOrderList(orderList);         
+
+
+
+            return RedirectToAction(nameof(Index));
+
+
+        }
+
     }
 }
