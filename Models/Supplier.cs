@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace InventoryControlSystem.Models
 {
@@ -13,6 +14,8 @@ namespace InventoryControlSystem.Models
         public string Email { get; set; }
         public int Phone { get; set; }
         public string Address { get; set; }
-        public string Orders { get; set; }
+        public List<string> OrderListsID { get; set; }
+        public List<string> ProductsID { get; set; }
+
     }
 }

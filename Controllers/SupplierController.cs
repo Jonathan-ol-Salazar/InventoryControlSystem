@@ -2,17 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.ViewModels;
 
 namespace InventoryControlSystem.Controllers
 {
     public class SupplierController : Controller
     {
         private readonly ISupplierRepository _supplierRepository;
+        private readonly IProductRepository _productRepository;
 
 
-        public SupplierController(ISupplierRepository supplierRepository)
+
+        public SupplierController(ISupplierRepository supplierRepository, IProductRepository productRepository)
         {
             _supplierRepository = supplierRepository;
+            _productRepository = productRepository;
         }
 
 
@@ -39,11 +44,16 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: Supplier/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            SupplierViewModel supplierViewModel = new SupplierViewModel()
+            {
+                Products = await _productRepository.GetAllProducts()
+                
+            };
             ViewData["Title"] = "Create New Supplier";
 
-            return View();
+            return View(supplierViewModel);
         }
 
         // POST: Supplier/Create
@@ -51,7 +61,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Email,Phone,Address,Orders")] Supplier supplier)
+        public async Task<IActionResult> Create([Bind("ID,Name,Email,Phone,Address,ProductsID")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
