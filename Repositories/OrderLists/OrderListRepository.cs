@@ -66,9 +66,9 @@ namespace InventoryControlSystem.Repositories.OrderLists
 
         }
 
-        public async Task<OrderList> OrderListExist(string supplierName)
+        public async Task<OrderList> OrderListExist(string suppliersName)
         {
-            FilterDefinition<OrderList> filter = Builders<OrderList>.Filter.Eq(x => x.SupplierName, supplierName);
+            FilterDefinition<OrderList> filter = Builders<OrderList>.Filter.Eq(x => x.SuppliersName, suppliersName);
             return await _orderListsContext.Find(filter).FirstOrDefaultAsync();
         }
     }

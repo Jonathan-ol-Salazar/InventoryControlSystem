@@ -11,7 +11,9 @@ namespace InventoryControlSystem.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string ID { get; set; }
-        public string SupplierName { get; set; }
+        public string SuppliersName { get; set; }
+        public string SuppliersID { get; set; }
+
 
         public string Business { get; set; }
 
@@ -23,7 +25,7 @@ namespace InventoryControlSystem.Models
         public int Price { get; set; }
         public DateTime OrderDate  { get; set; }
 
-        public string BillingAddress { get; set; }
+        public string SuppliersAddress { get; set; }
         public string ShippingAddress { get; set; }
 
         public bool Confirmed { get; set; }

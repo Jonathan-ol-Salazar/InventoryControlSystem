@@ -9,6 +9,7 @@ using InventoryControlSystem.Repositories.Products;
 using InventoryControlSystem.ViewModels;
 using System.Linq;
 using InventoryControlSystem.Repositories.Customers;
+using InventoryControlSystem.Repositories.Suppliers;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -18,13 +19,15 @@ namespace InventoryControlSystem.Controllers
         private readonly IOrderListRepository _orderListRepository;
         private readonly IProductRepository _productRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly ISupplierRepository _supplierRepository;
 
-        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository)
+        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository, ISupplierRepository supplierRepository)
         {
             _orderRepository = orderRepository;
             _orderListRepository = orderListRepository;
             _productRepository = productRepository;
             _customerRepository = customerRepository;
+            _supplierRepository = supplierRepository;
         }
 
 
@@ -93,7 +96,9 @@ namespace InventoryControlSystem.Controllers
                 // Set status to incomplete
                 order.Status = "INCOMPLETE";
                 // Set orderdate to now
-                order.OrderDate = DateTime.Now;          
+                order.OrderDate = DateTime.Now;
+                // Set OrderListsID to new list
+                order.OrderListsID = new List<string>();
 
                 // Create order
                 await _orderRepository.CreateOrder(order);
@@ -251,13 +256,14 @@ namespace InventoryControlSystem.Controllers
 
                         OrderList newOrderList = new OrderList
                         {
-                            SupplierName = product.SuppliersName,
+                            SuppliersName = product.SuppliersName,
+                            SuppliersID = product.SuppliersID,
                             Business = "",
                             ProductsID = new List<string> {product.ID},
                             OrdersID = new List<string> {order.ID},
                             Price = 0,
                             OrderDate = DateTime.Now,
-                            BillingAddress = "",
+                            SuppliersAddress = "",
                             ShippingAddress = "",
                             Confirmed = false
                         };
@@ -265,6 +271,28 @@ namespace InventoryControlSystem.Controllers
                         await _orderListRepository.CreateOrderList(newOrderList);
                         newOrderList.ID = newOrderList.Id;
                         await _orderListRepository.UpdateOrderList(newOrderList);
+                        
+                        // Add OrderListID to Order
+                        order.OrderListsID = new List<string>
+                        {
+                            newOrderList.ID
+                        };
+
+                        // Add OrderListID to Supplier
+                        Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
+                        // If list empty populate, else add on
+                        if(supplier.OrderListsID == null)
+                        {
+                            supplier.OrderListsID = new List<string>
+                            {
+                                newOrderList.ID
+                            };
+                        }
+                        else
+                        {
+                            supplier.OrderListsID.Add(newOrderList.ID);
+                        }
+                        await _supplierRepository.UpdateSupplier(supplier);
 
                     }
                     else
@@ -279,19 +307,40 @@ namespace InventoryControlSystem.Controllers
                             orderList4Supplier.ProductsID.Add(product.ID);
                         }
 
+                        // Check if OrderID is already in list
+                        if (!orderList4Supplier.OrdersID.Contains(order.ID))
+                        {
+                            // if not add to list
+                            orderList4Supplier.OrdersID.Add(order.ID);
+                        }
+
+                        // Check if OrderListID is already in list
+                        if (!order.OrderListsID.Contains(orderList4Supplier.ID))
+                        {
+                            // if not add to list
+                            order.OrderListsID.Add(orderList4Supplier.ID);
+                        }
+
 
                         // Increase price of OrderList
                         orderList4Supplier.Price += product.Price;
 
                         // Increase quantity of units
                         product.NumUnits += 1;
+
+                        // Update Product repo
                         await _productRepository.UpdateProduct(product);
 
-                        // Add order to OrderList
-                        orderList4Supplier.OrdersID.Add(order.ID);
+                        //// Add Order to OrderList
+                        //orderList4Supplier.OrdersID.Add(order.ID);
 
+                        //// Add OrderList to Order
+                        //order.OrderListsID.Add(orderList4Supplier.ID);
+
+                        // Update OrderList repo
                         await _orderListRepository.UpdateOrderList(orderList4Supplier);
-                       
+
+                      
 
 
                     }
