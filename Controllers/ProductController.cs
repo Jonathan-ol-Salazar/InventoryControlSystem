@@ -2,17 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.ViewModels;
 
 namespace InventoryControlSystem.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly ISupplierRepository _supplierRepository;
 
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, ISupplierRepository supplierRepository)
         {
             _productRepository = productRepository;
+            _supplierRepository = supplierRepository;
         }
 
 
@@ -39,11 +43,16 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: Product/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ProductViewModel productViewModel = new ProductViewModel
+            {
+                Suppliers = await _supplierRepository.GetAllSuppliers()
+            };
+
             ViewData["Title"] = "Create New Product";
 
-            return View();
+            return View(productViewModel);
         }
 
         // POST: Product/Create
@@ -51,10 +60,14 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string id, [Bind("ID,Name,Type,Brand,Quantity,Price,Size,NumUnits")] Product product)
+        public async Task<IActionResult> Create(string id, [Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,Price,SuppliersID")] Product product)
         {
             if (ModelState.IsValid)
             {
+                string[] productIDName = product.SuppliersID.Split(':');
+                product.SuppliersID = productIDName[0];
+                product.SuppliersName = productIDName[1];
+
                 await _productRepository.CreateProduct(product);
                 product.ID = product.Id;
                 await _productRepository.UpdateProduct(product);
@@ -76,9 +89,15 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+
+            ProductViewModel productViewModel = new ProductViewModel
+            {
+                Suppliers = await _supplierRepository.GetAllSuppliers(),
+                Product = product
+            };
             ViewData["Title"] = "Edit Product";
 
-            return View(product);
+            return View(productViewModel);
         }
 
         // POST: Product/Edit/5

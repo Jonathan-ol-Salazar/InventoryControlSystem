@@ -64,37 +64,54 @@
                                 @Html.DisplayNameFor(model => model.Product.Brand)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Product.Quantity)
+                                @Html.DisplayNameFor(model => model.Product.NumBottles)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.BottleSize)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.NumUnits)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Product.Price)
                             </th>
-                            <th></th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.SuppliersName)
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.Products)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Type)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Brand)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Quantity)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </td>          
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Brand)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumBottles)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BottleSize)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumUnits)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SuppliersName)
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>  

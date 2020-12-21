@@ -29,39 +29,62 @@
                                     @Html.DisplayNameFor(model => model.Type)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Quantity)
+                                    @Html.DisplayNameFor(model => model.Brand)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NumBottles)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BottleSize)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NumUnits)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Price)
                                 </th>
-                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SuppliersName)
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Id)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Type)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Quantity)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Price)
-                                    </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Brand)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumBottles)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BottleSize)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumUnits)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SuppliersName)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
