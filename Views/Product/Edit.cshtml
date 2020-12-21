@@ -9,9 +9,11 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="@Model.Product.ID" />          
                     <div class="form-group">
                         <label asp-for="@Model.Product.Name" class="control-label"></label>
-                        <input asp-for="@Model.Product.Name" class="form-control" disabled/>
+                        <input asp-for="@Model.Product.Name" class="form-control" />
                         <span asp-validation-for="@Model.Product.Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -45,12 +47,12 @@
                         <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Product.SuppliersID">Select a Customer</label>
-                        <select asp-for="@Model.Product.SuppliersID" class="select2" multiple="multiple" data-placeholder="Select a Customer" style="width: 100%;">
+                        <label asp-for="@Model.Product.SuppliersID">Select a Supplier</label>
+                        <select asp-for="@Model.Product.SuppliersID" class="form-control select2" data-placeholder="Select a Supplier" style="width: 100%;">
 
                             @foreach (Supplier supplier in @Model.Suppliers)
                             {
-                                <option value="@supplier.ID">@supplier.Name</option>
+                                <option value="@supplier.ID:@supplier.Name">@supplier.Name</option>
                             }
 
                         </select>

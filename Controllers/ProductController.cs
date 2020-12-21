@@ -60,7 +60,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string id, [Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,Price,SuppliersID")] Product product)
+        public async Task<IActionResult> Create([Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,Price,SuppliersID")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -105,9 +105,8 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Type,Brand,Quantity,Price,Size,NumUnits")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,Price,SuppliersID")] Product product)
         {
-
             if (ModelState.IsValid)
             {
                 var productFromDb = await _productRepository.GetProduct(id);
@@ -115,13 +114,15 @@ namespace InventoryControlSystem.Controllers
                 {
                     return new NotFoundResult();
                 }
+                string[] productIDName = product.SuppliersID.Split(':');
+                product.SuppliersID = productIDName[0];
+                product.SuppliersName = productIDName[1];
+
                 product.Id = productFromDb.Id;
                 await _productRepository.UpdateProduct(product);
                 TempData["Message"] = "Customer Updated Successfully";
-
             }
             return RedirectToAction("Index");
-
         }
 
         // GET: Product/Delete/5
