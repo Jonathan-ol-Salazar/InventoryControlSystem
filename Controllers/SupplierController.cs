@@ -86,9 +86,14 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            SupplierViewModel supplierViewModel = new SupplierViewModel()
+            {
+                Products = await _productRepository.GetAllProducts(),
+                Supplier = supplier
+            };
             ViewData["Title"] = "Edit Supplier";
 
-            return View(supplier);
+            return View(supplierViewModel);
         }
 
         // POST: Supplier/Edit/5
@@ -96,7 +101,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,Name,Email,Phone,Address,Orders")] Supplier supplier)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,Name,Email,Phone,Address,ProductsID")] Supplier supplier)
         {
 
             if (ModelState.IsValid)
