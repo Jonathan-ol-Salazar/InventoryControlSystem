@@ -4,6 +4,7 @@ using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Products;
 using InventoryControlSystem.ViewModels;
+using System.Collections.Generic;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -37,9 +38,20 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
 
             }
+            List<Product> productList = new List<Product>();
+            foreach (string product in supplier.ProductsID)
+            {
+                productList.Add(await _productRepository.GetProduct(product));
+
+            }
+            SupplierViewModel supplierViewModel = new SupplierViewModel()
+            {
+                Products = productList,
+                Supplier = supplier
+            };
             ViewData["Title"] = "View Supplier";
 
-            return View(supplier);
+            return View(supplierViewModel);
 
         }
 

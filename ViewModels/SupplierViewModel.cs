@@ -10,5 +10,6 @@ namespace InventoryControlSystem.ViewModels
     {
         public IEnumerable<Product> Products { get; set; }
         public Supplier Supplier { get; set; }
+        public Product Product { get; set; }
     }
 }
