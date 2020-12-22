@@ -150,6 +150,13 @@ namespace InventoryControlSystem.Controllers
         {
             Product product = await _productRepository.GetProduct(id);
 
+            // Supplier - remove ProductID
+            Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
+            supplier.ProductsID.Remove(product.ID);
+
+            await _supplierRepository.UpdateSupplier(supplier);
+
+
             await _productRepository.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
         }

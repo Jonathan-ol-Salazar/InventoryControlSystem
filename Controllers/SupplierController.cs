@@ -5,6 +5,7 @@ using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Products;
 using InventoryControlSystem.ViewModels;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -147,9 +148,20 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+            List<Product> productList = new List<Product>();
+            foreach(string ID in supplier.ProductsID)
+            {
+                productList.Add(await _productRepository.GetProduct(ID));
+            }
+
+            SupplierViewModel supplierViewModel = new SupplierViewModel
+            {
+                Products = productList,
+                Supplier = supplier
+            };
             ViewData["Title"] = "Delete Supplier";
 
-            return View(supplier);
+            return View(supplierViewModel);
         }
 
         // POST: Supplier/Delete/5
@@ -157,6 +169,9 @@ namespace InventoryControlSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            // Delete Products
+            // Delete OrderList
+
             Supplier supplier = await _supplierRepository.GetSupplier(id);
 
             await _supplierRepository.DeleteSupplier(id);
