@@ -169,10 +169,14 @@ namespace InventoryControlSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            // Delete Products
-            // Delete OrderList
-
             Supplier supplier = await _supplierRepository.GetSupplier(id);
+
+            // Delete Products
+            foreach (string ID in supplier.ProductsID)
+            {
+                await _productRepository.DeleteProduct(ID);
+            }
+
 
             await _supplierRepository.DeleteSupplier(id);
             return RedirectToAction(nameof(Index));
