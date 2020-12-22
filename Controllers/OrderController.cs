@@ -215,6 +215,28 @@ namespace InventoryControlSystem.Controllers
         {
             Order order = await _orderRepository.GetOrder(id);
 
+            // Remove OrderID from OrderLists
+            foreach (string ID in order.OrderListsID)
+            {
+                OrderList orderList = await _orderListRepository.GetOrderList(ID);
+                if (!orderList.Confirmed)
+                {
+                    // Remove ProductID from OrderList that's in the Order
+                    var commonNumbers = order.ProductsID.Intersect(orderList.ProductsID);
+                    orderList.ProductsID = orderList.ProductsID.Except(commonNumbers).ToList();
+
+                    // Remove OrderID from OrderList
+                    orderList.OrdersID.Remove(order.ID);
+
+                    await _orderListRepository.UpdateOrderList(orderList);
+
+                }
+            }
+            // Remove OrderID from Customer
+            Customer customer = await _customerRepository.GetCustomer(order.Customer);
+            customer.Orders.Remove(order.ID);
+            await _customerRepository.UpdateCustomer(customer);
+
             await _orderRepository.DeleteOrder(id);
             return RedirectToAction(nameof(Index));
         }
@@ -247,6 +269,12 @@ namespace InventoryControlSystem.Controllers
                 foreach (string productID in order.ProductsID)
                 {
                     Product product = await _productRepository.GetProduct(productID);
+                    if(product == null)
+                    {
+                        order.ProductsID.Remove(productID);
+                        break;
+                    }
+
                     // Check if an existing orderlist for current product exists
                     var orderList4Supplier = await _orderListRepository.OrderListExist(product.SuppliersName);
 
@@ -344,8 +372,18 @@ namespace InventoryControlSystem.Controllers
 
 
                     }
-                }               
-                await _orderRepository.UpdateOrder(order);
+                }  
+                
+                // Delete order if it has no products
+                if(order.NumProducts == 0)
+                {
+                    RedirectToAction(nameof(DeleteConfirmed), order.ID);
+                }
+                else
+                {
+                    await _orderRepository.UpdateOrder(order);
+                }
+
 
                 return RedirectToAction(nameof(Index));
             }
