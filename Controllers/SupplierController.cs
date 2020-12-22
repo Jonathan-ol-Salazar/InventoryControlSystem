@@ -77,8 +77,8 @@ namespace InventoryControlSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Set OrderListsID to new list
-                supplier.OrderListsID = new List<string>();
+                //// Set OrderListsID to new list
+                //supplier.OrderListsID = new List<string>();
                 await _supplierRepository.CreateSupplier(supplier);
                 supplier.ID = supplier.Id;
                 await _supplierRepository.UpdateSupplier(supplier);

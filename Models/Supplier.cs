@@ -14,7 +14,7 @@ namespace InventoryControlSystem.Models
         public string Email { get; set; }
         public int Phone { get; set; }
         public string Address { get; set; }
-        public List<string> OrderListsID { get; set; }
+        //public List<string> OrderListsID { get; set; }
         public List<string> ProductsID { get; set; }
 
     }

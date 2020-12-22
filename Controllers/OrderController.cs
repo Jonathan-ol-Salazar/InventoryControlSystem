@@ -278,21 +278,21 @@ namespace InventoryControlSystem.Controllers
                             newOrderList.ID
                         };
 
-                        // Add OrderListID to Supplier
-                        Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
-                        // If list empty populate, else add on
-                        if(supplier.OrderListsID == null)
-                        {
-                            supplier.OrderListsID = new List<string>
-                            {
-                                newOrderList.ID
-                            };
-                        }
-                        else
-                        {
-                            supplier.OrderListsID.Add(newOrderList.ID);
-                        }
-                        await _supplierRepository.UpdateSupplier(supplier);
+                        //// Add OrderListID to Supplier
+                        //Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
+                        //// If list empty populate, else add on
+                        //if(supplier.OrderListsID == null)
+                        //{
+                        //    supplier.OrderListsID = new List<string>
+                        //    {
+                        //        newOrderList.ID
+                        //    };
+                        //}
+                        //else
+                        //{
+                        //    supplier.OrderListsID.Add(newOrderList.ID);
+                        //}
+                        //await _supplierRepository.UpdateSupplier(supplier);
 
                     }
                     else

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.OrderLists;
 using InventoryControlSystem.Repositories.Orders;
-
+using InventoryControlSystem.ViewModels;
+using System.Collections.Generic;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -125,9 +126,23 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+
+            List<Order> orders = new List<Order>();
+            foreach(string ID in orderList.OrdersID)
+            {
+                orders.Add(await _orderRepository.GetOrder(ID));
+            }
+
+            OrderListViewModel orderListViewModel = new OrderListViewModel
+            {
+                Orders = orders,
+                OrderList = orderList
+
+            };
+
             ViewData["Title"] = "Delete OrderList";
 
-            return View(orderList);
+            return View(orderListViewModel);
         }
 
         // POST: OrderList/Delete/5
@@ -137,7 +152,24 @@ namespace InventoryControlSystem.Controllers
         {
             OrderList orderList = await _orderListRepository.GetOrderList(id);
 
+            if(orderList.Confirmed == false)
+            {
+                // Remove OrderList from each of its Orders
+                foreach (string ID in orderList.OrdersID)
+                {
+                    Order order = await _orderRepository.GetOrder(ID);
+                    order.OrderListsID.Remove(id);
+                    order.OrderList = false;
+                    await _orderRepository.UpdateOrder(order);
+                }
+            }
+      
+
+
             await _orderListRepository.DeleteOrderList(id);
+
+
+
             return RedirectToAction(nameof(Index));
         }
 
