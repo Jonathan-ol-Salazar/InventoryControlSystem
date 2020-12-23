@@ -103,10 +103,13 @@ namespace InventoryControlSystem.Controllers
                 // Set OrderListsID to new list
                 order.OrderListsID = new List<string>();
                 // Set TotalCost
+                List<string> ProductsID = new List<string>();
                 foreach(string productPrice in order.ProductsID)
                 {
                     order.TotalCost += Convert.ToDouble(productPrice.Split(':')[1]);
+                    ProductsID.Add(productPrice.Split(':')[0]);
                 }
+                order.ProductsID = ProductsID;
 
                 // Update Funds
                 IEnumerable <Fund> Funds = await _fundRepository.GetAllFunds();
@@ -320,7 +323,7 @@ namespace InventoryControlSystem.Controllers
                             Business = "",
                             ProductsID = new List<string> {product.ID},
                             OrdersID = new List<string> {order.ID},
-                            Price = 0,
+                            Price = order.TotalCost,
                             OrderDate = DateTime.Now,
                             SuppliersAddress = "",
                             ShippingAddress = "",

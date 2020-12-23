@@ -5,6 +5,8 @@ using InventoryControlSystem.Repositories.OrderLists;
 using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.ViewModels;
 using System.Collections.Generic;
+using InventoryControlSystem.Repositories.Funds;
+using System.Linq;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -12,13 +14,15 @@ namespace InventoryControlSystem.Controllers
     {
         private readonly IOrderListRepository _orderListRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IFundRepository _fundRepository;
 
 
 
-        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository)
+        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository, IFundRepository fundRepository)
         {
             _orderListRepository = orderListRepository;
             _orderRepository = orderRepository;
+            _fundRepository = fundRepository;
 
         }
 
@@ -215,9 +219,15 @@ namespace InventoryControlSystem.Controllers
 
             }
 
-            await _orderListRepository.UpdateOrderList(orderList);         
+            await _orderListRepository.UpdateOrderList(orderList);
 
-
+            // Decreasing Fund
+            IEnumerable<Fund> Funds = await _fundRepository.GetAllFunds();
+            // Get Fund
+            Fund fund = Funds.ToList()[0];
+            
+            fund.Funds -= orderList.Price;
+            await _fundRepository.UpdateFund(fund);
 
             return RedirectToAction(nameof(Index));
 

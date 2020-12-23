@@ -22,7 +22,7 @@ namespace InventoryControlSystem.Models
         public List<string> OrdersID { get; set; }
 
 
-        public int Price { get; set; }
+        public double Price { get; set; }
         public DateTime OrderDate  { get; set; }
 
         public string SuppliersAddress { get; set; }
