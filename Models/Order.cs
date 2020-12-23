@@ -23,6 +23,7 @@ namespace InventoryControlSystem.Models
         public bool Ordered { get; set; }
         public bool OrderList { get; set; }
         public DateTime OrderDate { get; set; }
+        public double TotalCost { get; set; }
 
 
     }

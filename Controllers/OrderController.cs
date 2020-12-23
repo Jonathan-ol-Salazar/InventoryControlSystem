@@ -92,14 +92,19 @@ namespace InventoryControlSystem.Controllers
                 // ORDER PROPERTIES
 
                 // Set number of products 
-                order.NumProducts = order.ProductsID.Count();
+                order.NumProducts = order.ProductsID.Count;
                 // Set status to incomplete
                 order.Status = "INCOMPLETE";
                 // Set orderdate to now
                 order.OrderDate = DateTime.Now;
                 // Set OrderListsID to new list
                 order.OrderListsID = new List<string>();
-
+                // Set TotalCost
+                foreach(string productPrice in order.ProductsID)
+                {
+                    order.TotalCost += Convert.ToDouble(productPrice.Split(':')[1]);
+                }
+                
                 // Create order
                 await _orderRepository.CreateOrder(order);
                 // Set order ID
