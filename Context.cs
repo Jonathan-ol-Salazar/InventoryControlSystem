@@ -4,7 +4,7 @@ using InventoryControlSystem.Models;
 
 namespace InventoryControlSystem
 {
-    public class Context : IUserContext, IProductContext, ICustomerContext, ISupplierContext, IOrderContext, IOrderListContext
+    public class Context : IUserContext, IProductContext, ICustomerContext, ISupplierContext, IOrderContext, IOrderListContext, IFundContext
     {
         private readonly IMongoDatabase mongoDatabase;
 
@@ -20,6 +20,8 @@ namespace InventoryControlSystem
         public IMongoCollection<Supplier> Suppliers => mongoDatabase.GetCollection<Supplier>("Suppliers");
         public IMongoCollection<Order> Orders => mongoDatabase.GetCollection<Order>("Orders");
         public IMongoCollection<OrderList> OrderLists => mongoDatabase.GetCollection<OrderList>("OrderLists");
+        public IMongoCollection<Fund> Funds => mongoDatabase.GetCollection<Fund>("Funds");
+
 
 
     }
@@ -53,5 +55,9 @@ namespace InventoryControlSystem
     public interface IOrderListContext
     {
         IMongoCollection<OrderList> OrderLists { get; }
+    }
+    public interface IFundContext
+    {
+        IMongoCollection<Fund> Funds { get; }
     }
 }

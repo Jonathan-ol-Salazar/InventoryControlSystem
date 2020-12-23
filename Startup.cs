@@ -18,7 +18,7 @@ using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.Repositories.OrderLists;
 
 using InventoryControlSystem.Models;
-
+using InventoryControlSystem.Repositories.Funds;
 
 namespace InventoryControlSystem
 {
@@ -67,15 +67,16 @@ namespace InventoryControlSystem
 			services.AddTransient<IOrderListContext, Context>();
 			services.AddTransient<IOrderListRepository, OrderListRepository>();
 
+			services.AddTransient<IFundContext, Context>();
+			services.AddTransient<IFundRepository, FundRepository>();
 
+			// Auth0 
 
-            // Auth0 
+			// Cookie configuration for HTTP to support cookies with SameSite=None
+			//services.ConfigureSameSiteNoneCookies();
 
-            // Cookie configuration for HTTP to support cookies with SameSite=None
-            //services.ConfigureSameSiteNoneCookies();
-
-            // Cookie configuration for HTTPS
-            services.Configure<CookiePolicyOptions>(options =>
+			// Cookie configuration for HTTPS
+			services.Configure<CookiePolicyOptions>(options =>
             {
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 
