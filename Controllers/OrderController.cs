@@ -10,6 +10,7 @@ using InventoryControlSystem.ViewModels;
 using System.Linq;
 using InventoryControlSystem.Repositories.Customers;
 using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.Repositories.Funds;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -20,14 +21,16 @@ namespace InventoryControlSystem.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly ISupplierRepository _supplierRepository;
+        private readonly IFundRepository _fundRepository;
 
-        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository, ISupplierRepository supplierRepository)
+        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository, ISupplierRepository supplierRepository, IFundRepository fundRepository)
         {
             _orderRepository = orderRepository;
             _orderListRepository = orderListRepository;
             _productRepository = productRepository;
             _customerRepository = customerRepository;
             _supplierRepository = supplierRepository;
+            _fundRepository = fundRepository;
         }
 
 
@@ -104,7 +107,30 @@ namespace InventoryControlSystem.Controllers
                 {
                     order.TotalCost += Convert.ToDouble(productPrice.Split(':')[1]);
                 }
-                
+
+                // Update Funds
+                IEnumerable <Fund> Funds = await _fundRepository.GetAllFunds();
+                // Create new fund if none exists                
+                if(Funds.ToList().Count == 0)
+                {
+                    Fund fund = new Fund
+                    {
+                        Funds = order.TotalCost
+                    };
+                    await _fundRepository.CreateFund(fund);
+                    fund.ID = fund.Id;
+                    await _fundRepository.UpdateFund(fund);
+                }
+                else
+                {
+                    Fund fund = Funds.ToList()[0];
+                    fund.Funds += order.TotalCost;
+                    await _fundRepository.UpdateFund(fund);
+
+                }
+
+                //Fund fund = await _fundRepository.GetFund(Funds);
+
                 // Create order
                 await _orderRepository.CreateOrder(order);
                 // Set order ID

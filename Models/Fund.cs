@@ -1,9 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventoryControlSystem.Models
 {
@@ -12,7 +8,7 @@ namespace InventoryControlSystem.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string ID { get; set; }        
-        public int Funds { get; set; }
+        public string ID { get; set; }
+        public double Funds { get; set; } = 0;
     }
 }
