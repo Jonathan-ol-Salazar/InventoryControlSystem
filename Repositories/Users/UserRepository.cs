@@ -65,5 +65,20 @@ namespace InventoryControlSystem.Repositories.Users
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
 
         }
+
+        public async Task<bool> Auth0IDExists(string Auth0ID)
+        {
+
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq(x => x.Auth0ID, Auth0ID);
+
+            if(await _usersContext.Find(filter).FirstOrDefaultAsync() != null)
+            {
+                return true;
+            } 
+
+            return false;
+
+        }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using InventoryControlSystem.Repositories.Users;
+using InventoryControlSystem.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +13,19 @@ namespace InventoryControlSystem.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IUserRepository _userRepository;
+
+        public AccountController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public async Task Login(string returnUrl = "/")
         {
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
+            int x = 1;
+            // Check if user is in database
+            //if(await _userRepository.Auth0IDExists(User.Claims.))
         }
 
         [Authorize]
@@ -29,5 +41,17 @@ namespace InventoryControlSystem.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> Index()
+        //{
+        //    User user = await
+
+        //    AccountViewModel accountViewModel = new AccountViewModel
+        //    {
+        //        User = user;
+        //    }
+
+        //    return View();
+        //}
     }
 }
