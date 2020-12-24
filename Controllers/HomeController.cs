@@ -1,41 +1,53 @@
 ﻿using InventoryControlSystem.Models;
-using InventoryControlSystem.Repositories.Products;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using InventoryControlSystem.Models;
+using InventoryControlSystem.ViewModels;
+using InventoryControlSystem.Repositories.Orders;
+using InventoryControlSystem.Repositories.OrderLists;
+using InventoryControlSystem.Repositories.Customers;
+using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.Repositories.Funds;
+using InventoryControlSystem.Repositories.Products;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace InventoryControlSystem.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
-        private readonly IProductRepository _bottleRepository;
-
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-
-        public HomeController(IProductRepository bottleRepository)
+        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderListRepository _orderListRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ISupplierRepository _supplierRepository;
+        private readonly IFundRepository _fundRepository;
+        public HomeController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository, ISupplierRepository supplierRepository, IFundRepository fundRepository)
         {
-            _bottleRepository = bottleRepository;
+            _orderRepository = orderRepository;
+            _orderListRepository = orderListRepository;
+            _productRepository = productRepository;
+            _customerRepository = customerRepository;
+            _supplierRepository = supplierRepository;
+            _fundRepository = fundRepository;
         }
 
 
-        //public String Index()
-        //{
-        //    return _bottleRepository.GetItem(1).Name;
-        //}
-
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<Order> order = await _orderRepository.ToOrderList();
+            IEnumerable<OrderList> orderList = await _orderListRepository.ToConfirm();
+            IEnumerable<Fund> funds = await _fundRepository.GetAllFunds();
+            Fund fund = funds.ToList()[0];
+
+            HomeViewModel homeViewModel = new HomeViewModel
+            {
+                Orders = order,
+                OrderLists = orderList,
+                Fund = fund
+            };
+            return View(homeViewModel);
         }
 
         public IActionResult Privacy()

@@ -71,5 +71,13 @@ namespace InventoryControlSystem.Repositories.OrderLists
             FilterDefinition<OrderList> filter = Builders<OrderList>.Filter.Eq(x => x.SuppliersName, suppliersName);
             return await _orderListsContext.Find(filter).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<OrderList>> ToConfirm()
+        {
+            FilterDefinition<OrderList> filter = Builders<OrderList>.Filter.Where(x => x.Confirmed == false);
+            return await _orderListsContext.Find(filter).ToListAsync();
+        }
+
+
     }
 }

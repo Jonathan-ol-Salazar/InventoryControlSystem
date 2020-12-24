@@ -19,5 +19,7 @@ namespace InventoryControlSystem.Repositories.Orders
         Task<IEnumerable<Order>> ToOrder();
 
         Task<IEnumerable<Order>> ToFulfill();
+        Task<IEnumerable<Order>> ToOrderList();
+
     }
 }

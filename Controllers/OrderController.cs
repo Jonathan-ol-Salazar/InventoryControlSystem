@@ -1,16 +1,17 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
+using InventoryControlSystem.ViewModels;
 using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.Repositories.OrderLists;
-using System.Collections.Generic;
-using System;
-using InventoryControlSystem.Repositories.Products;
-using InventoryControlSystem.ViewModels;
-using System.Linq;
 using InventoryControlSystem.Repositories.Customers;
 using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Funds;
+using InventoryControlSystem.Repositories.Products;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+
 
 namespace InventoryControlSystem.Controllers
 {

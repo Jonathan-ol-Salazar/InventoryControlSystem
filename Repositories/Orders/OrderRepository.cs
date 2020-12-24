@@ -76,5 +76,10 @@ namespace InventoryControlSystem.Repositories.Orders
             FilterDefinition<Order> filter = Builders<Order>.Filter.Where(x => x.Fulfilled == false);
             return await _ordersContext.Find(filter).ToListAsync();
         }
+        public async Task<IEnumerable<Order>> ToOrderList()
+        {
+            FilterDefinition<Order> filter = Builders<Order>.Filter.Where(x => x.OrderList == false);
+            return await _ordersContext.Find(filter).ToListAsync();
+        }
     }
 }

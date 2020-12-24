@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model InventoryControlSystem.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "DashBoard";
 }
 
 
@@ -13,8 +15,8 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Today's Revenue</span>
                     <span class="info-box-number">
-                        10
-                        <small>%</small>
+                        @Model.Fund.TodaysRevenue
+                        <small>$</small>
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -27,7 +29,10 @@
                 <span class="info-box-icon bg-success elevation-1"><i class="fas fa-arrow-up"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Today's Profit</span>
-                    <span class="info-box-number">41,410</span>
+                    <span class="info-box-number">
+                        @Model.Fund.TodaysProfit
+                        <small>$</small>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -39,7 +44,10 @@
                 <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Today's Sales</span>
-                    <span class="info-box-number">41,410</span>
+                    <span class="info-box-number">
+                        @Model.Fund.TodaysSales
+                        <small>$</small>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -51,7 +59,10 @@
                 <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-dollar-sign"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Today's Cost</span>
-                    <span class="info-box-number">41,410</span>
+                    <span class="info-box-number">
+                        @Model.Fund.TodaysCost
+                        <small>$</small>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -59,164 +70,162 @@
         </div>
         <!-- /.col -->
     </div>
+    <!-- /.Info boxes -->
 
+    <!-- Order -->
     <div class="row">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="card-title">Online Store Visitors</h3>
-                        <a href="javascript:void(0);">View Report</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <p class="d-flex flex-column">
-                            <span class="text-bold text-lg">820</span>
-                            <span>Visitors Over Time</span>
-                        </p>
-                        <p class="ml-auto d-flex flex-column text-right">
-                            <span class="text-success">
-                                <i class="fas fa-arrow-up"></i> 12.5%
-                            </span>
-                            <span class="text-muted">Since last week</span>
-                        </p>
-                    </div>
-                    <!-- /.d-flex -->
-
-                    <div class="position-relative mb-4">
-                        <canvas id="visitors-chart" height="200"></canvas>
-                    </div>
-
-                    <div class="d-flex flex-row justify-content-end">
-                        <span class="mr-2">
-                            <i class="fas fa-square text-primary"></i> This Week
-                        </span>
-
-                        <span>
-                            <i class="fas fa-square text-gray"></i> Last Week
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <!-- /.card -->
-
-            <div class="card">
-                <div class="card-header border-0">
-                    <h3 class="card-title">Products</h3>
-                    <div class="card-tools">
-                        <a href="#" class="btn btn-tool btn-sm">
-                            <i class="fas fa-download"></i>
-                        </a>
-                        <a href="#" class="btn btn-tool btn-sm">
-                            <i class="fas fa-bars"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body table-responsive p-0">
-          
-                </div>
-            </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.col-md-6 -->
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="card-title">Sales</h3>
-                        <a href="javascript:void(0);">View Report</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <p class="d-flex flex-column">
-                            <span class="text-bold text-lg">$18,230.00</span>
-                            <span>Sales Over Time</span>
-                        </p>
-                        <p class="ml-auto d-flex flex-column text-right">
-                            <span class="text-success">
-                                <i class="fas fa-arrow-up"></i> 33.1%
-                            </span>
-                            <span class="text-muted">Since last month</span>
-                        </p>
-                    </div>
-                    <!-- /.d-flex -->
-
-                    <div class="position-relative mb-4">
-                        <canvas id="sales-chart" height="200"></canvas>
-                    </div>
-
-                    <div class="d-flex flex-row justify-content-end">
-                        <span class="mr-2">
-                            <i class="fas fa-square text-primary"></i> This year
-                        </span>
-
-                        <span>
-                            <i class="fas fa-square text-gray"></i> Last year
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <!-- /.card -->
-            <!-- TABLE: LATEST ORDERS -->
-            <div class="card">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Latest Orders</h3>
-                    <div class="card-tools">                                            
-                        <a href="#" class="btn btn-sm btn-info float-left">
-                            Place New Order
-                        </a>
-                                
-                        <a href="#" class="btn btn-sm btn-info float-left">
-                            View All Orders
-                        </a>                                
-                    </div>
+        <div class="col-12">
+            <div class="card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Add Order to Orderlist</h3>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table m-0">
-                            <thead>
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Order ID
+                                </th>
+                                <th>
+                                    Total Items
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Order.TotalCost)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Order.Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Order.Fulfilled)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Order.Ordered)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Order.OrderList)
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Orders)
+                            {
                                 <tr>
-                                    <th>Order ID</th>
-                                    <th>Item</th>
-                                    <th>Status</th>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NumProducts)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalCost)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Fulfilled)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ordered)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderList)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                                        <a asp-action="Add2OrderList" asp-route-id="@item.Id">Add To Order List</a> |
+                                        <a asp-action="Fulfill" asp-route-id="@item.Id">Fulfill</a>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body  -->
+            </div>
+        </div>
+    </div>
+    <!-- /.Order -->
+
+    <!-- OrderList -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Confirm OrderList</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example11" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderList.Business)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderList.Price)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderList.OrderDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderList.SuppliersAddress)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderList.ShippingAddress)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderList.Confirmed)
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderLists)
+                            {
                                 <tr>
-                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                    <td>Call of Duty IV</td>
-                                    <td><span class="badge badge-success">Shipped</span></td>
-                                       
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Business)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SuppliersAddress)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ShippingAddress)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Confirmed)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                                        <a asp-action="Confirm" asp-route-id="@item.Id">Confirm</a>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                    <td>Samsung Smart TV</td>
-                                    <td><span class="badge badge-warning">Pending</span></td>
-                                         
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                    <td>iPhone 6 Plus</td>
-                                    <td><span class="badge badge-danger">Delivered</span></td>
-                                          
-                                </tr>                                     
-                                       
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
+                            }
+                        </tbody>
+                    </table>
                 </div>
                 <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-                   
         </div>
-        <!-- /.col-md-6 -->
     </div>
-    <!-- /.row -->
+    <!-- /.OrderList-->
 
 </div>
 <!-- /.col -->
