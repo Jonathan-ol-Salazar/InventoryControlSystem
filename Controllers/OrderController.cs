@@ -118,7 +118,16 @@ namespace InventoryControlSystem.Controllers
                 {
                     Fund fund = new Fund
                     {
-                        Funds = order.TotalCost
+                        TotalRevenue = order.TotalCost,
+                        TodaysRevenue = order.TotalCost,
+                        TotalSales = order.TotalCost,
+                        TodaysSales = order.TotalCost,
+                        TotalProfit = order.TotalCost,
+                        TodaysProfit = order.TotalCost,
+                        TotalCost = 0,
+                        TodaysCost = 0,
+                        DateLastCalculated = DateTime.Now
+
                     };
                     await _fundRepository.CreateFund(fund);
                     fund.ID = fund.Id;
@@ -127,7 +136,24 @@ namespace InventoryControlSystem.Controllers
                 else
                 {
                     Fund fund = Funds.ToList()[0];
-                    fund.Funds += order.TotalCost;
+                    fund.TotalRevenue += order.TotalCost;
+                    fund.TotalSales += order.TotalCost;
+                    fund.TotalProfit += fund.TotalSales - fund.TotalCost;
+
+                    // If new day reset
+                    if(DateTime.Now > fund.DateLastCalculated)
+                    {
+                        fund.TodaysRevenue = order.TotalCost;
+                        fund.TodaysSales = order.TotalCost;
+                        fund.TodaysProfit = fund.TodaysSales - fund.TodaysCost;
+                    }
+                    else
+                    {
+                        fund.TodaysRevenue += order.TotalCost;
+                        fund.TodaysSales += order.TotalCost;
+                        fund.TodaysProfit += fund.TodaysSales - fund.TodaysCost;
+                    }
+
                     await _fundRepository.UpdateFund(fund);
 
                 }

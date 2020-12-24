@@ -7,6 +7,7 @@ using InventoryControlSystem.ViewModels;
 using System.Collections.Generic;
 using InventoryControlSystem.Repositories.Funds;
 using System.Linq;
+using System;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -226,7 +227,20 @@ namespace InventoryControlSystem.Controllers
             // Get Fund
             Fund fund = Funds.ToList()[0];
             
-            fund.Funds -= orderList.Price;
+            fund.TotalCost += orderList.Price;
+            fund.TotalProfit = fund.TotalSales - fund.TotalCost;
+
+            if (DateTime.Now.Date > fund.DateLastCalculated.Date)
+            {
+                fund.TodaysCost = orderList.Price;
+            }
+            else
+            {
+                fund.TodaysCost += orderList.Price;
+            }
+            fund.TodaysProfit = (fund.TodaysSales - fund.TodaysCost);
+
+
             await _fundRepository.UpdateFund(fund);
 
             return RedirectToAction(nameof(Index));
