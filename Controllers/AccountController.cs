@@ -1,4 +1,5 @@
-﻿using InventoryControlSystem.Repositories.Users;
+﻿using InventoryControlSystem.Models;
+using InventoryControlSystem.Repositories.Users;
 using InventoryControlSystem.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -41,17 +42,60 @@ namespace InventoryControlSystem.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    User user = await
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            User user = await _userRepository.GetUserAuth0(User.Claims.ToList()[7].Value);
 
-        //    AccountViewModel accountViewModel = new AccountViewModel
-        //    {
-        //        User = user;
-        //    }
+            AccountViewModel accountViewModel = new AccountViewModel
+            {
+                User = user
+            };
 
-        //    return View();
-        //}
+            return View(accountViewModel);
+        }
+
+        // GET: Account/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            User user = await _userRepository.GetUser(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            ViewData["Title"] = "Edit User";
+
+            return View(user);
+        }
+
+        // POST: Account/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,Address,DOB,Auth0ID,Role")] User user)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var userFromDb = await _userRepository.GetUser(id);
+                if (userFromDb == null)
+                {
+                    return new NotFoundResult();
+                }
+                user.Id = userFromDb.Id;
+                await _userRepository.UpdateUser(user);
+                TempData["Message"] = "User Updated Successfully";
+
+            }
+            return RedirectToAction("Index");
+
+        }
+
     }
 }

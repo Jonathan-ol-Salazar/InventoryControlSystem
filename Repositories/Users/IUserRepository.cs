@@ -16,7 +16,9 @@ namespace InventoryControlSystem.Repositories.Users
 
         Task<bool> UpdateUser(User userChanges);
 
-        Task<bool> Auth0IDExists(string AuthID);
+        Task<bool> Auth0IDExists(string Auth0ID);
+
+        Task<User> GetUserAuth0(string Auth0ID);
 
     }
 }

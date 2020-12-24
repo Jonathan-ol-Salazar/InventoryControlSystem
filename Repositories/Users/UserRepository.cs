@@ -80,5 +80,11 @@ namespace InventoryControlSystem.Repositories.Users
 
         }
 
+        public async Task<User> GetUserAuth0(string Auth0ID)
+        {
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq(x => x.Auth0ID, Auth0ID);
+            return await _usersContext.Find(filter).FirstOrDefaultAsync();
+        }
+
     }
 }

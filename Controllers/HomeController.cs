@@ -54,7 +54,22 @@ namespace InventoryControlSystem.Controllers
 
             if(User.Identity.IsAuthenticated == true)
             {
-                ExistingUser();
+                //ExistingUser();
+                string Auth0ID = User.Claims.ToList()[7].Value;
+
+                if (await _userRepository.Auth0IDExists(Auth0ID) == false)
+                {
+                    User user = new User
+                    {
+                        Auth0ID = Auth0ID,
+                        Email = User.Claims.ToList()[5].Value,
+                        Role = User.Claims.ToList()[0].Value
+                    };
+
+                    await _userRepository.CreateUser(user);
+                    user.ID = user.Id;
+                    await _userRepository.UpdateUser(user);
+                }
             }
 
             return View(homeViewModel);
