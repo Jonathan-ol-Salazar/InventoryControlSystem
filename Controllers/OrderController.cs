@@ -350,7 +350,7 @@ namespace InventoryControlSystem.Controllers
                             Business = "",
                             ProductsID = new List<string> {product.ID},
                             OrdersID = new List<string> {order.ID},
-                            Price = order.TotalCost,
+                            Price = product.Price,
                             OrderDate = DateTime.Now,
                             SuppliersAddress = "",
                             ShippingAddress = "",
