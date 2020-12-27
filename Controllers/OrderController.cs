@@ -362,10 +362,18 @@ namespace InventoryControlSystem.Controllers
                         await _orderListRepository.UpdateOrderList(newOrderList);
                         
                         // Add OrderListID to Order
-                        order.OrderListsID = new List<string>
+                        if(order.OrderListsID != null)
                         {
-                            newOrderList.ID
-                        };
+                            order.OrderListsID.Add(newOrderList.ID);
+                        }
+                        else
+                        {
+                            order.OrderListsID = new List<string>
+                                {
+                                    newOrderList.ID
+                                };
+                        }
+                       
 
                         //// Add OrderListID to Supplier
                         //Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
