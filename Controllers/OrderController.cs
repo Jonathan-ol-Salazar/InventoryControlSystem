@@ -169,7 +169,7 @@ namespace InventoryControlSystem.Controllers
 
                 // CUSTOMER PROPERTIES
                 // Get customer
-                Customer customer = await _customerRepository.GetCustomer(order.Customer);
+                Customer customer = await _customerRepository.GetCustomer(order.CustomerID);
                 // Set order
                 customer.Orders.Add(order.ID);
                 // Update numOrders
@@ -224,7 +224,7 @@ namespace InventoryControlSystem.Controllers
                 }
                 
                 order.Id = orderFromDb.Id;
-                order.Customer = orderFromDb.Customer;
+                order.CustomerID = orderFromDb.CustomerID;
                 order.NumProducts = order.ProductsID.Count;
                 await _orderRepository.UpdateOrder(order);
 
@@ -294,7 +294,7 @@ namespace InventoryControlSystem.Controllers
                 }
             }
             // Remove OrderID from Customer
-            Customer customer = await _customerRepository.GetCustomer(order.Customer);
+            Customer customer = await _customerRepository.GetCustomer(order.CustomerID);
             customer.Orders.Remove(order.ID);
             await _customerRepository.UpdateCustomer(customer);
 

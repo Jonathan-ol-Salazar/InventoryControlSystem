@@ -13,8 +13,8 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="@Model.Order.ID" />                   
                     <div hidden class="form-group">                        
-                        <select asp-for="@Model.Order.Customer" class="select2" multiple="multiple" data-placeholder="Select a Product" style="width: 100%;">
-                                <option selected value="@Model.Order.Customer">@Model.Order.Customer</option>
+                        <select asp-for="@Model.Order.CustomerID" class="select2" multiple="multiple" data-placeholder="Select a Product" style="width: 100%;">
+                                <option selected value="@Model.Order.CustomerID">@Model.Order.CustomerID</option>
                         </select>
                     </div>
                     <div class="form-group">

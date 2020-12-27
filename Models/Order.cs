@@ -17,7 +17,7 @@ namespace InventoryControlSystem.Models
         public List<string> ProductsID { get; set; }
         public List<string> OrderListsID { get; set; }
 
-        public string Customer { get; set; }
+        public string CustomerID { get; set; }
         public string Status { get; set; }
         public bool Fulfilled { get; set; }
         public bool Ordered { get; set; }
