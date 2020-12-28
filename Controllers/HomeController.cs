@@ -40,21 +40,34 @@ namespace InventoryControlSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Order> order = await _orderRepository.ToOrderList();
-            IEnumerable<OrderList> orderList = await _orderListRepository.ToConfirm();
-            IEnumerable<Fund> funds = await _fundRepository.GetAllFunds();
-            Fund fund = funds.ToList()[0];
-
-            HomeViewModel homeViewModel = new HomeViewModel
-            {
-                Orders = order,
-                OrderLists = orderList,
-                Fund = fund
-            };
-
             if(User.Identity.IsAuthenticated == true)
             {
-                //ExistingUser();
+                // Creating View Model
+
+                IEnumerable<Order> order = new List<Order>();
+                if (User.IsInRole("Team Member"))
+                {
+                    order = await _orderRepository.ToFulfill();
+                }
+                else
+                {
+                    order = await _orderRepository.ToOrderList();
+                }
+
+                IEnumerable<OrderList> orderList = await _orderListRepository.ToConfirm();
+                IEnumerable<Fund> funds = await _fundRepository.GetAllFunds();
+                Fund fund = funds.ToList()[0];
+
+                HomeViewModel homeViewModel = new HomeViewModel
+                {
+                    Orders = order,
+                    OrderLists = orderList,
+                    Fund = fund
+                };
+
+
+
+                // New Users
                 string Auth0ID = User.Claims.ToList()[7].Value;
 
                 if (await _userRepository.Auth0IDExists(Auth0ID) == false)
@@ -70,29 +83,12 @@ namespace InventoryControlSystem.Controllers
                     user.ID = user.Id;
                     await _userRepository.UpdateUser(user);
                 }
+                return View(homeViewModel);
+
             }
+            return View("~/Views/Shared/Blank.cshtml" );
 
-            return View(homeViewModel);
         }
-
-        public async void ExistingUser()
-        {
-            string Auth0ID = User.Claims.ToList()[7].Value;
-
-            if (await _userRepository.Auth0IDExists(Auth0ID) == false)
-            {
-                User user = new User{
-                    Auth0ID = Auth0ID,
-                    Email = User.Claims.ToList()[5].Value,
-                    Role = User.Claims.ToList()[0].Value
-                };
-
-                await _userRepository.CreateUser(user);
-                user.ID = user.Id;
-                await _userRepository.UpdateUser(user);
-            }
-        }
-
 
         public IActionResult Privacy()
         {
