@@ -2,17 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Users;
+using InventoryControlSystem.ViewModels;
+using InventoryControlSystem.Repositories.Roles;
 
 namespace InventoryControlSystem.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
 
-        public UserController(IUserRepository userRepository)
+
+        public UserController(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
 
@@ -76,9 +81,16 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                User = user,
+                Roles = await _roleRepository.GetAllRoles()
+            };
+
             ViewData["Title"] = "Edit User";
 
-            return View(user);
+            return View(userViewModel);
         }
 
         // POST: User/Edit/5
@@ -86,7 +98,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,FirstName,LastName,Email,Phone,Address,DOB")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role")] User user)
         {
 
             if (ModelState.IsValid)

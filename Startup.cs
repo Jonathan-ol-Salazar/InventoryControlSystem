@@ -19,6 +19,7 @@ using InventoryControlSystem.Repositories.OrderLists;
 
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Funds;
+using InventoryControlSystem.Repositories.Roles;
 
 namespace InventoryControlSystem
 {
@@ -69,6 +70,9 @@ namespace InventoryControlSystem
 
 			services.AddTransient<IFundContext, Context>();
 			services.AddTransient<IFundRepository, FundRepository>();
+
+			services.AddTransient<IRoleContext, Context>();
+			services.AddTransient<IRoleRepository, RoleRepository>();
 
 			// Auth0 
 
