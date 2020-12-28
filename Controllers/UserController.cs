@@ -4,6 +4,9 @@ using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Users;
 using InventoryControlSystem.ViewModels;
 using InventoryControlSystem.Repositories.Roles;
+using RestSharp;
+using Microsoft.AspNetCore.Authentication;
+using Newtonsoft.Json.Linq;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -20,6 +23,23 @@ namespace InventoryControlSystem.Controllers
             _roleRepository = roleRepository;
         }
 
+
+
+        public string getAccessToken()
+        {
+            var client = new RestClient("https://bottleo-ics.au.auth0.com/oauth/token");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("content-type", "application/json");
+            request.AddParameter("application/json", "{\"client_id\":\"RcxHp3J27FtuIk5yTjz1ly7MmVcCwWLE\",\"client_secret\":\"AsOHBk522QRzh2tW9VfcoTncQVceJlnyXrhrGPAqqBQpVLB4DQK6S30CF5mMiVKJ\",\"audience\":\"https://bottleo-ics.au.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+            // Parsing into JSON 
+            var response2dict = JObject.Parse(response.Content);
+            // Retrieving Access Token
+            var Auth0ManagementAPI_AccessToken = response2dict.First.First.ToString();
+
+            return Auth0ManagementAPI_AccessToken;
+        }
 
         // GET: User
         public async Task<IActionResult> Index()
@@ -98,7 +118,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID")] User user)
         {
 
             if (ModelState.IsValid)
@@ -110,6 +130,18 @@ namespace InventoryControlSystem.Controllers
                 }
                 user.Id = userFromDb.Id;
                 await _userRepository.UpdateUser(user);
+
+                // Update User Role in Auth0
+                //string accessToken = await HttpContext.GetTokenAsync("access_token");
+                string accessToken = getAccessToken();
+
+                var client = new RestClient("https://bottleo-ics.au.auth0.com/api/v2/users/" + user.Auth0ID);
+                var request = new RestRequest(Method.PATCH);
+                request.AddHeader("authorization", "Bearer " + accessToken);
+                request.AddHeader("content-type", "application/json");
+                request.AddParameter("application/json", "{\"app_metadata\": {\"roles\": [\"" + user.Role + "\"]}}", ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+
                 TempData["Message"] = "Customer Updated Successfully";
 
             }

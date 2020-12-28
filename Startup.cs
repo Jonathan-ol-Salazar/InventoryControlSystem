@@ -127,6 +127,10 @@ namespace InventoryControlSystem
 				// Configure the Claims Issuer to be Auth0
 				options.ClaimsIssuer = "Auth0";
 
+
+				// Saves tokens to the AuthenticationProperties
+				options.SaveTokens = true;
+
 				// Handling logout redirect
 				options.Events = new OpenIdConnectEvents
 				{
@@ -151,6 +155,18 @@ namespace InventoryControlSystem
 						context.HandleResponse();
 
 						return Task.CompletedTask;
+					},
+
+					OnRedirectToIdentityProvider = context =>
+					{
+						// The context's ProtocolMessage can be used to pass along additional query parameters
+						// to Auth0's /authorize endpoint.
+						// 
+						// Set the audience query parameter to the API identifier to ensure the returned Access Tokens can be used
+						// to call protected endpoints on the corresponding API.
+						context.ProtocolMessage.SetParameter("audience", Configuration["Auth0:Audience"]);
+
+						return Task.FromResult(0);
 					}
 				};
 

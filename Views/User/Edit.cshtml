@@ -11,6 +11,11 @@
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="@Model.User.ID" />
+                    <div hidden class="form-group">
+                        <select required asp-for="@Model.User.Auth0ID" class="select2" data-placeholder="Select a Role" style="width: 100%;">
+                            <option selected value="@Model.User.Auth0ID">@Model.User.Auth0ID</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label asp-for="@Model.User.FirstName" class="control-label"></label>
                         <input asp-for="@Model.User.FirstName" class="form-control" />
