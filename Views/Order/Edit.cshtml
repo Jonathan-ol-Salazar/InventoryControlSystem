@@ -23,7 +23,7 @@
 
                             @foreach (Product product in @Model.Products)
                             {
-                                <option value="@product.ID">@product.Name</option>
+                                <option value="@product.ID:@product.Price">@product.Name</option>
                             }
                         </select>
                     </div>

@@ -226,6 +226,16 @@ namespace InventoryControlSystem.Controllers
                 order.Id = orderFromDb.Id;
                 order.CustomerID = orderFromDb.CustomerID;
                 order.NumProducts = order.ProductsID.Count;
+                // Set TotalCost
+                List<string> ProductsID = new List<string>();
+                foreach (string productPrice in order.ProductsID)
+                {
+                    order.TotalCost += Convert.ToDouble(productPrice.Split(':')[1]);
+                    ProductsID.Add(productPrice.Split(':')[0]);
+                }
+                order.ProductsID = ProductsID;
+
+
                 await _orderRepository.UpdateOrder(order);
 
 
