@@ -340,7 +340,7 @@ namespace InventoryControlSystem.Controllers
                     var orderList4Supplier = await _orderListRepository.OrderListExist(product.SuppliersName);
 
                     // If no OrderList exists, create a new one. Otherwise, add to existing one
-                    if (orderList4Supplier == null)
+                    if (orderList4Supplier == null )
                     {
 
                         OrderList newOrderList = new OrderList
@@ -373,24 +373,6 @@ namespace InventoryControlSystem.Controllers
                                     newOrderList.ID
                                 };
                         }
-                       
-
-                        //// Add OrderListID to Supplier
-                        //Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
-                        //// If list empty populate, else add on
-                        //if(supplier.OrderListsID == null)
-                        //{
-                        //    supplier.OrderListsID = new List<string>
-                        //    {
-                        //        newOrderList.ID
-                        //    };
-                        //}
-                        //else
-                        //{
-                        //    supplier.OrderListsID.Add(newOrderList.ID);
-                        //}
-                        //await _supplierRepository.UpdateSupplier(supplier);
-
                     }
                     else
                     {
