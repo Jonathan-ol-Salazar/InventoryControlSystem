@@ -17,7 +17,7 @@ namespace InventoryControlSystem.Models
         public string DOB { get; set; }
         public string Auth0ID { get; set; }
         public string Role { get; set; }
-
+        public string Picture { get; set; }
 
     }
 }

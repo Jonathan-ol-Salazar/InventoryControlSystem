@@ -82,7 +82,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role")] User user)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Picture")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -114,6 +114,8 @@ namespace InventoryControlSystem.Controllers
                 IRestResponse response = client.Execute(request);
 
                 user.Auth0ID = JObject.Parse(response.Content).GetValue("user_id").ToString();
+                user.Picture = JObject.Parse(response.Content).GetValue("picture").ToString();
+
                 await _userRepository.UpdateUser(user);
 
                 return RedirectToAction(nameof(Index));
@@ -151,7 +153,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID,Picture")] User user)
         {
 
             if (ModelState.IsValid)
