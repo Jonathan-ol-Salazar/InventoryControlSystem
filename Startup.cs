@@ -110,6 +110,7 @@ namespace InventoryControlSystem
 				options.Scope.Add("profile");
 				options.Scope.Add("email");
 				options.Scope.Add("name");
+				options.Scope.Add("picture");
 
 
 
