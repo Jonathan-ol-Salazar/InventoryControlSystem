@@ -1,10 +1,8 @@
 ﻿using InventoryControlSystem.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryControlSystem.Repositories.Invoices
+namespace InventoryControlSystem.Repositories.InvoiceCustomers
 {
     public interface IInvoiceCustomerRepository
     {

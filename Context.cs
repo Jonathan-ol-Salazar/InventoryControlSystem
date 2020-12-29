@@ -4,7 +4,7 @@ using InventoryControlSystem.Models;
 
 namespace InventoryControlSystem
 {
-    public class Context : IUserContext, IProductContext, ICustomerContext, ISupplierContext, IOrderContext, IOrderListContext, IFundContext, IRoleContext, IBusinessContext, IInvoiceCustomerContext //, IInvoiceBusinessContext
+    public class Context : IUserContext, IProductContext, ICustomerContext, ISupplierContext, IOrderContext, IOrderListContext, IFundContext, IRoleContext, IBusinessContext, IInvoiceCustomerContext, IInvoiceBusinessContext
     {
         private readonly IMongoDatabase mongoDatabase;
 
@@ -24,7 +24,7 @@ namespace InventoryControlSystem
         public IMongoCollection<Role> Roles => mongoDatabase.GetCollection<Role>("Roles");
         public IMongoCollection<Business> Businesses => mongoDatabase.GetCollection<Business>("Businesses");
         public IMongoCollection<InvoiceCustomer> InvoiceCustomers => mongoDatabase.GetCollection<InvoiceCustomer>("InvoiceCustomers");
-
+        public IMongoCollection<InvoiceBusiness> InvoiceBusinesses => mongoDatabase.GetCollection<InvoiceBusiness>("InvoiceBusinesses");
 
 
     }
@@ -75,9 +75,9 @@ namespace InventoryControlSystem
     {
         IMongoCollection<InvoiceCustomer> InvoiceCustomers { get; }
     }
-    //public interface IInvoiceBusinessContext
-    //{
-    //    IMongoCollection<InvoiceBusiness> InvoiceBusinesses { get; }
-    //}
+    public interface IInvoiceBusinessContext
+    {
+        IMongoCollection<InvoiceBusiness> InvoiceBusinesses { get; }
+    }
 }
 

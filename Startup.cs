@@ -10,18 +10,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using InventoryControlSystem.Models;
+
 using InventoryControlSystem.Repositories.Users;
 using InventoryControlSystem.Repositories.Products;
 using InventoryControlSystem.Repositories.Customers;
 using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.Repositories.OrderLists;
-
-using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Funds;
 using InventoryControlSystem.Repositories.Roles;
 using InventoryControlSystem.Repositories.Businesses;
-using InventoryControlSystem.Repositories.Invoices;
+
+using InventoryControlSystem.Repositories.InvoiceBusinesses;
+using InventoryControlSystem.Repositories.InvoiceCustomers;
 
 namespace InventoryControlSystem
 {
@@ -82,16 +84,16 @@ namespace InventoryControlSystem
             services.AddTransient<IInvoiceCustomerContext, Context>();
             services.AddTransient<IInvoiceCustomerRepository, InvoiceCustomerRepository>();
 
-			//services.AddTransient<IInvoiceBusinessContext, Context>();
-			//services.AddTransient<IInvoiceBusinessRepository, InvoiceBusinessRepository>();
+            services.AddTransient<IInvoiceBusinessContext, Context>();
+            services.AddTransient<IInvoiceBusinessRepository, InvoiceBusinessRepository>();
 
-			// Auth0 
+            // Auth0 
 
-			// Cookie configuration for HTTP to support cookies with SameSite=None
-			//services.ConfigureSameSiteNoneCookies();
+            // Cookie configuration for HTTP to support cookies with SameSite=None
+            //services.ConfigureSameSiteNoneCookies();
 
-			// Cookie configuration for HTTPS
-			services.Configure<CookiePolicyOptions>(options =>
+            // Cookie configuration for HTTPS
+            services.Configure<CookiePolicyOptions>(options =>
             {
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 
