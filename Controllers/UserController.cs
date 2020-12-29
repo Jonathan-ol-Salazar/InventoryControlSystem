@@ -82,7 +82,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Picture")] User user)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -153,7 +153,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID,Picture")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID")] User user)
         {
 
             if (ModelState.IsValid)
@@ -166,8 +166,7 @@ namespace InventoryControlSystem.Controllers
                 user.Id = userFromDb.Id;
                 await _userRepository.UpdateUser(user);
 
-                // Update User Role in Auth0
-                //string accessToken = await HttpContext.GetTokenAsync("access_token");
+                // Update User Role in Auth0                
                 string accessToken = getAccessToken();
 
                 var client = new RestClient("https://bottleo-ics.au.auth0.com/api/v2/users/" + user.Auth0ID);
@@ -209,19 +208,19 @@ namespace InventoryControlSystem.Controllers
         {
             User user = await _userRepository.GetUser(id);
 
+
+            // Deleting User from Auth0
+            string accessToken = getAccessToken();
+            var client = new RestClient("https://bottleo-ics.au.auth0.com/api/v2/users/" + user.Auth0ID);
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("authorization", "Bearer " + accessToken);
+            request.AddHeader("content-type", "application/json");
+
+            IRestResponse response = client.Execute(request);
+
             await _userRepository.DeleteUser(id);
+
             return RedirectToAction(nameof(Index));
         }
-
-        //private async bool UserExists(string id)
-        //{
-        //    User user = await _userRepository.GetUser(id);
-
-        //    if
-
-
-        //    return await _context.Users.FindAsync(id);
-
-        //}
     }
 }
