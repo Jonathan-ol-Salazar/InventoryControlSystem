@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace InventoryControlSystem.Repositories.Invoices
 {
-    public class InvoiceRepository : IInvoiceRepository
+    public class InvoiceCustomerRepository : IInvoiceCustomerRepository
     {
-        private readonly IInvoiceContext _context;
-        private readonly IMongoCollection<Invoice> _invoicesContext;
+        private readonly IInvoiceCustomerContext _context;
+        private readonly IMongoCollection<InvoiceCustomer> _invoicesContext;
 
-        public InvoiceRepository(IInvoiceContext context)
+        public InvoiceCustomerRepository(IInvoiceCustomerContext context)
         {
             _context = context;
-            _invoicesContext = _context.Invoices;
+            _invoicesContext = _context.InvoiceCustomers;
         }
 
 
-        public async Task<IEnumerable<Invoice>> GetAllInvoices()
+        public async Task<IEnumerable<InvoiceCustomer>> GetAllInvoices()
         {
-            return await _invoicesContext.Find(Builders<Invoice>.Filter.Empty).ToListAsync();
+            return await _invoicesContext.Find(Builders<InvoiceCustomer>.Filter.Empty).ToListAsync();
         }
 
 
@@ -32,18 +32,18 @@ namespace InventoryControlSystem.Repositories.Invoices
 
 
 
-        public async Task<Invoice> GetInvoice(string id)
+        public async Task<InvoiceCustomer> GetInvoice(string id)
         {
-            FilterDefinition<Invoice> filter = Builders<Invoice>.Filter.Eq(x => x.Id, id);
+            FilterDefinition<InvoiceCustomer> filter = Builders<InvoiceCustomer>.Filter.Eq(x => x.Id, id);
             return await _invoicesContext.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task CreateInvoice(Invoice invoice)
+        public async Task CreateInvoice(InvoiceCustomer invoice)
         {
             await _invoicesContext.InsertOneAsync(invoice);
         }
 
-        public async Task<bool> UpdateInvoice(Invoice invoice)
+        public async Task<bool> UpdateInvoice(InvoiceCustomer invoice)
         {
             ReplaceOneResult updateResult = await _invoicesContext.ReplaceOneAsync(filter: b => b.Id == invoice.Id, replacement: invoice);
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;

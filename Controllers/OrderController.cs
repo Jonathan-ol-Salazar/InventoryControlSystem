@@ -383,6 +383,17 @@ namespace InventoryControlSystem.Controllers
                                     newOrderList.ID
                                 };
                         }
+
+                        //// Create Customer Invoice if single item in Order
+                        //if(order.ProductsID.Count == 1)
+                        //{
+                        //    Invoice invoice = new Invoice
+                        //    {
+                        //        CustomerOrders = invoice.CustomerOrders.Add(order);
+                        //    }
+                        //}
+                                              
+
                     }
                     else
                     {

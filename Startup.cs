@@ -79,16 +79,19 @@ namespace InventoryControlSystem
 			services.AddTransient<IBusinessContext, Context>();
 			services.AddTransient<IBusinessRepository, BusinessRepository>();
 
-            services.AddTransient<IInvoiceContext, Context>();
-            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+            services.AddTransient<IInvoiceCustomerContext, Context>();
+            services.AddTransient<IInvoiceCustomerRepository, InvoiceCustomerRepository>();
 
-            // Auth0 
+			//services.AddTransient<IInvoiceBusinessContext, Context>();
+			//services.AddTransient<IInvoiceBusinessRepository, InvoiceBusinessRepository>();
 
-            // Cookie configuration for HTTP to support cookies with SameSite=None
-            //services.ConfigureSameSiteNoneCookies();
+			// Auth0 
 
-            // Cookie configuration for HTTPS
-            services.Configure<CookiePolicyOptions>(options =>
+			// Cookie configuration for HTTP to support cookies with SameSite=None
+			//services.ConfigureSameSiteNoneCookies();
+
+			// Cookie configuration for HTTPS
+			services.Configure<CookiePolicyOptions>(options =>
             {
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 
