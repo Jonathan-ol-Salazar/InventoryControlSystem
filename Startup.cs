@@ -20,6 +20,8 @@ using InventoryControlSystem.Repositories.OrderLists;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Funds;
 using InventoryControlSystem.Repositories.Roles;
+using InventoryControlSystem.Repositories.Businesses;
+using InventoryControlSystem.Repositories.Invoices;
 
 namespace InventoryControlSystem
 {
@@ -74,13 +76,19 @@ namespace InventoryControlSystem
 			services.AddTransient<IRoleContext, Context>();
 			services.AddTransient<IRoleRepository, RoleRepository>();
 
-			// Auth0 
+			services.AddTransient<IBusinessContext, Context>();
+			services.AddTransient<IBusinessRepository, BusinessRepository>();
 
-			// Cookie configuration for HTTP to support cookies with SameSite=None
-			//services.ConfigureSameSiteNoneCookies();
+            services.AddTransient<IInvoiceContext, Context>();
+            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
 
-			// Cookie configuration for HTTPS
-			services.Configure<CookiePolicyOptions>(options =>
+            // Auth0 
+
+            // Cookie configuration for HTTP to support cookies with SameSite=None
+            //services.ConfigureSameSiteNoneCookies();
+
+            // Cookie configuration for HTTPS
+            services.Configure<CookiePolicyOptions>(options =>
             {
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 
