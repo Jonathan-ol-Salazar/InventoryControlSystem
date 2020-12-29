@@ -64,11 +64,17 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: User/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Roles = await _roleRepository.GetAllRoles()
+            };
+
             ViewData["Title"] = "Create New User";
 
-            return View();
+            return View(userViewModel);
         }
 
         // POST: User/Create
@@ -76,13 +82,40 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB")] User user)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role")] User user)
         {
             if (ModelState.IsValid)
             {
                 await _userRepository.CreateUser(user);
                 user.ID = user.Id;
+
+                // Update Auth0 with new user
+                string accessToken = getAccessToken();
+
+                // Creating JSON 
+                string payload = @"{""email"":""" + user.Email + @""",
+	                ""blocked"":false,
+	                ""email_verified"":false,
+	                ""app_metadata"":{
+                        ""roles"":[                
+                            """ + user.Role + @"""
+		                ]
+	                },
+	                ""connection"":""Username-Password-Authentication"",
+	                ""password"":""Password123321"",
+	                ""verify_email"":false
+                }";
+
+                var client = new RestClient("https://bottleo-ics.au.auth0.com/api/v2/users");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("authorization", "Bearer " + accessToken);
+                request.AddHeader("content-type", "application/json");
+                request.AddParameter("application/json", payload, ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+
+                user.Auth0ID = JObject.Parse(response.Content).GetValue("user_id").ToString();
                 await _userRepository.UpdateUser(user);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
