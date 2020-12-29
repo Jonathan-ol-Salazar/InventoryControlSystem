@@ -2,17 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Customers;
+using System.Collections.Generic;
+using InventoryControlSystem.Repositories.Orders;
+using InventoryControlSystem.ViewModels;
 
 namespace InventoryControlSystem.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly IOrderRepository _orderRepository;
 
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerRepository customerRepository, IOrderRepository orderRepository)
         {
             _customerRepository = customerRepository;
+            _orderRepository = orderRepository;
         }
 
 
@@ -32,9 +37,24 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
 
             }
+
+            // Get Orders
+            List<Order> Orders = new List<Order>();
+
+            foreach(string ID in customer.Orders)
+            {
+                Orders.Add(await _orderRepository.GetOrder(ID));
+            }
+
+            CustomerViewModel customerViewModel = new CustomerViewModel
+            {
+                Customer = customer,
+                Orders = Orders
+            };
+  
             ViewData["Title"] = "View Customer";
 
-            return View(customer);
+            return View(customerViewModel);
 
         }
 
