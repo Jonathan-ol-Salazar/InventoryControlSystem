@@ -1,5 +1,7 @@
 ﻿using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.InvoiceBusinesses;
+using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,37 +12,73 @@ namespace InventoryControlSystem.Controllers
 {
     public class InvoiceBusinessController : Controller
     {
-        private readonly IInvoiceBusinessRepository _invoiceBusinessRepository;
+        private readonly IInvoiceBusinessRepository _invoiceCustomerRepository;
+        private readonly IProductRepository _productRepository;
 
 
 
-        public InvoiceBusinessController(IInvoiceBusinessRepository invoiceBusinessRepository)
+        public InvoiceBusinessController(IInvoiceBusinessRepository invoiceCustomerRepository, IProductRepository productRepository)
         {
-            _invoiceBusinessRepository = invoiceBusinessRepository;
+            _invoiceCustomerRepository = invoiceCustomerRepository;
+            _productRepository = productRepository;
         }
 
 
         // GET: InvoiceBusiness
         public async Task<IActionResult> Index()
         {
-            var x = await _invoiceBusinessRepository.GetAllInvoiceBusinesses();
-            return View(await _invoiceBusinessRepository.GetAllInvoiceBusinesses());
+            var x = await _invoiceCustomerRepository.GetAllInvoiceBusinesses();
+            return View(await _invoiceCustomerRepository.GetAllInvoiceBusinesses());
         }
 
         // GET: InvoiceBusiness/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            var invoiceBusiness = await _invoiceBusinessRepository.GetInvoiceBusiness(id);
-            if (invoiceBusiness == null)
+            var invoiceCustomer = await _invoiceCustomerRepository.GetInvoiceBusiness(id);
+            if (invoiceCustomer == null)
             {
                 return NotFound();
 
             }
+            List<Product> products = new List<Product>();
+            foreach (string ID in invoiceCustomer.ProductsID)
+            {
+                products.Add(await _productRepository.GetProduct(ID));
+            }
+
+            InvoiceBusinessViewModel invoiceCustomerViewModel = new InvoiceBusinessViewModel
+            {
+                InvoiceBusiness = invoiceCustomer,
+                Products = products
+            };
+
             ViewData["Title"] = "View InvoiceBusiness";
 
-            return View(invoiceBusiness);
+            return View(invoiceCustomerViewModel);
 
         }
+
+        public async Task<IActionResult> PrintInvoice(string id)
+        {
+            var invoiceCustomer = await _invoiceCustomerRepository.GetInvoiceBusiness(id);
+
+            List<Product> products = new List<Product>();
+            foreach (string ID in invoiceCustomer.ProductsID)
+            {
+                products.Add(await _productRepository.GetProduct(ID));
+            }
+
+            InvoiceBusinessViewModel invoiceCustomerViewModel = new InvoiceBusinessViewModel
+            {
+                InvoiceBusiness = invoiceCustomer,
+                Products = products
+            };
+
+            ViewData["Title"] = "View InvoiceBusiness";
+
+            return View(invoiceCustomerViewModel);
+        }
+
 
         // GET: InvoiceBusiness/Create
         public IActionResult Create()
@@ -55,16 +93,16 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] InvoiceBusiness invoiceBusiness)
+        public async Task<IActionResult> Create([Bind("ID,Name")] InvoiceBusiness invoiceCustomer)
         {
             if (ModelState.IsValid)
             {
-                await _invoiceBusinessRepository.CreateInvoiceBusiness(invoiceBusiness);
-                invoiceBusiness.ID = invoiceBusiness.Id;
-                await _invoiceBusinessRepository.UpdateInvoiceBusiness(invoiceBusiness);
+                await _invoiceCustomerRepository.CreateInvoiceBusiness(invoiceCustomer);
+                invoiceCustomer.ID = invoiceCustomer.Id;
+                await _invoiceCustomerRepository.UpdateInvoiceBusiness(invoiceCustomer);
                 return RedirectToAction(nameof(Index));
             }
-            return View(invoiceBusiness);
+            return View(invoiceCustomer);
         }
 
         // GET: InvoiceBusiness/Edit/5
@@ -75,8 +113,8 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
             }
 
-            InvoiceBusiness invoiceBusiness = await _invoiceBusinessRepository.GetInvoiceBusiness(id);
-            if (invoiceBusiness == null)
+            InvoiceBusiness invoiceCustomer = await _invoiceCustomerRepository.GetInvoiceBusiness(id);
+            if (invoiceCustomer == null)
             {
                 return NotFound();
             }
@@ -91,18 +129,18 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Name")] InvoiceBusiness invoiceBusiness)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Name")] InvoiceBusiness invoiceCustomer)
         {
 
             if (ModelState.IsValid)
             {
-                var invoiceBusinessFromDb = await _invoiceBusinessRepository.GetInvoiceBusiness(id);
-                if (invoiceBusinessFromDb == null)
+                var invoiceCustomerFromDb = await _invoiceCustomerRepository.GetInvoiceBusiness(id);
+                if (invoiceCustomerFromDb == null)
                 {
                     return new NotFoundResult();
                 }
-                invoiceBusiness.Id = invoiceBusinessFromDb.Id;
-                await _invoiceBusinessRepository.UpdateInvoiceBusiness(invoiceBusiness);
+                invoiceCustomer.Id = invoiceCustomerFromDb.Id;
+                await _invoiceCustomerRepository.UpdateInvoiceBusiness(invoiceCustomer);
                 TempData["Message"] = "Customer Updated Successfully";
 
             }
@@ -118,14 +156,14 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
             }
 
-            InvoiceBusiness invoiceBusiness = await _invoiceBusinessRepository.GetInvoiceBusiness(id);
-            if (invoiceBusiness == null)
+            InvoiceBusiness invoiceCustomer = await _invoiceCustomerRepository.GetInvoiceBusiness(id);
+            if (invoiceCustomer == null)
             {
                 return NotFound();
             }
             ViewData["Title"] = "Delete InvoiceBusiness";
 
-            return View(invoiceBusiness);
+            return View(invoiceCustomer);
         }
 
         // POST: InvoiceBusiness/Delete/5
@@ -133,9 +171,9 @@ namespace InventoryControlSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            InvoiceBusiness invoiceBusiness = await _invoiceBusinessRepository.GetInvoiceBusiness(id);
+            InvoiceBusiness invoiceCustomer = await _invoiceCustomerRepository.GetInvoiceBusiness(id);
 
-            await _invoiceBusinessRepository.DeleteInvoiceBusiness(id);
+            await _invoiceCustomerRepository.DeleteInvoiceBusiness(id);
             return RedirectToAction(nameof(Index));
         }
 
