@@ -254,7 +254,7 @@ namespace InventoryControlSystem.Controllers
                 SenderEmail = orderList.SuppliersEmail,
                 SenderAddress = orderList.SuppliersAddress,
                 Date = orderList.OrderDate,
-                Products = orderList.ProductsID,
+                ProductsID = orderList.ProductsID,
                 TotalCost = orderList.Price
             };
 

@@ -453,7 +453,7 @@ namespace InventoryControlSystem.Controllers
                     RecieverAddress = customer.Address,
                     RecieverPhone = customer.Phone,
                     Date = order.OrderDate,
-                    Products = order.ProductsID,
+                    ProductsID = order.ProductsID,
                     TotalCost = order.TotalCost
                 };
 

@@ -22,7 +22,7 @@ namespace InventoryControlSystem.Models
         public string RecieverEmail { get; set; }
         public string RecieverPhone { get; set; }
         public DateTime Date { get; set; }
-        public List<string> Products { get; set; }
+        public List<string> ProductsID { get; set; }
         public double TotalCost { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.InvoiceCustomers;
+using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,12 +13,14 @@ namespace InventoryControlSystem.Controllers
     public class InvoiceCustomerController : Controller
     {
         private readonly IInvoiceCustomerRepository _invoiceCustomerRepository;
+        private readonly IProductRepository _productRepository;
 
 
 
-        public InvoiceCustomerController(IInvoiceCustomerRepository invoiceCustomerRepository)
+        public InvoiceCustomerController(IInvoiceCustomerRepository invoiceCustomerRepository, IProductRepository productRepository)
         {
             _invoiceCustomerRepository = invoiceCustomerRepository;
+            _productRepository = productRepository;
         }
 
 
@@ -36,11 +40,45 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
 
             }
+            List<Product> products = new List<Product>();
+            foreach(string ID in invoiceCustomer.ProductsID)
+            {
+                products.Add(await _productRepository.GetProduct(ID));
+            }
+
+            InvoiceCustomerViewModel invoiceCustomerViewModel = new InvoiceCustomerViewModel
+            {
+                InvoiceCustomer = invoiceCustomer,
+                Products = products
+            };
+
             ViewData["Title"] = "View InvoiceCustomer";
 
-            return View(invoiceCustomer);
+            return View(invoiceCustomerViewModel);
 
         }
+
+        public async Task<IActionResult> PrintInvoice(string id)
+        {
+            var invoiceCustomer = await _invoiceCustomerRepository.GetInvoiceCustomer(id);
+
+            List<Product> products = new List<Product>();
+            foreach (string ID in invoiceCustomer.ProductsID)
+            {
+                products.Add(await _productRepository.GetProduct(ID));
+            }
+
+            InvoiceCustomerViewModel invoiceCustomerViewModel = new InvoiceCustomerViewModel
+            {
+                InvoiceCustomer = invoiceCustomer,
+                Products = products
+            };
+
+            ViewData["Title"] = "View InvoiceCustomer";
+
+            return View(invoiceCustomerViewModel);
+        }
+
 
         // GET: InvoiceCustomer/Create
         public IActionResult Create()
