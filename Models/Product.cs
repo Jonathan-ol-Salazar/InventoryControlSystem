@@ -20,7 +20,7 @@ namespace InventoryControlSystem.Models
         public int NumBottles { get; set; }
         public int BottleSize { get; set; }
         public int NumUnits { get; set; }
-        public double Price { get; set; }
+        public double TotalCost { get; set; }
         public string SuppliersName { get; set; }
         public string SuppliersID { get; set; }
 

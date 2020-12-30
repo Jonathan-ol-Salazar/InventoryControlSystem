@@ -78,7 +78,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Supplier,Business,Products,Orders,Price,OrderDate,SuppliersAddress,ShippingAddress,Confirmed")] OrderList orderList)
+        public async Task<IActionResult> Create([Bind("ID,Supplier,Business,Products,Orders,TotalCost,OrderDate,SuppliersAddress,ShippingAddress,Confirmed")] OrderList orderList)
         {
             if (ModelState.IsValid)
             {
@@ -114,7 +114,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Supplier,Business,Products,Orders,Price,OrderDate,SuppliersAddress,ShippingAddress,Confirmed")] OrderList orderList)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Supplier,Business,Products,Orders,TotalCost,OrderDate,SuppliersAddress,ShippingAddress,Confirmed")] OrderList orderList)
         {
 
             if (ModelState.IsValid)
@@ -248,16 +248,16 @@ namespace InventoryControlSystem.Controllers
             // Get Fund
             Fund fund = Funds.ToList()[0];
             
-            fund.TotalCost += orderList.Price;
+            fund.TotalCost += orderList.TotalCost;
             fund.TotalProfit = fund.TotalSales - fund.TotalCost;
 
             if (DateTime.Now.Date > fund.DateLastCalculated.Date)
             {
-                fund.TodaysCost = orderList.Price;
+                fund.TodaysCost = orderList.TotalCost;
             }
             else
             {
-                fund.TodaysCost += orderList.Price;
+                fund.TodaysCost += orderList.TotalCost;
             }
             fund.TodaysProfit = (fund.TodaysSales - fund.TodaysCost);
 
@@ -275,7 +275,7 @@ namespace InventoryControlSystem.Controllers
                 SenderAddress = orderList.SuppliersAddress,
                 Date = orderList.OrderDate,
                 ProductsID = orderList.ProductsID,
-                TotalCost = orderList.Price
+                TotalCost = orderList.TotalCost
             };
 
             await _invoiceBusinessRepository.CreateInvoiceBusiness(invoiceBusiness);

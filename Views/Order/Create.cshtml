@@ -28,7 +28,7 @@
                         <select asp-for="@Model.Order.ProductsID"class="select2" multiple="multiple" data-placeholder="Select a Product" style="width: 100%;">
 
                             @foreach(Product product in @Model.Products){
-                                <option value="@product.ID:@product.Price">@product.Name</option>
+                                <option value="@product.ID:@product.TotalCost">@product.Name</option>
                             }
                             
                         </select>

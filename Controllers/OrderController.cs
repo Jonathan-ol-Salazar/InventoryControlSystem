@@ -108,10 +108,10 @@ namespace InventoryControlSystem.Controllers
                 order.OrderListsID = new List<string>();
                 // Set TotalCost
                 List<string> ProductsID = new List<string>();
-                foreach(string productPrice in order.ProductsID)
+                foreach(string productTotalCost in order.ProductsID)
                 {
-                    order.TotalCost += Convert.ToDouble(productPrice.Split(':')[1]);
-                    ProductsID.Add(productPrice.Split(':')[0]);
+                    order.TotalCost += Convert.ToDouble(productTotalCost.Split(':')[1]);
+                    ProductsID.Add(productTotalCost.Split(':')[0]);
                 }
                 order.ProductsID = ProductsID;
 
@@ -231,10 +231,10 @@ namespace InventoryControlSystem.Controllers
                 order.NumProducts = order.ProductsID.Count;
                 // Set TotalCost
                 List<string> ProductsID = new List<string>();
-                foreach (string productPrice in order.ProductsID)
+                foreach (string productTotalCost in order.ProductsID)
                 {
-                    order.TotalCost += Convert.ToDouble(productPrice.Split(':')[1]);
-                    ProductsID.Add(productPrice.Split(':')[0]);
+                    order.TotalCost += Convert.ToDouble(productTotalCost.Split(':')[1]);
+                    ProductsID.Add(productTotalCost.Split(':')[0]);
                 }
                 order.ProductsID = ProductsID;
 
@@ -365,7 +365,7 @@ namespace InventoryControlSystem.Controllers
                             Business = "",
                             ProductsID = new List<string> {product.ID},
                             OrdersID = new List<string> {order.ID},
-                            Price = product.Price,
+                            TotalCost = product.TotalCost,
                             OrderDate = DateTime.Now,
                             SuppliersAddress = supplier.Address,
                             SuppliersEmail = supplier.Email,
@@ -419,7 +419,7 @@ namespace InventoryControlSystem.Controllers
 
 
                         // Increase price of OrderList
-                        orderList4Supplier.Price += product.Price;
+                        orderList4Supplier.TotalCost += product.TotalCost;
 
                         // Increase quantity of units
                         product.NumUnits += 1;

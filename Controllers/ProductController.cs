@@ -60,7 +60,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,Price,SuppliersID")] Product product)
+        public async Task<IActionResult> Create([Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,TotalCost,SuppliersID")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,Price,SuppliersID")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,TotalCost,SuppliersID")] Product product)
         {
             if (ModelState.IsValid)
             {
