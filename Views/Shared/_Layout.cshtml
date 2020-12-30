@@ -95,7 +95,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="~/Theme_AdminLTE/index3.html" class="brand-link">
+            <a asp-controller="Business" asp-action="Index" class="brand-link">
                 @if (@User.Claims.ToList().Count > 3)
                 {
                     <img src="@User.Claims.ToList()[3].Value" class="brand-image img-circle elevation-3" style="opacity: .8">

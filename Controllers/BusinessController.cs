@@ -56,7 +56,7 @@ namespace InventoryControlSystem.Controllers
             //ViewData["Title"] = "View Business";
 
             //return View(businessViewModel);
-            return View();
+            return View(business);
         }
 
         // GET: Business/Create
@@ -72,7 +72,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Email,Phone,Address,Orders")] Business business)
+        public async Task<IActionResult> Create([Bind("ID,Name,Email,Phone,Address")] Business business)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,FirstName,LastName,Email,Phone,Address,Orders")] Business business)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Email,Phone,Address,Selected")] Business business)
         {
 
             if (ModelState.IsValid)
@@ -155,16 +155,22 @@ namespace InventoryControlSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //private async bool BusinessExists(string id)
-        //{
-        //    Business business = await _businessRepository.GetBusiness(id);
+        public async Task<IActionResult> Select(string id)
+        {
+            Business currentSelected = await _businessRepository.GetSelectedBusiness();
+            if(currentSelected != null)
+            {
+                currentSelected.Selected = false;
+            }
 
-        //    if
+            Business business = await _businessRepository.GetBusiness(id);
+            business.Selected = true;
+            await _businessRepository.UpdateBusiness(business);
+            return RedirectToAction(nameof(Index));
+
+        }
 
 
-        //    return await _context.Businesss.FindAsync(id);
-
-        //}
     }
-   
+
 }

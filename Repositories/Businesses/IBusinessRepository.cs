@@ -15,5 +15,7 @@ namespace InventoryControlSystem.Repositories.Businesses
         Task<IEnumerable<Business>> GetAllBusinesss();
 
         Task<bool> UpdateBusiness(Business businessChanges);
+        Task<Business> GetSelectedBusiness();
+
     }
 }

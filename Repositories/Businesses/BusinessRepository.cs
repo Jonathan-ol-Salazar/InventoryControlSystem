@@ -67,5 +67,10 @@ namespace InventoryControlSystem.Repositories.Businesses
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
 
         }
+        public async Task<Business> GetSelectedBusiness()
+        {
+            FilterDefinition<Business> filter = Builders<Business>.Filter.Eq(x => x.Selected, true);
+            return await _businesssContext.Find(filter).FirstOrDefaultAsync();
+        }
     }
 }
