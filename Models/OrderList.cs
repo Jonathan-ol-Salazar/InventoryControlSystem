@@ -26,6 +26,9 @@ namespace InventoryControlSystem.Models
         public DateTime OrderDate  { get; set; }
 
         public string SuppliersAddress { get; set; }
+        public int SuppliersPhone { get; set; }
+        public string SuppliersEmail { get; set; }
+
         public string ShippingAddress { get; set; }
 
         public bool Confirmed { get; set; }

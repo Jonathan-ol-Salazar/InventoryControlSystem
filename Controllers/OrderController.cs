@@ -354,19 +354,23 @@ namespace InventoryControlSystem.Controllers
                     var orderList4Supplier = await _orderListRepository.OrderListExist(product.SuppliersName);
 
                     // If no OrderList exists, create a new one. Otherwise, add to existing one
-                    if (orderList4Supplier == null )
+                    if (orderList4Supplier == null)
                     {
+                        // Get Supplier
+                        Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
 
                         OrderList newOrderList = new OrderList
                         {
-                            SuppliersName = product.SuppliersName,
-                            SuppliersID = product.SuppliersID,
+                            SuppliersName = supplier.Name,
+                            SuppliersID = supplier.ID,
                             Business = "",
                             ProductsID = new List<string> {product.ID},
                             OrdersID = new List<string> {order.ID},
                             Price = product.Price,
                             OrderDate = DateTime.Now,
-                            SuppliersAddress = "",
+                            SuppliersAddress = supplier.Address,
+                            SuppliersEmail = supplier.Email,
+                            SuppliersPhone = supplier.Phone,
                             ShippingAddress = "",
                             Confirmed = false
                         };

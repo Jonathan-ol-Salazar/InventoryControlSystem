@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using InventoryControlSystem.Repositories.Funds;
 using System.Linq;
 using System;
+using InventoryControlSystem.Repositories.Businesses;
+using InventoryControlSystem.Repositories.InvoiceBusinesses;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -16,15 +18,14 @@ namespace InventoryControlSystem.Controllers
         private readonly IOrderListRepository _orderListRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IFundRepository _fundRepository;
+        private readonly IInvoiceBusinessRepository _invoiceBusinessRepository;
 
-
-
-        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository, IFundRepository fundRepository)
+        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository, IFundRepository fundRepository, IInvoiceBusinessRepository invoiceBusinessRepository)
         {
             _orderListRepository = orderListRepository;
             _orderRepository = orderRepository;
             _fundRepository = fundRepository;
-
+            _invoiceBusinessRepository = invoiceBusinessRepository;
         }
 
 
@@ -242,6 +243,25 @@ namespace InventoryControlSystem.Controllers
 
 
             await _fundRepository.UpdateFund(fund);
+
+            // Creating InvoiceBusiness
+            //Supplier supplier = await _supplierRepository.GetSupplier(orderList.);
+            InvoiceBusiness invoiceBusiness = new InvoiceBusiness
+            {
+                OrderListID = orderList.ID,
+                SenderName = orderList.SuppliersName,
+                SenderPhone = orderList.SuppliersPhone,
+                SenderEmail = orderList.SuppliersEmail,
+                SenderAddress = orderList.SuppliersAddress,
+                Date = orderList.OrderDate,
+                Products = orderList.ProductsID,
+                TotalCost = orderList.Price
+            };
+
+            await _invoiceBusinessRepository.CreateInvoiceBusiness(invoiceBusiness);
+            invoiceBusiness.ID = invoiceBusiness.Id;
+            await _invoiceBusinessRepository.UpdateInvoiceBusiness(invoiceBusiness);
+
 
             return RedirectToAction(nameof(Index));
 
