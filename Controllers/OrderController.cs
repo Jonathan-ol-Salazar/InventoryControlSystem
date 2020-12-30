@@ -8,6 +8,7 @@ using InventoryControlSystem.Repositories.Customers;
 using InventoryControlSystem.Repositories.Suppliers;
 using InventoryControlSystem.Repositories.Funds;
 using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.Repositories.InvoiceCustomers;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -23,8 +24,10 @@ namespace InventoryControlSystem.Controllers
         private readonly ICustomerRepository _customerRepository;
         private readonly ISupplierRepository _supplierRepository;
         private readonly IFundRepository _fundRepository;
-
-        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, ICustomerRepository customerRepository, ISupplierRepository supplierRepository, IFundRepository fundRepository)
+        private readonly IInvoiceCustomerRepository _invoiceCustomerRepository;
+        public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, 
+            ICustomerRepository customerRepository, ISupplierRepository supplierRepository, IFundRepository fundRepository,
+            IInvoiceCustomerRepository invoiceCustomer)
         {
             _orderRepository = orderRepository;
             _orderListRepository = orderListRepository;
@@ -32,6 +35,7 @@ namespace InventoryControlSystem.Controllers
             _customerRepository = customerRepository;
             _supplierRepository = supplierRepository;
             _fundRepository = fundRepository;
+            _invoiceCustomerRepository = invoiceCustomer;
         }
 
 
@@ -383,17 +387,6 @@ namespace InventoryControlSystem.Controllers
                                     newOrderList.ID
                                 };
                         }
-
-                        //// Create Customer Invoice if single item in Order
-                        //if(order.ProductsID.Count == 1)
-                        //{
-                        //    Invoice invoice = new Invoice
-                        //    {
-                        //        CustomerOrders = invoice.CustomerOrders.Add(order);
-                        //    }
-                        //}
-                                              
-
                     }
                     else
                     {
@@ -444,10 +437,29 @@ namespace InventoryControlSystem.Controllers
 
 
                     }
-                }  
-                
+                }
+
+                // Creating InvoiceCustomer
+                Customer customer = await _customerRepository.GetCustomer(order.CustomerID);
+                InvoiceCustomer invoiceCustomer = new InvoiceCustomer
+                {
+                    OrderID = order.ID,
+                    RecieverName = customer.FirstName + " " + customer.LastName,
+                    RecieverEmail = customer.Email,
+                    RecieverAddress = customer.Address,
+                    RecieverPhone = customer.Phone,
+                    Date = order.OrderDate,
+                    Products = order.ProductsID,
+                    TotalCost = order.TotalCost
+                };
+
+                await _invoiceCustomerRepository.CreateInvoiceCustomer(invoiceCustomer);
+                invoiceCustomer.ID = invoiceCustomer.Id;
+                await _invoiceCustomerRepository.UpdateInvoiceCustomer(invoiceCustomer);
+
+
                 // Delete order if it has no products
-                if(order.NumProducts == 0)
+                if (order.NumProducts == 0)
                 {
                     RedirectToAction(nameof(DeleteConfirmed), order.ID);
                 }

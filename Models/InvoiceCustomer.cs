@@ -12,17 +12,17 @@ namespace InventoryControlSystem.Models
         public string Id { get; set; }
         public string ID { get; set; }
         public List<Order> CustomerOrders { get; set; } = new List<Order>();
-        public Order Order { get; set; }
+        public string OrderID { get; set; }
         public string SenderName { get; set; }
         public string SenderAddress { get; set; }
         public string SenderEmail { get; set; }
-        public string SenderPhone { get; set; }
+        public int SenderPhone { get; set; }
         public string RecieverName { get; set; }
         public string RecieverAddress { get; set; }
         public string RecieverEmail { get; set; }
-        public string RecieverPhone { get; set; }
+        public int RecieverPhone { get; set; }
         public DateTime Date { get; set; }
-        public List<Product> Products { get; set; }
+        public List<string> Products { get; set; }
         public double TotalCost { get; set; }
     }
 }
