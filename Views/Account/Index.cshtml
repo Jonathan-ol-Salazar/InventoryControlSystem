@@ -44,7 +44,7 @@
                 <div class="card-header">
                     <h3 class="card-title">About Me</h3>
                     <div class="card-tools">
-                        <a asp-action="Edit" asp-route-id="@Model.User.Id" class="btn btn-sm btn-secondary">
+                        <a asp-controller="User" asp-action="Edit" asp-route-id="@Model.User.Id" class="btn btn-sm btn-secondary">
                             Update Details
                         </a>
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">

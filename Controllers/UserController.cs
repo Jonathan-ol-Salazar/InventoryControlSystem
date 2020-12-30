@@ -101,6 +101,7 @@ namespace InventoryControlSystem.Controllers
                             """ + user.Role + @"""
 		                ]
 	                },
+                    ""name"":" + user.FirstName + " " + user.LastName + @""",
 	                ""connection"":""Username-Password-Authentication"",
 	                ""password"":""Password123321"",
 	                ""verify_email"":false
@@ -173,7 +174,7 @@ namespace InventoryControlSystem.Controllers
                 var request = new RestRequest(Method.PATCH);
                 request.AddHeader("authorization", "Bearer " + accessToken);
                 request.AddHeader("content-type", "application/json");
-                request.AddParameter("application/json", "{\"app_metadata\": {\"roles\": [\"" + user.Role + "\"]}}", ParameterType.RequestBody);
+                request.AddParameter("application/json", "{\"name\": \"" + user.FirstName + " " + user.LastName + "\",\"app_metadata\": {\"roles\": [\"" + user.Role + "\"]}}", ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
 
                 TempData["Message"] = "Customer Updated Successfully";
