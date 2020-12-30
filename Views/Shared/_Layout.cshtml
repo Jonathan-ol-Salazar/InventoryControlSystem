@@ -93,13 +93,10 @@
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">         
             <!-- Brand Logo -->
             <a asp-controller="Business" asp-action="Index" class="brand-link">
-                @if (@User.Claims.ToList().Count > 3)
-                {
-                    <img src="@User.Claims.ToList()[3].Value" class="brand-image img-circle elevation-3" style="opacity: .8">
-                }
+                <img src="~/Theme_AdminLTE/dist/img/inventory.png" class="brand-image img-circle elevation-3" style="opacity: .9">
                 <span class="brand-text font-weight-light">Bottle-O Inventories</span>
             </a>
 
@@ -166,18 +163,18 @@
                                             <p>Manage Orders</p>
                                         </a>
                                     </li>
-                                                    @*<li class="nav-item">
-                                        <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>To Order</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>To Fulfill</p>
-                                        </a>
-                                    </li>*@
+                                    @*<li class="nav-item">
+                                    <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>To Order</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>To Fulfill</p>
+                                    </a>
+                                </li>*@
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -227,10 +224,10 @@
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-dolly"></i>
+                                    <i class="nav-icon fas fa-receipt"></i>
                                     <p>
                                         Invoices
-                                        <i class="fas fa-angle-left right"></i>               
+                                        <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
@@ -245,7 +242,7 @@
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Customer Invoices</p>
                                         </a>
-                                    </li> 
+                                    </li>
                                 </ul>
                             </li>
                         }
