@@ -17,10 +17,10 @@ namespace InventoryControlSystem.Models
         public string SenderAddress { get; set; }
         public string SenderEmail { get; set; }
         public int SenderPhone { get; set; }
-        public string RecieverName { get; set; }
-        public string RecieverAddress { get; set; }
-        public string RecieverEmail { get; set; }
-        public int RecieverPhone { get; set; }
+        public string ReceiverName { get; set; }
+        public string ReceiverAddress { get; set; }
+        public string ReceiverEmail { get; set; }
+        public int ReceiverPhone { get; set; }
         public DateTime Date { get; set; }
         public List<string> ProductsID { get; set; }
         public double TotalCost { get; set; }

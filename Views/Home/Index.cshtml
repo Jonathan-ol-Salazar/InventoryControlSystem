@@ -87,22 +87,22 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.OrderList.Business)
+                                        @Html.DisplayNameFor(model => model.OrderList.ID)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.OrderList.TotalCost)
+                                        @Html.DisplayNameFor(model => model.OrderList.SuppliersName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OrderList.BusinessesName)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.OrderList.OrderDate)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.OrderList.SuppliersAddress)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.OrderList.ShippingAddress)
-                                    </th>
-                                    <th>
                                         @Html.DisplayNameFor(model => model.OrderList.Confirmed)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.OrderList.TotalCost)
                                     </th>
                                     <th>
                                         Actions
@@ -114,22 +114,22 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Business)
+                                            @Html.DisplayFor(modelItem => item.ID)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.TotalCost)
+                                            @Html.DisplayFor(modelItem => item.SuppliersName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BusinessesName)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.OrderDate)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.SuppliersAddress)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ShippingAddress)
-                                        </td>
-                                        <td>
                                             @Html.DisplayFor(modelItem => item.Confirmed)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TotalCost)
                                         </td>
                                         <td>
                                             <a asp-controller="OrderList" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -12,7 +12,7 @@ using InventoryControlSystem.Repositories.InvoiceCustomers;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-
+using InventoryControlSystem.Repositories.Businesses;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -25,9 +25,10 @@ namespace InventoryControlSystem.Controllers
         private readonly ISupplierRepository _supplierRepository;
         private readonly IFundRepository _fundRepository;
         private readonly IInvoiceCustomerRepository _invoiceCustomerRepository;
+        private readonly IBusinessRepository _businessRepository;
         public OrderController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, 
             ICustomerRepository customerRepository, ISupplierRepository supplierRepository, IFundRepository fundRepository,
-            IInvoiceCustomerRepository invoiceCustomer)
+            IInvoiceCustomerRepository invoiceCustomer, IBusinessRepository businessRepository)
         {
             _orderRepository = orderRepository;
             _orderListRepository = orderListRepository;
@@ -36,6 +37,7 @@ namespace InventoryControlSystem.Controllers
             _supplierRepository = supplierRepository;
             _fundRepository = fundRepository;
             _invoiceCustomerRepository = invoiceCustomer;
+            _businessRepository = businessRepository;
         }
 
 
@@ -326,7 +328,10 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
             }
 
-            var order = await _orderRepository.GetOrder(id);
+            Order order = await _orderRepository.GetOrder(id);
+
+            // Get Business
+            Business business = await _businessRepository.GetSelectedBusiness();
 
 
             if (order == null)
@@ -357,20 +362,24 @@ namespace InventoryControlSystem.Controllers
                     {
                         // Get Supplier
                         Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
-
+                       
                         OrderList newOrderList = new OrderList
                         {
                             SuppliersName = supplier.Name,
                             SuppliersID = supplier.ID,
-                            Business = "",
+                            SuppliersAddress = supplier.Address,
+                            SuppliersEmail = supplier.Email,
+                            SuppliersPhone = supplier.Phone,
+                            BusinessesName = business.Name,
+                            BusinessesID = business.ID,
+                            BusinessesAddress = business.Address,
+                            BusinessesEmail = business.Email,
+                            BusinessesPhone = business.Phone,
                             ProductsID = new List<string> {product.ID},
                             OrdersID = new List<string> {order.ID},
                             TotalCost = product.TotalCost,
                             OrderDate = DateTime.Now,
-                            SuppliersAddress = supplier.Address,
-                            SuppliersEmail = supplier.Email,
-                            SuppliersPhone = supplier.Phone,
-                            ShippingAddress = "",
+
                             Confirmed = false
                         };
                         // Create new OrderList and update ID to reflect new Id
@@ -447,10 +456,14 @@ namespace InventoryControlSystem.Controllers
                 InvoiceCustomer invoiceCustomer = new InvoiceCustomer
                 {
                     OrderID = order.ID,
-                    RecieverName = customer.FirstName + " " + customer.LastName,
-                    RecieverEmail = customer.Email,
-                    RecieverAddress = customer.Address,
-                    RecieverPhone = customer.Phone,
+                    ReceiverName = customer.FirstName + " " + customer.LastName,
+                    ReceiverEmail = customer.Email,
+                    ReceiverAddress = customer.Address,
+                    ReceiverPhone = customer.Phone,
+                    SenderName = business.Name,
+                    SenderAddress = business.Address,
+                    SenderEmail = business.Email,
+                    SenderPhone = business.Phone,
                     Date = order.OrderDate,
                     ProductsID = order.ProductsID,
                     TotalCost = order.TotalCost

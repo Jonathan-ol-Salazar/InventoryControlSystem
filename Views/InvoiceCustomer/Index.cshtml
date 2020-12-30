@@ -16,9 +16,6 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Id)
-                                </th>
-                                <th>
                                     @Html.DisplayNameFor(model => model.ID)
                                 </th>
                                 <th>
@@ -34,16 +31,16 @@
                                     @Html.DisplayNameFor(model => model.SenderPhone)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.RecieverName)
+                                    @Html.DisplayNameFor(model => model.ReceiverName)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.RecieverAddress)
+                                    @Html.DisplayNameFor(model => model.ReceiverAddress)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.RecieverEmail)
+                                    @Html.DisplayNameFor(model => model.ReceiverEmail)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.RecieverPhone)
+                                    @Html.DisplayNameFor(model => model.ReceiverPhone)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Date)
@@ -58,9 +55,6 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Id)
-                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ID)
                                     </td>
@@ -77,16 +71,16 @@
                                         @Html.DisplayFor(modelItem => item.SenderPhone)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RecieverName)
+                                        @Html.DisplayFor(modelItem => item.ReceiverName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RecieverAddress)
+                                        @Html.DisplayFor(modelItem => item.ReceiverAddress)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RecieverEmail)
+                                        @Html.DisplayFor(modelItem => item.ReceiverEmail)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.RecieverPhone)
+                                        @Html.DisplayFor(modelItem => item.ReceiverPhone)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Date)

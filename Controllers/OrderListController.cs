@@ -273,6 +273,10 @@ namespace InventoryControlSystem.Controllers
                 SenderPhone = orderList.SuppliersPhone,
                 SenderEmail = orderList.SuppliersEmail,
                 SenderAddress = orderList.SuppliersAddress,
+                ReceiverName = orderList.BusinessesName,
+                ReceiverPhone = orderList.BusinessesPhone,
+                ReceiverEmail = orderList.BusinessesEmail,
+                ReceiverAddress = orderList.BusinessesAddress,
                 Date = orderList.OrderDate,
                 ProductsID = orderList.ProductsID,
                 TotalCost = orderList.TotalCost
