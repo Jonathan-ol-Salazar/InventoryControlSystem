@@ -52,36 +52,45 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NumProducts)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TotalCost)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Fulfilled)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ordered)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OrderList)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                                    <a asp-action="Add2OrderList" asp-route-id="@item.Id">Add To Order List</a> |
-                                    <a asp-action="Fulfill" asp-route-id="@item.Id">Fulfill</a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NumProducts)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalCost)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Fulfilled)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ordered)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderList)
+                                    </td>
+                                    <td>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                            @if (item.OrderList == false)
+                                            {
+                                                <a asp-action="Add2OrderList" asp-route-id="@item.Id">Add To Order List</a>
+                                            }
+                                        }
+                                        @if (item.Fulfilled == false)
+                                        {
+                                            <a asp-action="Fulfill" asp-route-id="@item.Id">Fulfill</a>
+                                        }
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
