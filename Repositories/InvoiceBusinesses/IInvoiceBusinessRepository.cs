@@ -6,14 +6,14 @@ namespace InventoryControlSystem.Repositories.InvoiceBusinesses
 {
     public interface IInvoiceBusinessRepository
     {
-        Task<InvoiceBusiness> GetInvoice(string id);
+        Task<InvoiceBusiness> GetInvoiceBusiness(string id);
 
-        Task CreateInvoice(InvoiceBusiness invoice);
+        Task CreateInvoiceBusiness(InvoiceBusiness invoice);
 
-        Task<bool> DeleteInvoice(string id);
+        Task<bool> DeleteInvoiceBusiness(string id);
 
-        Task<IEnumerable<InvoiceBusiness>> GetAllInvoices();
+        Task<IEnumerable<InvoiceBusiness>> GetAllInvoiceBusinesses();
 
-        Task<bool> UpdateInvoice(InvoiceBusiness invoiceChanges);
+        Task<bool> UpdateInvoiceBusiness(InvoiceBusiness invoiceChanges);
     }
 }

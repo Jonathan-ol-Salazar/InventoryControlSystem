@@ -17,7 +17,7 @@ namespace InventoryControlSystem.Repositories.InvoiceBusinesses
         }
 
 
-        public async Task<IEnumerable<InvoiceBusiness>> GetAllInvoices()
+        public async Task<IEnumerable<InvoiceBusiness>> GetAllInvoiceBusinesses()
         {
             return await _invoicesContext.Find(Builders<InvoiceBusiness>.Filter.Empty).ToListAsync();
         }
@@ -30,24 +30,24 @@ namespace InventoryControlSystem.Repositories.InvoiceBusinesses
 
 
 
-        public async Task<InvoiceBusiness> GetInvoice(string id)
+        public async Task<InvoiceBusiness> GetInvoiceBusiness(string id)
         {
             FilterDefinition<InvoiceBusiness> filter = Builders<InvoiceBusiness>.Filter.Eq(x => x.Id, id);
             return await _invoicesContext.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task CreateInvoice(InvoiceBusiness invoice)
+        public async Task CreateInvoiceBusiness(InvoiceBusiness invoice)
         {
             await _invoicesContext.InsertOneAsync(invoice);
         }
 
-        public async Task<bool> UpdateInvoice(InvoiceBusiness invoice)
+        public async Task<bool> UpdateInvoiceBusiness(InvoiceBusiness invoice)
         {
             ReplaceOneResult updateResult = await _invoicesContext.ReplaceOneAsync(filter: b => b.Id == invoice.Id, replacement: invoice);
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 
-        public async Task<bool> DeleteInvoice(string id)
+        public async Task<bool> DeleteInvoiceBusiness(string id)
         {
             //var ids = invoice.Select(d => d.Id);
 

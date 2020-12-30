@@ -166,18 +166,18 @@
                                             <p>Manage Orders</p>
                                         </a>
                                     </li>
-                                    @*<li class="nav-item">
-                                            <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>To Order</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>To Fulfill</p>
-                                            </a>
-                                        </li>*@
+                                                    @*<li class="nav-item">
+                                        <a href="@Url.Action("ToOrder", "Order", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>To Order</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ToFulfill", "Order", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>To Fulfill</p>
+                                        </a>
+                                    </li>*@
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -223,6 +223,29 @@
                                             <p>Manage Orderlists</p>
                                         </a>
                                     </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-dolly"></i>
+                                    <p>
+                                        Invoices
+                                        <i class="fas fa-angle-left right"></i>               
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "InvoiceBusiness", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Business Invoices</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "InvoiceCustomer", new { })" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Customer Invoices</p>
+                                        </a>
+                                    </li> 
                                 </ul>
                             </li>
                         }
