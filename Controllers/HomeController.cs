@@ -1,7 +1,6 @@
 ﻿using InventoryControlSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using InventoryControlSystem.Models;
 using InventoryControlSystem.ViewModels;
 using InventoryControlSystem.Repositories.Orders;
 using InventoryControlSystem.Repositories.OrderLists;

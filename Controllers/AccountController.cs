@@ -24,9 +24,6 @@ namespace InventoryControlSystem.Controllers
         public async Task Login(string returnUrl = "/")
         {
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
-            int x = 1;
-            // Check if user is in database
-            //if(await _userRepository.Auth0IDExists(User.Claims.))
         }
 
         [Authorize]

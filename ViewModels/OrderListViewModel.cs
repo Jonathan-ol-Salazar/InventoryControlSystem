@@ -10,6 +10,8 @@ namespace InventoryControlSystem.ViewModels
     {
         public IEnumerable<Order> Orders { get; set; }
         public OrderList OrderList { get; set; }
+        public IEnumerable<Product> Products { get; set; }
 
+        public Product Product {get; set; }
     }
 }

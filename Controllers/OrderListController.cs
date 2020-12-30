@@ -10,6 +10,7 @@ using System.Linq;
 using System;
 using InventoryControlSystem.Repositories.Businesses;
 using InventoryControlSystem.Repositories.InvoiceBusinesses;
+using InventoryControlSystem.Repositories.Products;
 
 namespace InventoryControlSystem.Controllers
 {
@@ -19,13 +20,15 @@ namespace InventoryControlSystem.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IFundRepository _fundRepository;
         private readonly IInvoiceBusinessRepository _invoiceBusinessRepository;
+        private readonly IProductRepository _productRepository;
 
-        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository, IFundRepository fundRepository, IInvoiceBusinessRepository invoiceBusinessRepository)
+        public OrderListController(IOrderListRepository orderListRepository, IOrderRepository orderRepository, IFundRepository fundRepository, IInvoiceBusinessRepository invoiceBusinessRepository, IProductRepository productRepository)
         {
             _orderListRepository = orderListRepository;
             _orderRepository = orderRepository;
             _fundRepository = fundRepository;
             _invoiceBusinessRepository = invoiceBusinessRepository;
+            _productRepository = productRepository;
         }
 
 
@@ -45,9 +48,20 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
 
             }
+            List<Product> products = new List<Product>();
+            foreach (string ID in orderList.ProductsID)
+            {
+                products.Add(await _productRepository.GetProduct(ID));
+            }
+
+            OrderListViewModel orderListViewModel = new OrderListViewModel
+            {
+                OrderList = orderList,
+                Products = products
+            };
             ViewData["Title"] = "View OrderList";
 
-            return View(orderList);
+            return View(orderListViewModel);
 
         }
 
@@ -139,11 +153,17 @@ namespace InventoryControlSystem.Controllers
                 orders.Add(await _orderRepository.GetOrder(ID));
             }
 
+            List<Product> products = new List<Product>();
+            foreach (string ID in orderList.ProductsID)
+            {
+                products.Add(await _productRepository.GetProduct(ID));
+            }
+
             OrderListViewModel orderListViewModel = new OrderListViewModel
             {
                 Orders = orders,
-                OrderList = orderList
-
+                OrderList = orderList,
+                Products = products
             };
 
             ViewData["Title"] = "Delete OrderList";

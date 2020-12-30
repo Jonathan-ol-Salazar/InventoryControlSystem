@@ -59,7 +59,6 @@ namespace InventoryControlSystem.Controllers
             foreach(string product in order.ProductsID)
             {
                 productList.Add(await _productRepository.GetProduct(product));
-
             }
 
             OrderViewModel orderViewModel = new OrderViewModel()
