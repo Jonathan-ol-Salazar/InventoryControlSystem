@@ -136,7 +136,7 @@ namespace InventoryControlSystem
 
 				// Set the callback path, so Auth0 will call back to http://localhost:3000/callback
 				// Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-				options.CallbackPath = new PathString("/callback");
+				options.CallbackPath = new PathString("/Home/Index/callback");
 
 				// Configure the Claims Issuer to be Auth0
 				options.ClaimsIssuer = "Auth0";
@@ -217,7 +217,7 @@ namespace InventoryControlSystem
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Home}/{action=Index}/{id?}");
+					pattern: "{controller=Account}/{action=Login}");
 			});
 		}
 	}

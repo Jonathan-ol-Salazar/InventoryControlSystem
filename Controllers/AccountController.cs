@@ -21,7 +21,7 @@ namespace InventoryControlSystem.Controllers
             _userRepository = userRepository;
         }
 
-        public async Task Login(string returnUrl = "/")
+        public async Task Login(string returnUrl = "/Home/Index")
         {
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
         }
@@ -34,7 +34,7 @@ namespace InventoryControlSystem.Controllers
                 // Indicate here where Auth0 should redirect the user after a logout.
                 // Note that the resulting absolute Uri must be added to the
                 // **Allowed Logout URLs** settings for the app.
-                RedirectUri = Url.Action("Index", "Home")
+                RedirectUri = Url.Action("Login", "Account")
             });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
