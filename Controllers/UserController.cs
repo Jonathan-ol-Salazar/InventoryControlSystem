@@ -44,7 +44,8 @@ namespace InventoryControlSystem.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-            var x = await _userRepository.GetAllUsers();
+            ViewData["Title"] = "Table of Users";
+
             return View(await _userRepository.GetAllUsers());
         }
 

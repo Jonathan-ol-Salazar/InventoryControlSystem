@@ -25,7 +25,8 @@ namespace InventoryControlSystem.Controllers
         // GET: Business
         public async Task<IActionResult> Index()
         {
-            var x = await _businessRepository.GetAllBusinesss();
+            ViewData["Title"] = "Table of Businesses";
+
             return View(await _businessRepository.GetAllBusinesss());
         }
 
@@ -38,24 +39,8 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
 
             }
+            ViewData["Title"] = "View Business";
 
-            //// Get Orders
-            //List<Order> Orders = new List<Order>();
-
-            //foreach (string ID in business.Orders)
-            //{
-            //    Orders.Add(await _orderRepository.GetOrder(ID));
-            //}
-
-            //BusinessViewModel businessViewModel = new BusinessViewModel
-            //{
-            //    Business = business,
-            //    Orders = Orders
-            //};
-
-            //ViewData["Title"] = "View Business";
-
-            //return View(businessViewModel);
             return View(business);
         }
 

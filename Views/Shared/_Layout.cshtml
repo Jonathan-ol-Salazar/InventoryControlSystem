@@ -249,11 +249,16 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">
-                                    <a href="#">Home</a>
+                                    <a href="@Url.Action("Index", "Home", new { })">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">
-                                    <a href="@Url.Action("Index", "Home", new { })">@ViewData["Title"]</a>
-                                </li>
+                                @if (ViewData["Title"].ToString() != "DashBoard")
+                                {
+                                    <li class="breadcrumb-item active">
+                                        <a href="#">@ViewData["Title"]</a>
+
+                                    </li>
+                                }
+
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
