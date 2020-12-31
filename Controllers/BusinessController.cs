@@ -1,6 +1,7 @@
 ﻿using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Businesses;
 using InventoryControlSystem.Repositories.Orders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,8 @@ namespace InventoryControlSystem.Controllers
             _orderRepository = orderRepository;
         }
 
-
         // GET: Business
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Table of Businesses";
@@ -45,6 +46,7 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: Business/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["Title"] = "Create New Business";
@@ -52,9 +54,11 @@ namespace InventoryControlSystem.Controllers
             return View();
         }
 
+
         // POST: Business/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,Email,Phone,Address")] Business business)
@@ -70,6 +74,7 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: Business/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -90,6 +95,7 @@ namespace InventoryControlSystem.Controllers
         // POST: Business/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Email,Phone,Address,Selected")] Business business)
@@ -112,6 +118,7 @@ namespace InventoryControlSystem.Controllers
         }
 
         // GET: Business/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -140,6 +147,7 @@ namespace InventoryControlSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Select(string id)
         {
             Business currentSelected = await _businessRepository.GetSelectedBusiness();

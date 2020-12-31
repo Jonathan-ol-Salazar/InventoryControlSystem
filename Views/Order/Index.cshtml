@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<InventoryControlSystem.Models.Order>
 
 <p>
-    <a asp-action="Index">All</a>
-    <a asp-action="Create">Create New</a>
-    <a asp-action="ToOrder">To Order</a>
-    <a asp-action="ToFulfill">To Fulfill</a>
+    <a asp-action="Index" class="btn btn-secondary">All</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="ToOrder" class="btn btn-secondary">To Order</a>
+    <a asp-action="ToFulfill" class="btn btn-success">To Fulfill</a>
 
 </p>
 
@@ -73,17 +73,17 @@
                                 <td>
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                        @if (item.OrderList == false)
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> 
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> 
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a> 
+                                        @if(item.OrderList == false)
                                         {
-                                            <a asp-action="Add2OrderList" asp-route-id="@item.Id">Add To Order List</a>
+                                            <a asp-action="Add2OrderList" asp-route-id="@item.Id" class="btn btn-secondary">Add To Order List</a>
                                         }
                                     }
                                     @if (item.Fulfilled == false)
                                     {
-                                        <a asp-action="Fulfill" asp-route-id="@item.Id">Fulfill</a>
+                                        <a asp-action="Fulfill" asp-route-id="@item.Id" class="btn btn-success">Fulfill</a>
                                     }
                                 </td>
                             </tr>

@@ -7,9 +7,11 @@ using InventoryControlSystem.Repositories.Roles;
 using RestSharp;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryControlSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;

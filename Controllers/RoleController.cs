@@ -1,5 +1,6 @@
 ﻿using InventoryControlSystem.Models;
 using InventoryControlSystem.Repositories.Roles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace InventoryControlSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly IRoleRepository _roleRepository;
