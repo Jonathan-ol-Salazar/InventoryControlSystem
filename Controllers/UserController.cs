@@ -45,7 +45,7 @@ namespace InventoryControlSystem.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Table of Users";
-
+            var x = await _userRepository.GetAllUsers();
             return View(await _userRepository.GetAllUsers());
         }
 
@@ -102,7 +102,7 @@ namespace InventoryControlSystem.Controllers
                             """ + user.Role + @"""
 		                ]
 	                },
-                    ""name"":" + user.FirstName + " " + user.LastName + @""",
+                    ""name"":""" + user.FirstName + " " + user.LastName + @""",
 	                ""connection"":""Username-Password-Authentication"",
 	                ""password"":""Password123321"",
 	                ""verify_email"":false
@@ -155,12 +155,12 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID")] User user)
+        public async Task<IActionResult> Edit([Bind("ID,FirstName,LastName,Email,Phone,Address,DOB,Role,Auth0ID")] User user)
         {
 
             if (ModelState.IsValid)
             {
-                var userFromDb = await _userRepository.GetUser(id);
+                var userFromDb = await _userRepository.GetUser(user.ID);
                 if (userFromDb == null)
                 {
                     return new NotFoundResult();

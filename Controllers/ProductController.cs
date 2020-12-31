@@ -105,11 +105,11 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,TotalCost,SuppliersID")] Product product)
+        public async Task<IActionResult> Edit([Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,TotalCost,SuppliersID")] Product product)
         {
             if (ModelState.IsValid)
             {
-                var productFromDb = await _productRepository.GetProduct(id);
+                var productFromDb = await _productRepository.GetProduct(product.ID);
                 if (productFromDb == null)
                 {
                     return new NotFoundResult();

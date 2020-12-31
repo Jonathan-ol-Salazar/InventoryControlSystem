@@ -153,14 +153,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index", "User", new { })" class="nav-link">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </a>
-                            </li>
+
                             <li class="nav-item">
                                 <a href="@Url.Action("Index", "Customer", new { })" class="nav-link">
                                     <i class="nav-icon fab fa-creative-commons-by"></i>
@@ -222,6 +215,25 @@
                                 </ul>
                             </li>
                         }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Role", new { })" class="nav-link">
+                                    <i class="nav-icon fas fa-wine-bottle"></i>
+                                    <p>
+                                        Roles
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "User", new { })" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Users
+                                    </p>
+                                </a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "Product", new { })" class="nav-link">
                                 <i class="nav-icon fas fa-wine-bottle"></i>
@@ -230,6 +242,7 @@
                                 </p>
                             </a>
                         </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

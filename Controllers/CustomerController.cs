@@ -106,12 +106,12 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,ID,FirstName,LastName,Email,Phone,Address")] Customer customer)
+        public async Task<IActionResult> Edit([Bind("Id,ID,FirstName,LastName,Email,Phone,Address")] Customer customer)
         {
 
             if (ModelState.IsValid)
             {
-                var customerFromDb = await _customerRepository.GetCustomer(id);
+                var customerFromDb = await _customerRepository.GetCustomer(customer.ID);
                 if (customerFromDb == null)
                 {
                     return new NotFoundResult();

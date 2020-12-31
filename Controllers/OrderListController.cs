@@ -114,12 +114,12 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Supplier,Business,Products,Orders,TotalCost,OrderDate,SuppliersAddress,ShippingAddress,Confirmed")] OrderList orderList)
+        public async Task<IActionResult> Edit([Bind("ID,Supplier,Business,Products,Orders,TotalCost,OrderDate,SuppliersAddress,ShippingAddress,Confirmed")] OrderList orderList)
         {
 
             if (ModelState.IsValid)
             {
-                var orderListFromDb = await _orderListRepository.GetOrderList(id);
+                var orderListFromDb = await _orderListRepository.GetOrderList(orderList.ID);
                 if (orderListFromDb == null)
                 {
                     return new NotFoundResult();

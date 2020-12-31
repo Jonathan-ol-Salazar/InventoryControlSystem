@@ -23,7 +23,8 @@ namespace InventoryControlSystem.Controllers
         // GET: Role
         public async Task<IActionResult> Index()
         {
-            var x = await _roleRepository.GetAllRoles();
+            ViewData["Title"] = "Table of Roles";
+
             return View(await _roleRepository.GetAllRoles());
         }
 
@@ -83,7 +84,7 @@ namespace InventoryControlSystem.Controllers
 
             ViewData["Title"] = "Edit Role";
 
-            return View();
+            return View(role);
         }
 
         // POST: Role/Edit/5
