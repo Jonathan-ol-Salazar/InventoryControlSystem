@@ -1,85 +1,80 @@
 ﻿@model IEnumerable<InventoryControlSystem.Models.OrderList>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">DataTable with default features</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ID)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.SuppliersName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.BusinessesName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.OrderDate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Confirmed)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.TotalCost)
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ID)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.SuppliersName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.BusinessesName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OrderDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Confirmed)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalCost)
-                                    </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                                        @if (item.Confirmed == false)
-                                        {
-                                            <a asp-action="Confirm" asp-route-id="@item.Id">Confirm</a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["Title"]</h3>
             </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SuppliersName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BusinessesName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrderDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Confirmed)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TotalCost)
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SuppliersName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BusinessesName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Confirmed)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalCost)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                                    @if (item.Confirmed == false)
+                                    {
+                                        <a asp-action="Confirm" asp-route-id="@item.Id">Confirm</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
         </div>
     </div>
 </div>

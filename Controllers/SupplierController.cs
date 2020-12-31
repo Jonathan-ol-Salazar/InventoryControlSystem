@@ -26,7 +26,7 @@ namespace InventoryControlSystem.Controllers
         // GET: Supplier
         public async Task<IActionResult> Index()
         {
-            var x = await _supplierRepository.GetAllSuppliers();
+            ViewData["Title"] = "Table of Suppliers";
             return View(await _supplierRepository.GetAllSuppliers());
         }
 

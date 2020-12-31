@@ -24,7 +24,7 @@ namespace InventoryControlSystem.Controllers
         // GET: Customer
         public async Task<IActionResult> Index()
         {
-            var x = await _customerRepository.GetAllCustomers();
+            ViewData["Title"] = "Table of Customers";
             return View(await _customerRepository.GetAllCustomers());
         }
 
@@ -153,16 +153,5 @@ namespace InventoryControlSystem.Controllers
             await _customerRepository.DeleteCustomer(id);
             return RedirectToAction(nameof(Index));
         }
-
-        //private async bool CustomerExists(string id)
-        //{
-        //    Customer customer = await _customerRepository.GetCustomer(id);
-
-        //    if
-
-
-        //    return await _context.Customers.FindAsync(id);
-
-        //}
     }
 }

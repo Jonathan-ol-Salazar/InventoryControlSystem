@@ -27,7 +27,7 @@ namespace InventoryControlSystem.Controllers
         // GET: InvoiceBusiness
         public async Task<IActionResult> Index()
         {
-            var x = await _invoiceCustomerRepository.GetAllInvoiceBusinesses();
+            ViewData["Title"] = "Table of Business Invoices";
             return View(await _invoiceCustomerRepository.GetAllInvoiceBusinesses());
         }
 
@@ -52,7 +52,7 @@ namespace InventoryControlSystem.Controllers
                 Products = products
             };
 
-            ViewData["Title"] = "View InvoiceBusiness";
+            ViewData["Title"] = "View Business Invoice";
 
             return View(invoiceCustomerViewModel);
 
@@ -74,7 +74,7 @@ namespace InventoryControlSystem.Controllers
                 Products = products
             };
 
-            ViewData["Title"] = "View InvoiceBusiness";
+            ViewData["Title"] = "View Business Invoice";
 
             return View(invoiceCustomerViewModel);
         }
@@ -83,7 +83,7 @@ namespace InventoryControlSystem.Controllers
         // GET: InvoiceBusiness/Create
         public IActionResult Create()
         {
-            ViewData["Title"] = "Create New InvoiceBusiness";
+            ViewData["Title"] = "Create New Business Invoice";
 
             return View();
         }
@@ -119,7 +119,7 @@ namespace InventoryControlSystem.Controllers
                 return NotFound();
             }
 
-            ViewData["Title"] = "Edit InvoiceBusiness";
+            ViewData["Title"] = "Edit Business Invoice";
 
             return View();
         }
@@ -161,7 +161,7 @@ namespace InventoryControlSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["Title"] = "Delete InvoiceBusiness";
+            ViewData["Title"] = "Delete Business Invoice";
 
             return View(invoiceCustomer);
         }

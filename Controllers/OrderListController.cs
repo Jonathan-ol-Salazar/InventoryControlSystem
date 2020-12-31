@@ -35,7 +35,7 @@ namespace InventoryControlSystem.Controllers
         // GET: OrderList
         public async Task<IActionResult> Index()
         {
-            var x = await _orderListRepository.GetAllOrderLists();
+            ViewData["Title"] = "Table of OrderLists";
             return View(await _orderListRepository.GetAllOrderLists());
         }
 

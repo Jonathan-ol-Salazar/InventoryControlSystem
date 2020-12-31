@@ -44,7 +44,8 @@ namespace InventoryControlSystem.Controllers
         // GET: Order
         public async Task<IActionResult> Index()
         {
-            var x = await _orderRepository.GetAllOrders();
+            ViewData["Title"] = "Table of Orders";
+
             return View(await _orderRepository.GetAllOrders());
         }
 

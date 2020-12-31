@@ -48,7 +48,7 @@ namespace InventoryControlSystem.Controllers
             {
                 User = user
             };
-
+            ViewData["Title"] = "Account";
             return View(accountViewModel);
         }
 

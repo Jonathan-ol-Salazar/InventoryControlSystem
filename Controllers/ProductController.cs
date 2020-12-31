@@ -23,7 +23,7 @@ namespace InventoryControlSystem.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var x = await _productRepository.GetAllProducts();
+            ViewData["Title"] = "Table of Products";
             return View(await _productRepository.GetAllProducts());
         }
 

@@ -3,104 +3,104 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">@ViewData["Title"]</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ID)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.SenderName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.SenderAddress)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.SenderEmail)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.SenderPhone)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ReceiverName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ReceiverAddress)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ReceiverEmail)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.ReceiverPhone)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Date)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.TotalCost)
-                                </th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ID)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.SenderName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.SenderAddress)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.SenderEmail)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.SenderPhone)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ReceiverName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ReceiverAddress)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ReceiverEmail)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ReceiverPhone)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Date)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalCost)
-                                    </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["Title"]</h3>
             </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SenderName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SenderAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SenderEmail)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SenderPhone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ReceiverName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ReceiverAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ReceiverEmail)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ReceiverPhone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Date)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TotalCost)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SenderName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SenderAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SenderEmail)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SenderPhone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReceiverName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReceiverAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReceiverEmail)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReceiverPhone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalCost)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
         </div>
     </div>
 </div>
+
 
