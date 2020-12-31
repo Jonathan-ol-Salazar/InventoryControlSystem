@@ -1,54 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using InventoryControlSystem.Models;
+using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.ViewModels;
 
 namespace InventoryControlSystem.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProductRepository _productRepository;
+        private readonly ISupplierRepository _supplierRepository;
 
-        public ProductController(AppDbContext context)
+
+        public ProductController(IProductRepository productRepository, ISupplierRepository supplierRepository)
         {
-            _context = context;
+            _productRepository = productRepository;
+            _supplierRepository = supplierRepository;
         }
+
 
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            ViewData["Title"] = "Table of Products";
+            return View(await _productRepository.GetAllProducts());
         }
 
         // GET: Product/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var product = await _productRepository.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
+
             }
             ViewData["Title"] = "View Product";
 
             return View(product);
+
         }
 
         // GET: Product/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ProductViewModel productViewModel = new ProductViewModel
+            {
+                Suppliers = await _supplierRepository.GetAllSuppliers()
+            };
+
             ViewData["Title"] = "Create New Product";
 
-            return View();
+            return View(productViewModel);
         }
 
         // POST: Product/Create
@@ -56,33 +60,44 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Type,Quantity,Price")] Product product)
+        public async Task<IActionResult> Create([Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,TotalCost,SuppliersID")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                string[] productIDName = product.SuppliersID.Split(':');
+                product.SuppliersID = productIDName[0];
+                product.SuppliersName = productIDName[1];
+
+                await _productRepository.CreateProduct(product);
+                product.ID = product.Id;
+                await _productRepository.UpdateProduct(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
 
         // GET: Product/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            Product product = await _productRepository.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
             }
+
+            ProductViewModel productViewModel = new ProductViewModel
+            {
+                Suppliers = await _supplierRepository.GetAllSuppliers(),
+                Product = product
+            };
             ViewData["Title"] = "Edit Product";
 
-            return View(product);
+            return View(productViewModel);
         }
 
         // POST: Product/Edit/5
@@ -90,46 +105,35 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Type,Quantity,Price")] Product product)
+        public async Task<IActionResult> Edit([Bind("ID,Name,Type,Brand,NumBottles,BottleSize,NumUnits,TotalCost,SuppliersID")] Product product)
         {
-            if (id != product.ID)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                var productFromDb = await _productRepository.GetProduct(product.ID);
+                if (productFromDb == null)
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundResult();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                string[] productIDName = product.SuppliersID.Split(':');
+                product.SuppliersID = productIDName[0];
+                product.SuppliersName = productIDName[1];
+
+                product.Id = productFromDb.Id;
+                await _productRepository.UpdateProduct(product);
+                TempData["Message"] = "Customer Updated Successfully";
             }
-            return View(product);
+            return RedirectToAction("Index");
         }
 
         // GET: Product/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Product product = await _productRepository.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
@@ -142,17 +146,30 @@ namespace InventoryControlSystem.Controllers
         // POST: Product/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            Product product = await _productRepository.GetProduct(id);
+
+            // Supplier - remove ProductID
+            Supplier supplier = await _supplierRepository.GetSupplier(product.SuppliersID);
+            supplier.ProductsID.Remove(product.ID);
+
+            await _supplierRepository.UpdateSupplier(supplier);
+
+
+            await _productRepository.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.ID == id);
-        }
+        //private async bool ProductExists(string id)
+        //{
+        //    Product product = await _productRepository.GetProduct(id);
+
+        //    if
+
+
+        //    return await _context.Products.FindAsync(id);
+
+        //}
     }
 }

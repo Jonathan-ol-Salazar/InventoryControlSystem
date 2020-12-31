@@ -1,0 +1,139 @@
+﻿@model InventoryControlSystem.ViewModels.InvoiceCustomerViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Invoice Print</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Theme_AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Theme_AdminLTE/dist/css/adminlte.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Main content -->
+        <section class="invoice">
+            <!-- title row -->
+            <div class="row">
+                <div class="col-12">
+                    <h4>
+                        <i class="fas fa-globe"></i> @Model.InvoiceCustomer.SenderName
+                        @*<small class="float-right">@Model.InvoiceCustomer.Date</small>*@
+                    </h4>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- info row -->
+            <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                    <strong><u>FROM</u></strong>
+                    <address>
+                        <strong>@Model.InvoiceCustomer.SenderName</strong><br>
+                        <strong><u>Address</u></strong><br>
+                        @Model.InvoiceCustomer.SenderAddress<br>
+                        <strong><u>Phone</u></strong><br>
+                        @Model.InvoiceCustomer.SenderPhone<br>
+                        <strong><u>Email</u></strong><br>
+                        @Model.InvoiceCustomer.SenderEmail
+                    </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                    <strong><u>TO</u></strong>
+                    <address>
+                        <strong>@Model.InvoiceCustomer.ReceiverName</strong><br>
+                        <strong><u>Address</u></strong><br>
+                        @Model.InvoiceCustomer.ReceiverAddress<br>
+                        <strong><u>Phone</u></strong><br>
+                        @Model.InvoiceCustomer.ReceiverPhone<br>
+                        <strong><u>Email</u></strong><br>
+                        @Model.InvoiceCustomer.ReceiverEmail
+                    </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                    <b>Invoice: </b>@Model.InvoiceCustomer.ID<br>
+                    <br>
+                    <b>Order ID: </b>@Model.InvoiceCustomer.OrderID<br>
+                    <b>Payment Completed: </b>@Model.InvoiceCustomer.Date<br>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <!-- Table row -->
+            <div class="row">
+                <div class="col-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                @*
+                                    <th>Qty</th>*@
+                                <th>Product</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Products)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalCost)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+                    <p class="lead">Payment Methods:</p>
+                    <img src="~/Theme_AdminLTE/dist/img/credit/visa.png" alt="Visa">
+                    <img src="~/Theme_AdminLTE/dist/img/credit/mastercard.png" alt="Mastercard">
+                    <img src="~/Theme_AdminLTE/dist/img/credit/american-express.png" alt="American Express">
+                    <img src="~/Theme_AdminLTE/dist/img/credit/paypal2.png" alt="Paypal">
+
+                </div>
+                <!-- /.col -->
+                <div class="col-6">
+                    <p class="lead">Total Amount</p>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th>Total:</th>
+                                <td>$@Model.InvoiceCustomer.TotalCost</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+
+        <!-- /.content -->
+    </div>
+    <!-- ./wrapper -->
+    <!-- Page specific script -->
+    <script>
+        window.addEventListener("load", window.print());
+    </script>
+</body>
+</html>

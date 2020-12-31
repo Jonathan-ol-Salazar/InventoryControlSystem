@@ -1,54 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using InventoryControlSystem.Models;
+using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.Repositories.Products;
+using InventoryControlSystem.ViewModels;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace InventoryControlSystem.Controllers
 {
     public class SupplierController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly ISupplierRepository _supplierRepository;
+        private readonly IProductRepository _productRepository;
 
-        public SupplierController(AppDbContext context)
+
+
+        public SupplierController(ISupplierRepository supplierRepository, IProductRepository productRepository)
         {
-            _context = context;
+            _supplierRepository = supplierRepository;
+            _productRepository = productRepository;
         }
+
 
         // GET: Supplier
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Suppliers.ToListAsync());
+            ViewData["Title"] = "Table of Suppliers";
+            return View(await _supplierRepository.GetAllSuppliers());
         }
 
         // GET: Supplier/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var supplier = await _context.Suppliers
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var supplier = await _supplierRepository.GetSupplier(id);
             if (supplier == null)
             {
                 return NotFound();
+
             }
+            List<Product> productList = new List<Product>();
+            foreach (string product in supplier.ProductsID)
+            {
+                productList.Add(await _productRepository.GetProduct(product));
+
+            }
+            SupplierViewModel supplierViewModel = new SupplierViewModel()
+            {
+                Products = productList,
+                Supplier = supplier
+            };
             ViewData["Title"] = "View Supplier";
 
-            return View(supplier);
+            return View(supplierViewModel);
+
         }
 
         // GET: Supplier/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            SupplierViewModel supplierViewModel = new SupplierViewModel()
+            {
+                Products = await _productRepository.GetAllProducts()
+                
+            };
             ViewData["Title"] = "Create New Supplier";
 
-            return View();
+            return View(supplierViewModel);
         }
 
         // POST: Supplier/Create
@@ -56,33 +74,41 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Email,Phone,Address,Orders")] Supplier supplier)
+        public async Task<IActionResult> Create([Bind("ID,Name,Email,Phone,Address,ProductsID")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(supplier);
-                await _context.SaveChangesAsync();
+                //// Set OrderListsID to new list
+                //supplier.OrderListsID = new List<string>();
+                await _supplierRepository.CreateSupplier(supplier);
+                supplier.ID = supplier.Id;
+                await _supplierRepository.UpdateSupplier(supplier);
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);
         }
 
         // GET: Supplier/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers.FindAsync(id);
+            Supplier supplier = await _supplierRepository.GetSupplier(id);
             if (supplier == null)
             {
                 return NotFound();
             }
+            SupplierViewModel supplierViewModel = new SupplierViewModel()
+            {
+                Products = await _productRepository.GetAllProducts(),
+                Supplier = supplier
+            };
             ViewData["Title"] = "Edit Supplier";
 
-            return View(supplier);
+            return View(supplierViewModel);
         }
 
         // POST: Supplier/Edit/5
@@ -90,69 +116,81 @@ namespace InventoryControlSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Email,Phone,Address,Orders")] Supplier supplier)
+        public async Task<IActionResult> Edit([Bind("Id,ID,Name,Email,Phone,Address,ProductsID")] Supplier supplier)
         {
-            if (id != supplier.ID)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                var supplierFromDb = await _supplierRepository.GetSupplier(supplier.ID);
+                if (supplierFromDb == null)
                 {
-                    _context.Update(supplier);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundResult();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SupplierExists(supplier.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                supplier.Id = supplierFromDb.Id;
+                await _supplierRepository.UpdateSupplier(supplier);
+                TempData["Message"] = "Supplier Updated Successfully";
+
             }
-            return View(supplier);
+            return RedirectToAction("Index");
+
         }
 
         // GET: Supplier/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var supplier = await _context.Suppliers
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Supplier supplier = await _supplierRepository.GetSupplier(id);
             if (supplier == null)
             {
                 return NotFound();
             }
+            List<Product> productList = new List<Product>();
+            foreach(string ID in supplier.ProductsID)
+            {
+                productList.Add(await _productRepository.GetProduct(ID));
+            }
+
+            SupplierViewModel supplierViewModel = new SupplierViewModel
+            {
+                Products = productList,
+                Supplier = supplier
+            };
             ViewData["Title"] = "Delete Supplier";
 
-            return View(supplier);
+            return View(supplierViewModel);
         }
 
         // POST: Supplier/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var supplier = await _context.Suppliers.FindAsync(id);
-            _context.Suppliers.Remove(supplier);
-            await _context.SaveChangesAsync();
+            Supplier supplier = await _supplierRepository.GetSupplier(id);
+
+            // Delete Products
+            foreach (string ID in supplier.ProductsID)
+            {
+                await _productRepository.DeleteProduct(ID);
+            }
+
+
+            await _supplierRepository.DeleteSupplier(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SupplierExists(int id)
-        {
-            return _context.Suppliers.Any(e => e.ID == id);
-        }
+        //private async bool SupplierExists(string id)
+        //{
+        //    Supplier supplier = await _supplierRepository.GetSupplier(id);
+
+        //    if
+
+
+        //    return await _context.Suppliers.FindAsync(id);
+
+        //}
     }
 }

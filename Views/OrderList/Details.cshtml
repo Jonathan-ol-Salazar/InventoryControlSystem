@@ -1,7 +1,7 @@
-﻿@model InventoryControlSystem.Models.OrderList
+﻿@model InventoryControlSystem.ViewModels.OrderListViewModel
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">@ViewData["Title"]</h3>
@@ -10,44 +10,167 @@
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Business)
+                        @Html.DisplayNameFor(model => model.OrderList.Id)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Business)
+                        @Html.DisplayFor(model => model.OrderList.Id)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Price)
+                        @Html.DisplayNameFor(model => model.OrderList.ID)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Price)
+                        @Html.DisplayFor(model => model.OrderList.ID)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.OrderDate)
+                        @Html.DisplayNameFor(model => model.OrderList.SuppliersName)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.OrderDate)
+                        @Html.DisplayFor(model => model.OrderList.SuppliersName)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.BillingAddress)
+                        @Html.DisplayNameFor(model => model.OrderList.SuppliersID)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.BillingAddress)
+                        @Html.DisplayFor(model => model.OrderList.SuppliersID)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ShippingAddress)
+                        @Html.DisplayNameFor(model => model.OrderList.SuppliersAddress)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ShippingAddress)
+                        @Html.DisplayFor(model => model.OrderList.SuppliersAddress)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Confirmed)
+                        @Html.DisplayNameFor(model => model.OrderList.SuppliersPhone)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Confirmed)
+                        @Html.DisplayFor(model => model.OrderList.SuppliersPhone)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.SuppliersEmail)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.SuppliersEmail)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.BusinessesName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.BusinessesName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.BusinessesID)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.BusinessesID)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.BusinessesPhone)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.BusinessesPhone)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.BusinessesEmail)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.BusinessesEmail)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.BusinessesAddress)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.BusinessesAddress)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.TotalCost)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.TotalCost)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.OrderDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.OrderDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderList.Confirmed)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderList.Confirmed)
                     </dd>
                 </dl>
+                <h4><b>Products</b></h4>
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.Brand)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.NumBottles)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.BottleSize)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.NumUnits)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.TotalCost)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Product.SuppliersName)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Products)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Brand)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumBottles)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BottleSize)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumUnits)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalCost)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SuppliersName)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <br />
                 <div>
-                    <a asp-action="Edit" asp-route-id="@Model.ID" class=" btn btn-primary float-right">Edit</a>
+                    <a asp-action="Edit" asp-route-id="@Model.OrderList.Id" class=" btn btn-primary float-right">Edit</a>
                     <a asp-action="Index" class="btn btn-secondary float-left">Back to List</a>
                 </div>
             </div>

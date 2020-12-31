@@ -1,40 +1,92 @@
 ﻿using InventoryControlSystem.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using InventoryControlSystem.ViewModels;
+using InventoryControlSystem.Repositories.Orders;
+using InventoryControlSystem.Repositories.OrderLists;
+using InventoryControlSystem.Repositories.Customers;
+using InventoryControlSystem.Repositories.Suppliers;
+using InventoryControlSystem.Repositories.Funds;
+using InventoryControlSystem.Repositories.Products;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using InventoryControlSystem.Repositories.Users;
 
 namespace InventoryControlSystem.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
-        private readonly IProductRepository _bottleRepository;
-
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-
-        public HomeController(IProductRepository bottleRepository)
+        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderListRepository _orderListRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ISupplierRepository _supplierRepository;
+        private readonly IFundRepository _fundRepository;
+        private readonly IUserRepository _userRepository;
+        public HomeController(IOrderRepository orderRepository, IOrderListRepository orderListRepository, IProductRepository productRepository, 
+            ICustomerRepository customerRepository, ISupplierRepository supplierRepository, IFundRepository fundRepository, IUserRepository userRepository)
         {
-            _bottleRepository = bottleRepository;
+            _orderRepository = orderRepository;
+            _orderListRepository = orderListRepository;
+            _productRepository = productRepository;
+            _customerRepository = customerRepository;
+            _supplierRepository = supplierRepository;
+            _fundRepository = fundRepository;
+            _userRepository = userRepository;
         }
 
 
-        //public String Index()
-        //{
-        //    return _bottleRepository.GetItem(1).Name;
-        //}
-
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            if(User.Identity.IsAuthenticated == true)
+            {
+                // Creating View Model
+
+                IEnumerable<Order> order = new List<Order>();
+                if (User.IsInRole("Team Member"))
+                {
+                    order = await _orderRepository.ToFulfill();
+                }
+                else
+                {
+                    order = await _orderRepository.ToOrderList();
+                }
+
+                IEnumerable<OrderList> orderList = await _orderListRepository.ToConfirm();
+                IEnumerable<Fund> funds = await _fundRepository.GetAllFunds();
+                Fund fund = funds.ToList()[0];
+
+                HomeViewModel homeViewModel = new HomeViewModel
+                {
+                    Orders = order,
+                    OrderLists = orderList,
+                    Fund = fund
+                };
+
+
+
+                // New Users
+                string Auth0ID = User.Claims.ToList()[7].Value;
+
+                if (await _userRepository.Auth0IDExists(Auth0ID) == false)
+                {
+                    User user = new User
+                    {
+                        Auth0ID = Auth0ID,
+                        Email = User.Claims.ToList()[5].Value,
+                        Role = User.Claims.ToList()[0].Value
+                    };
+
+                    await _userRepository.CreateUser(user);
+                    user.ID = user.Id;
+                    await _userRepository.UpdateUser(user);
+                }
+                return View(homeViewModel);
+
+            }
+            return View("~/Views/Shared/Blank.cshtml" );
+
         }
 
         public IActionResult Privacy()

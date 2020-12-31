@@ -1,61 +1,62 @@
 ﻿@model IEnumerable<InventoryControlSystem.Models.Order>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
 <p>
-    <a asp-action="Create">Create New</a>
-    <a asp-action="ToOrder">To Order</a>
-    <a asp-action="ToFulfill">To Fulfill</a>
+    <a asp-action="Index" class="btn btn-secondary">All</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="ToOrder" class="btn btn-secondary">To Order</a>
+    <a asp-action="ToFulfill" class="btn btn-success">To Fulfill</a>
 
 </p>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">DataTable with default features</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.OrderID)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.NumProducts)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Status)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Fulfilled)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Ordered)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.OrderList)
-                                </th>
-                                <th>
-                                    Functions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["Title"]</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Order ID
+                            </th>
+                            <th>
+                                Total Items
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TotalCost)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Fulfilled)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Ordered)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrderList)
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.OrderID)
+                                    @Html.DisplayFor(modelItem => item.ID)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NumProducts)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalCost)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Status)
@@ -70,19 +71,27 @@
                                     @Html.DisplayFor(modelItem => item.OrderList)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a> |
-                                    <a asp-action="Add2OrderList" asp-route-id="@item.ID">Add To Order List</a>
-
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> 
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> 
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a> 
+                                        @if(item.OrderList == false)
+                                        {
+                                            <a asp-action="Add2OrderList" asp-route-id="@item.Id" class="btn btn-secondary">Add To Order List</a>
+                                        }
+                                    }
+                                    @if (item.Fulfilled == false)
+                                    {
+                                        <a asp-action="Fulfill" asp-route-id="@item.Id" class="btn btn-success">Fulfill</a>
+                                    }
                                 </td>
                             </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+                        }
+                    </tbody>
+                </table>
             </div>
+            <!-- /.card-body -->
         </div>
     </div>
 </div>

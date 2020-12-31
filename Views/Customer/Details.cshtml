@@ -1,7 +1,7 @@
-﻿@model InventoryControlSystem.Models.Customer
+﻿@model InventoryControlSystem.ViewModels.CustomerViewModel
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">@ViewData["Title"]</h3>
@@ -9,45 +9,106 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.FirstName)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Customer.FirstName)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.FirstName)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Customer.FirstName)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.LastName)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Customer.LastName)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.LastName)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Customer.LastName)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Email)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Customer.Email)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Email)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Customer.Email)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Phone)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Customer.Phone)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Phone)
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Customer.Phone)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Address)
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Customer.Address)
                     </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Address)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Orders)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Orders)
-                    </dd>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Customer.Address)
+                    </dd>              
                 </dl>
+                @*<h4><b>Orders</b></h4>
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Order ID
+                            </th>
+                            <th>
+                                Total Items
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Order.TotalCost)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Order.Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Order.Fulfilled)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Order.Ordered)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Order.OrderList)
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Orders)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumProducts)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalCost)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Fulfilled)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ordered)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderList)
+                                </td>
+                                <td>
+                                    <a asp-controller="Order" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-controller="Order" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-controller="Order" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                                    <a asp-controller="Order" asp-action="Add2OrderList" asp-route-id="@item.Id">Add To Order List</a> |
+                                    <a asp-controller="Order" asp-action="Fulfill" asp-route-id="@item.Id">Fulfill</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <br />*@
                 <div>
-                    <a asp-action="Edit" asp-route-id="@Model.ID" class=" btn btn-primary float-right">Edit</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Customer.Id" class=" btn btn-primary float-right">Edit</a>
                     <a asp-action="Index" class="btn btn-secondary float-left">Back to List</a>
                 </div>
             </div>
