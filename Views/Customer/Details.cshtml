@@ -40,7 +40,7 @@
                         @Html.DisplayFor(model => model.Customer.Address)
                     </dd>              
                 </dl>
-                <h4><b>Orders</b></h4>
+                @*<h4><b>Orders</b></h4>
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -106,7 +106,7 @@
                         }
                     </tbody>
                 </table>
-                <br />
+                <br />*@
                 <div>
                     <a asp-action="Edit" asp-route-id="@Model.Customer.Id" class=" btn btn-primary float-right">Edit</a>
                     <a asp-action="Index" class="btn btn-secondary float-left">Back to List</a>
