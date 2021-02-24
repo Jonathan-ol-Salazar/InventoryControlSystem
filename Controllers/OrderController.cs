@@ -515,6 +515,7 @@ namespace InventoryControlSystem.Controllers
         {
             // get all the entries that have 'ordered' as false
             var toOrder = await _orderRepository.ToOrder();
+            ViewData["Title"] = "To Order";
             return View("Index", toOrder);
         }
 
@@ -523,6 +524,7 @@ namespace InventoryControlSystem.Controllers
         {
             // get all the entries that have 'fulfilled' as false
             var toFulfill = await _orderRepository.ToFulfill();
+            ViewData["Title"] = "To Filfill";
             return View("Index", toFulfill);
         }
 
