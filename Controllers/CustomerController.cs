@@ -75,6 +75,7 @@ namespace InventoryControlSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Orders = new List<string>();
                 await _customerRepository.CreateCustomer(customer);
                 customer.ID = customer.Id;
                 await _customerRepository.UpdateCustomer(customer);
