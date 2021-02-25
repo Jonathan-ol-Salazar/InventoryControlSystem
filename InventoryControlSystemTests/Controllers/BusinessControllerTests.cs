@@ -97,10 +97,34 @@ namespace InventoryControlSystemTests.Controllers
             businessRepo.Setup(r => r.GetBusiness(id));
             controller = new BusinessController(businessRepo.Object,orderRepo.Object);
 
-            // Act
+            // Arrange
             var result = await controller.Details(id);
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task Details_WhenCalledWithExistingID_ReturnViewResult()
+        {
+            // Arrange
+            businessRepo.Setup(r => r.GetBusiness(business.Id)).ReturnsAsync(business);
+            BusinessController controller = new BusinessController(businessRepo.Object, orderRepo.Object);
+            var result = await controller.Details(business.Id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public async Task Details_WhenCalledWithExistingID_ReturnViewData()
+        {
+            // Act
+            businessRepo.Setup(r => r.GetBusiness(business.Id)).ReturnsAsync(business);
+            BusinessController controller = new BusinessController(businessRepo.Object, orderRepo.Object);
+            var result = await controller.Details(business.Id) as ViewResult;
+            var viewData = result.ViewData.Values.ToList()[0];
+            // Assert
+            Assert.AreEqual("View Business", viewData);
         }
     }
 }
