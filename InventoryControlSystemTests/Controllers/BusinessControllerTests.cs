@@ -126,5 +126,62 @@ namespace InventoryControlSystemTests.Controllers
             // Assert
             Assert.AreEqual("View Business", viewData);
         }
+
+        [TestMethod]
+        public async Task Create_WhenCalled_ReturnViewData()
+        {
+            // Act
+            var result = controller.Create() as ViewResult;
+            var viewData = result.ViewData.Values.ToList()[0];
+
+            // Assert
+            Assert.AreEqual(viewData, "Create New Business");
+        }
+
+        [TestMethod]
+        public async Task Create_WhenCalled_ReturnViewResult()
+        {
+            // Act
+            var result = controller.Create();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public async Task Create_WithValidModel_ReturnActionResult()
+        {
+            // Act
+            var result = await controller.Create(business);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ActionResult));
+        }
+
+        [TestMethod]
+        public async Task Create_WithInvalidModel_ReturnViewResult()
+        {
+            // Act
+            Business business = new Business();
+            controller.ModelState.AddModelError("ID", "Need ID");
+            var result = await controller.Create(business);
+
+            // Assert 
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public async Task Create_WithInvalidModel_ReturnViewModel()
+        {
+            // Act
+            Business business = new Business();
+            controller.ModelState.AddModelError("ID", "Need ID");
+            var result = await controller.Create(business) as ViewResult;
+            var model = result.Model;
+
+            // Assert
+            Assert.AreEqual(model, business);
+        }
+
     }
 }
