@@ -183,5 +183,15 @@ namespace InventoryControlSystemTests.Controllers
             Assert.AreEqual(model, business);
         }
 
+        [TestMethod]
+        public async Task Edit_IDIsNull_ReturnNotFound()
+        {
+            // Act
+            var result = await controller.Edit(null);
+
+            // Arrange
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
     }
 }
